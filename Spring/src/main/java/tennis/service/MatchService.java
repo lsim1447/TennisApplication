@@ -3,7 +3,12 @@ package tennis.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tennis.domain.Match;
+import tennis.domain.Player;
 import tennis.repository.MatchRepository;
+import tennis.repository.PlayerRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MatchService {
@@ -11,6 +16,28 @@ public class MatchService {
     @Autowired
     private MatchRepository matchesRepository;
 
+    @Autowired
+    private PlayerRepository playerRepository;
+
+    // REUSABLE FILTERS
+    private boolean filterBySelectedYear(Match match, int year){
+        try {
+            String ID = match.getMatch_id().split("-")[0];
+            return (year == Integer.parseInt(ID));
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    private boolean filterByTourneyName(Match match, String tourneyName){
+        try {
+            return match.getTournament().getTourney().getName().equals(tourneyName);
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    // DEFAULT METHODS
     public Match findMatchById(String id){ return matchesRepository.findById(id).orElse(null); }
 
     public Iterable<Match> findAll(){ return matchesRepository.findAll(); }
@@ -20,4 +47,50 @@ public class MatchService {
     public Iterable<Match> saveAll(Iterable<Match> matches) { return matchesRepository.saveAll(matches); }
 
     public void deleteMatchById(String id) { matchesRepository.deleteById(id); }
+
+
+    // TWO BASIC CASES
+    public Iterable<Match> findAllMatchesByPlayerName(String firstName, String lastName){
+        Player player = playerRepository.findByFirstNameAndLastName(firstName, lastName);
+        List<Match> matches = (List<Match>) matchesRepository.findAllByWinnerPlayerOrLoserPlayer(player, player);
+        return matches;
+    }
+
+    public Iterable<Match> findAllMatchesBetweenTwoPlayer(String firstName1, String lastName1, String firstName2, String lastName2){
+        Player player1 = playerRepository.findByFirstNameAndLastName(firstName1, lastName1);
+        Player player2 = playerRepository.findByFirstNameAndLastName(firstName2, lastName2);
+
+        List<Match> first_round = (List<Match>) matchesRepository.findAllByWinnerPlayerAndLoserPlayer(player1, player2);
+        List<Match> second_round = (List<Match>) matchesRepository.findAllByWinnerPlayerAndLoserPlayer(player2, player1);
+
+        first_round.addAll(second_round);
+        return first_round;
+    }
+
+    // FILTER BY SELECTED YEAR
+    public Iterable<Match> findAllMatchesByPlayerNameInSelectedYear(String firstName, String lastName, int year){
+        List<Match> matches = (List<Match>) findAllMatchesByPlayerName(firstName, lastName);
+        return matches.stream().filter(match -> filterBySelectedYear(match, year)).collect(Collectors.toList());
+    }
+
+    public Iterable<Match> findAllMatchesBetweenTwoPlayerInSelectedYear(String firstName1, String lastName1, String firstName2, String lastName2, int year){
+        List<Match> matches = (List<Match>)findAllMatchesBetweenTwoPlayer(firstName1, lastName1, firstName2, lastName2);
+        return matches.stream().filter(match -> filterBySelectedYear(match, year)).collect(Collectors.toList());
+    }
+
+    // FILTER BY SELECTED TOURNEY
+    public Iterable<Match> findAllMatchesByPlayerNameAndTourneyName(String firstName, String lastName, String tourneyName){
+        List<Match> matches = (List<Match>) findAllMatchesByPlayerName(firstName, lastName);
+        return matches.stream().filter(match -> filterByTourneyName(match, tourneyName)).collect(Collectors.toList());
+    }
+
+    public Iterable<Match> findAllMatchesBetweenTwoPlayerAndTourneyName(String firstName1, String lastName1, String firstName2, String lastName2, String tourneyName){
+        List<Match> matches = (List<Match>) findAllMatchesBetweenTwoPlayer(firstName1, lastName1, firstName2, lastName2);
+        return matches.stream().filter(match -> filterByTourneyName(match, tourneyName)).collect(Collectors.toList());
+    }
+
+    public Iterable<Match> findAllMatchesBetweenTwoPlayerInSelectedYearAndTourneyName(String firstName1, String lastName1, String firstName2, String lastName2, String tourneyName, int year){
+        List<Match> matches = (List<Match>) findAllMatchesBetweenTwoPlayerInSelectedYear(firstName1, lastName1, firstName2, lastName2, year);
+        return matches.stream().filter(match -> filterByTourneyName(match, tourneyName)).collect(Collectors.toList());
+    }
 }

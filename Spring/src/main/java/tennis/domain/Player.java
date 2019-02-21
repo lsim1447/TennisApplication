@@ -1,6 +1,5 @@
 package tennis.domain;
 
-import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -11,7 +10,7 @@ public class Player {
     @Id
     private String player_id;
 
-    private String player_slug;
+    private String playerSlug;
 
     public String getPlayer_id() {
         return player_id;
@@ -21,44 +20,44 @@ public class Player {
         this.player_id = player_id;
     }
 
-    public String getPlayer_slug() {
-        return player_slug;
+    public String getPlayerSlug() {
+        return playerSlug;
     }
 
-    public void setPlayer_slug(String player_slug) {
-        this.player_slug = player_slug;
+    public void setPlayerSlug(String playerSlug) {
+        this.playerSlug = playerSlug;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getPlayer_url() {
-        return player_url;
+    public String getPlayerUrl() {
+        return playerUrl;
     }
 
-    public void setPlayer_url(String player_url) {
-        this.player_url = player_url;
+    public void setPlayerUrl(String playerUrl) {
+        this.playerUrl = playerUrl;
     }
 
-    public String getFlag_code() {
-        return flag_code;
+    public String getFlagCode() {
+        return flagCode;
     }
 
-    public void setFlag_code(String flag_code) {
-        this.flag_code = flag_code;
+    public void setFlagCode(String flagCode) {
+        this.flagCode = flagCode;
     }
 
     public String getBirthdate() {
@@ -69,76 +68,76 @@ public class Player {
         this.birthdate = birthdate;
     }
 
-    public int getBirth_year() {
-        return birth_year;
+    public int getBirthYear() {
+        return birthYear;
     }
 
-    public void setBirth_year(int birth_year) {
-        this.birth_year = birth_year;
+    public void setBirthYear(int birthYear) {
+        this.birthYear = birthYear;
     }
 
-    public int getBirth_month() {
-        return birth_month;
+    public int getBirthMonth() {
+        return birthMonth;
     }
 
-    public void setBirth_month(int birth_month) {
-        this.birth_month = birth_month;
+    public void setBirthMonth(int birthMonth) {
+        this.birthMonth = birthMonth;
     }
 
-    public int getBirth_day() {
-        return birth_day;
+    public int getBirthDay() {
+        return birthDay;
     }
 
-    public void setBirth_day(int birth_day) {
-        this.birth_day = birth_day;
+    public void setBirthDay(int birthDay) {
+        this.birthDay = birthDay;
     }
 
-    public int getTurned_pro() {
-        return turned_pro;
+    public int getTurnedPro() {
+        return turnedPro;
     }
 
-    public void setTurned_pro(int turned_pro) {
-        this.turned_pro = turned_pro;
+    public void setTurnedPro(int turnedPro) {
+        this.turnedPro = turnedPro;
     }
 
-    public int getWeight_lbs() {
-        return weight_lbs;
+    public int getWeightLbs() {
+        return weightLbs;
     }
 
-    public void setWeight_lbs(int weight_lbs) {
-        this.weight_lbs = weight_lbs;
+    public void setWeightLbs(int weightLbs) {
+        this.weightLbs = weightLbs;
     }
 
-    public int getWeight_kg() {
-        return weight_kg;
+    public int getWeightKg() {
+        return weightKg;
     }
 
-    public void setWeight_kg(int weight_kg) {
-        this.weight_kg = weight_kg;
+    public void setWeightKg(int weightKg) {
+        this.weightKg = weightKg;
     }
 
-    public String getHeight_ft() {
-        return height_ft;
+    public String getHeightFt() {
+        return heightFt;
     }
 
-    public void setHeight_ft(String height_ft) {
-        this.height_ft = height_ft;
+    public void setHeightFt(String heightFt) {
+        this.heightFt = heightFt;
     }
 
-    public String getHeight_inches() {
-        return height_inches;
+    public String getHeightInches() {
+        return heightInches;
     }
 
-    public void setHeight_inches(String height_inches) {
-        this.height_inches = height_inches;
+    public void setHeightInches(String heightInches) {
+        this.heightInches = heightInches;
     }
 
-    public String getHeight_cm() {
-        return height_cm;
+    public String getHeightCm() {
+        return heightCm;
     }
 
-    public void setHeight_cm(String height_cm) {
-        this.height_cm = height_cm;
+    public void setHeightCm(String heightCm) {
+        this.heightCm = heightCm;
     }
 
     public String getHandedness() {
@@ -157,33 +156,33 @@ public class Player {
         this.backhand = backhand;
     }
 
-    private String first_name;
+    private String firstName;
 
-    private String last_name;
+    private String lastName;
 
-    private String player_url;
+    private String playerUrl;
 
-    private String flag_code;
+    private String flagCode;
 
     private String birthdate;
 
-    private int birth_year;
+    private int birthYear;
 
-    private int birth_month;
+    private int birthMonth;
 
-    private int birth_day;
+    private int birthDay;
 
-    private int turned_pro;
+    private int turnedPro;
 
-    private int weight_lbs;
+    private int weightLbs;
 
-    private int weight_kg;
+    private int weightKg;
 
-    private String height_ft;
+    private String heightFt;
 
-    private String height_inches;
+    private String heightInches;
 
-    private String height_cm;
+    private String heightCm;
 
     private String handedness;
 
@@ -191,21 +190,21 @@ public class Player {
 
     public Player(String player_id, String player_slug, String first_name, String last_name, String player_url, String flag_code, String birthdate, int birth_year, int birth_month, int birth_day, int turned_pro, int weight_lbs, int weight_kg, String height_ft, String height_inches, String height_cm, String handedness, String backhand) {
         this.player_id = player_id;
-        this.player_slug = player_slug;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.player_url = player_url;
-        this.flag_code = flag_code;
+        this.playerSlug = player_slug;
+        this.firstName = first_name;
+        this.lastName = last_name;
+        this.playerUrl = player_url;
+        this.flagCode = flag_code;
         this.birthdate = birthdate;
-        this.birth_year = birth_year;
-        this.birth_month = birth_month;
-        this.birth_day = birth_day;
-        this.turned_pro = turned_pro;
-        this.weight_lbs = weight_lbs;
-        this.weight_kg = weight_kg;
-        this.height_ft = height_ft;
-        this.height_inches = height_inches;
-        this.height_cm = height_cm;
+        this.birthYear = birth_year;
+        this.birthMonth = birth_month;
+        this.birthDay = birth_day;
+        this.turnedPro = turned_pro;
+        this.weightLbs = weight_lbs;
+        this.weightKg = weight_kg;
+        this.heightFt = height_ft;
+        this.heightInches = height_inches;
+        this.heightCm = height_cm;
         this.handedness = handedness;
         this.backhand = backhand;
     }

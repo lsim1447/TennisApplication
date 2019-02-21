@@ -8,8 +8,8 @@ public class Match {
     private String match_id;
 
     private String round_name;
-    private Long round_order;
-    private Long match_order;
+    private int round_order;
+    private int match_order;
 
     @ManyToOne
     @JoinColumn(name="tournament_year_id")
@@ -17,35 +17,35 @@ public class Match {
 
     @ManyToOne
     @JoinColumn(name="winner_player_id")
-    private Player winner_player;
+    private Player winnerPlayer;
 
     @ManyToOne
     @JoinColumn(name="loser_player_id")
-    private Player loser_player;
+    private Player loserPlayer;
 
     private String winner_seed;
     private String loser_seed;
     private String match_score_tiebreaks;
-    private Long winner_sets_won;
-    private Long loser_sets_won;
-    private Long winner_games_won;
-    private Long loser_games_won;
-    private Long winner_tiebreaks_won;
-    private Long loser_tiebreaks_won;
+    private int winner_sets_won;
+    private int loser_sets_won;
+    private int winner_games_won;
+    private int loser_games_won;
+    private int winner_tiebreaks_won;
+    private int loser_tiebreaks_won;
     private String match_stats_url_suffix;
 
     public Match(){
 
     }
 
-    public Match(String match_id, String round_name, Long round_order, Long match_order, Tournament tournament, Player winner_player, Player loser_player, String winner_seed, String loser_seed, String match_score_tiebreaks, Long winner_sets_won, Long loser_sets_won, Long winner_games_won, Long loser_games_won, Long winner_tiebreaks_won, Long loser_tiebreaks_won, String match_stats_url_suffix) {
+    public Match(String match_id, String round_name, int round_order, int match_order, Tournament tournament, Player winner_player, Player loser_player, String winner_seed, String loser_seed, String match_score_tiebreaks, int winner_sets_won, int loser_sets_won, int winner_games_won, int loser_games_won, int winner_tiebreaks_won, int loser_tiebreaks_won, String match_stats_url_suffix) {
         this.match_id = match_id;
         this.round_name = round_name;
         this.round_order = round_order;
         this.match_order = match_order;
         this.tournament = tournament;
-        this.winner_player = winner_player;
-        this.loser_player = loser_player;
+        this.winnerPlayer = winner_player;
+        this.loserPlayer = loser_player;
         this.winner_seed = winner_seed;
         this.loser_seed = loser_seed;
         this.match_score_tiebreaks = match_score_tiebreaks;
@@ -74,19 +74,19 @@ public class Match {
         this.round_name = round_name;
     }
 
-    public Long getRound_order() {
+    public int getRound_order() {
         return round_order;
     }
 
-    public void setRound_order(Long round_order) {
+    public void setRound_order(int round_order) {
         this.round_order = round_order;
     }
 
-    public Long getMatch_order() {
+    public int getMatch_order() {
         return match_order;
     }
 
-    public void setMatch_order(Long match_order) {
+    public void setMatch_order(int match_order) {
         this.match_order = match_order;
     }
 
@@ -98,20 +98,20 @@ public class Match {
         this.tournament = tournament;
     }
 
-    public Player getWinner_player() {
-        return winner_player;
+    public Player getWinnerPlayer() {
+        return winnerPlayer;
     }
 
-    public void setWinner_player(Player winner_player) {
-        this.winner_player = winner_player;
+    public void setWinnerPlayer(Player winnerPlayer) {
+        this.winnerPlayer = winnerPlayer;
     }
 
-    public Player getLoser_player() {
-        return loser_player;
+    public Player getLoserPlayer() {
+        return loserPlayer;
     }
 
-    public void setLoser_player(Player loser_player) {
-        this.loser_player = loser_player;
+    public void setLoserPlayer(Player loserPlayer) {
+        this.loserPlayer = loserPlayer;
     }
 
     public String getWinner_seed() {
@@ -138,51 +138,51 @@ public class Match {
         this.match_score_tiebreaks = match_score_tiebreaks;
     }
 
-    public Long getWinner_sets_won() {
+    public int getWinner_sets_won() {
         return winner_sets_won;
     }
 
-    public void setWinner_sets_won(Long winner_sets_won) {
+    public void setWinner_sets_won(int winner_sets_won) {
         this.winner_sets_won = winner_sets_won;
     }
 
-    public Long getLoser_sets_won() {
+    public int getLoser_sets_won() {
         return loser_sets_won;
     }
 
-    public void setLoser_sets_won(Long loser_sets_won) {
+    public void setLoser_sets_won(int loser_sets_won) {
         this.loser_sets_won = loser_sets_won;
     }
 
-    public Long getWinner_games_won() {
+    public int getWinner_games_won() {
         return winner_games_won;
     }
 
-    public void setWinner_games_won(Long winner_games_won) {
+    public void setWinner_games_won(int winner_games_won) {
         this.winner_games_won = winner_games_won;
     }
 
-    public Long getLoser_games_won() {
+    public int getLoser_games_won() {
         return loser_games_won;
     }
 
-    public void setLoser_games_won(Long loser_games_won) {
+    public void setLoser_games_won(int loser_games_won) {
         this.loser_games_won = loser_games_won;
     }
 
-    public Long getWinner_tiebreaks_won() {
+    public int getWinner_tiebreaks_won() {
         return winner_tiebreaks_won;
     }
 
-    public void setWinner_tiebreaks_won(Long winner_tiebreaks_won) {
+    public void setWinner_tiebreaks_won(int winner_tiebreaks_won) {
         this.winner_tiebreaks_won = winner_tiebreaks_won;
     }
 
-    public Long getLoser_tiebreaks_won() {
+    public int getLoser_tiebreaks_won() {
         return loser_tiebreaks_won;
     }
 
-    public void setLoser_tiebreaks_won(Long loser_tiebreaks_won) {
+    public void setLoser_tiebreaks_won(int loser_tiebreaks_won) {
         this.loser_tiebreaks_won = loser_tiebreaks_won;
     }
 

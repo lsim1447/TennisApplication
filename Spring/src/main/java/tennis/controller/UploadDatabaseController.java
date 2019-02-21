@@ -38,29 +38,29 @@ public class UploadDatabaseController {
 
                     player.setPlayer_id(line.get(0));
                     try {
-                        player.setPlayer_slug(line.get(1));
+                        player.setPlayerSlug(line.get(1));
                     } catch (Exception e){
-                        player.setPlayer_slug("");
+                        player.setPlayerSlug("");
                     }
                     try {
-                        player.setFirst_name(line.get(2));
+                        player.setFirstName(line.get(2));
                     } catch (Exception e){
-                        player.setFirst_name("");
+                        player.setFirstName("");
                     }
                     try {
-                        player.setLast_name(line.get(3));
+                        player.setLastName(line.get(3));
                     } catch (Exception e){
-                        player.setLast_name("");
+                        player.setLastName("");
                     }
                     try {
-                        player.setPlayer_url(line.get(4));
+                        player.setPlayerUrl(line.get(4));
                     } catch (Exception e){
-                        player.setPlayer_url("");
+                        player.setPlayerUrl("");
                     }
                     try {
-                        player.setFlag_code(line.get(5));
+                        player.setFlagCode(line.get(5));
                     } catch (Exception e){
-                        player.setFlag_code("");
+                        player.setFlagCode("");
                     }
                     try {
                         player.setBirthdate(line.get(6));
@@ -68,54 +68,54 @@ public class UploadDatabaseController {
                         player.setBirthdate("");
                     }
                     try{
-                        player.setBirth_year(new Integer(line.get(7)));
+                        player.setBirthYear(new Integer(line.get(7)));
                     } catch (Exception e){
-                        player.setBirth_year(0);
+                        player.setBirthYear(0);
                     }
                     try{
-                        player.setBirth_month(new Integer(line.get(8)));
+                        player.setBirthMonth(new Integer(line.get(8)));
                     } catch (Exception e){
-                        player.setBirth_year(0);
+                        player.setBirthYear(0);
                     }
                     try{
-                        player.setBirth_day(new Integer(line.get(9)));
+                        player.setBirthDay(new Integer(line.get(9)));
                     } catch (Exception e){
-                        player.setBirth_year(0);
+                        player.setBirthYear(0);
                     }
                     try{
-                        player.setTurned_pro(new Integer(line.get(10)));
+                        player.setTurnedPro(new Integer(line.get(10)));
                     } catch (Exception e){
-                        player.setBirth_year(0);
+                        player.setBirthYear(0);
                     }
                     try{
-                        player.setWeight_lbs(new Integer(line.get(11)));
+                        player.setWeightLbs(new Integer(line.get(11)));
                     } catch (Exception e){
-                        player.setBirth_year(0);
+                        player.setBirthYear(0);
                     }
                     try{
-                        player.setWeight_kg(new Integer(line.get(12)));
+                        player.setWeightKg(new Integer(line.get(12)));
                     } catch (Exception e){
-                        player.setBirth_year(0);
+                        player.setBirthYear(0);
                     }
                     try{
-                        player.setHeight_ft(line.get(13));
+                        player.setHeightFt(line.get(13));
                     } catch (Exception e){
-                        player.setHeight_ft("");
+                        player.setHeightFt("");
                     }
                     try{
-                        player.setHeight_inches(line.get(14));
+                        player.setHeightInches(line.get(14));
                     } catch (Exception e){
-                        player.setHeight_inches("");
+                        player.setHeightInches("");
                     }
                     try{
-                        player.setHeight_cm(line.get(15));
+                        player.setHeightCm(line.get(15));
                     } catch (Exception e){
-                        player.setHeight_cm("");
+                        player.setHeightCm("");
                     }
                     try{
-                        player.setHeight_cm(line.get(15));
+                        player.setHeightCm(line.get(15));
                     } catch (Exception e){
-                        player.setHeight_cm("");
+                        player.setHeightCm("");
                     }
                     try{
                         player.setHandedness(line.get(16));
@@ -140,7 +140,7 @@ public class UploadDatabaseController {
         List<List<String>> data = CSVReader.getData("tournaments").stream().collect(Collectors.toList());
 
         List<Tourney> tourneys = data.stream()
-                .map(line -> new Tourney(line.get(2), line.get(1), line.get(3), line.get(4)))
+                .map(line -> new Tourney(line.get(2), line.get(1), line.get(3), line.get(4), line.get(7), line.get(8)))
                 .distinct()
                 .collect(Collectors.toList());
 
@@ -157,24 +157,19 @@ public class UploadDatabaseController {
                     Tournament tournament = new Tournament();
                     tournament.setTournament_year_id(line.get(14));
                     tournament.setDates(line.get(5));
-                    tournament.setYear(new Long(line.get(0)));
-                    tournament.setSingles_draw(new Long(line.get(6)));
-                    tournament.setConditions(line.get(7));
-                    tournament.setSurface(line.get(8));
-                    tournament.setUrl_suffix(line.get(9));
+                    tournament.setYear(Integer.parseInt(line.get(0)));
+                    tournament.setSinglesDraw(Integer.parseInt(line.get(6)));
+                    tournament.setUrlSuffix(line.get(9));
 
                     Tourney tourney = new Tourney();
                     tourney.setTourney_id(line.get(2));
                     tournament.setTourney(tourney);
 
                     Player player = playerService.findPlayerById(line.get(13));
-                    //player.setPlayer_id(line.get(13));
                     tournament.setPlayer(player);
                     return  tournament;
                 })
                 .collect(Collectors.toList());
-
-        System.out.println("ALL = " + tournaments.size());
 
         tournaments.forEach(tournament -> {
             try{
@@ -197,27 +192,27 @@ public class UploadDatabaseController {
 
                     match.setMatch_id(line.get(19));
                     match.setRound_name(line.get(1));
-                    match.setRound_order(new Long(line.get(2)));
-                    match.setMatch_order(new Long(line.get(3)));
+                    match.setRound_order(Integer.parseInt(line.get(2)));
+                    match.setMatch_order(Integer.parseInt(line.get(3)));
 
                     Tournament tournament = tournamentService.findTournamentById(line.get(0));
                     match.setTournament(tournament);
 
                     Player winnerPlayer = playerService.findPlayerById(line.get(5));
-                    match.setWinner_player(winnerPlayer);
+                    match.setWinnerPlayer(winnerPlayer);
 
                     Player loserPlayer = playerService.findPlayerById(line.get(8));
-                    match.setLoser_player(loserPlayer);
+                    match.setLoserPlayer(loserPlayer);
 
                     match.setWinner_seed(line.get(10));
                     match.setLoser_seed(line.get(11));
                     match.setMatch_score_tiebreaks(line.get(12));
-                    match.setWinner_sets_won(new Long(line.get(13)));
-                    match.setLoser_sets_won(new Long(line.get(14)));
-                    match.setWinner_games_won(new Long(line.get(15)));
-                    match.setLoser_games_won(new Long(line.get(16)));
-                    match.setWinner_tiebreaks_won(new Long(line.get(17)));
-                    match.setLoser_tiebreaks_won(new Long(line.get(18)));
+                    match.setWinner_sets_won(Integer.parseInt(line.get(13)));
+                    match.setLoser_sets_won(Integer.parseInt(line.get(14)));
+                    match.setWinner_games_won(Integer.parseInt(line.get(15)));
+                    match.setLoser_games_won(Integer.parseInt(line.get(16)));
+                    match.setWinner_tiebreaks_won(Integer.parseInt(line.get(17)));
+                    match.setLoser_tiebreaks_won(Integer.parseInt(line.get(18)));
                     try{
                         match.setMatch_stats_url_suffix(line.get(20));
                     } catch (Exception e){

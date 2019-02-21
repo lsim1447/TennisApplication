@@ -14,15 +14,11 @@ public class Tournament {
 
     private String dates;
 
-    private Long year;
+    private int year;
 
-    private Long singles_draw;
+    private int singlesDraw;
 
-    private String conditions;
-
-    private String surface;
-
-    private String url_suffix;
+    private String urlSuffix;
 
     @ManyToOne
     @JoinColumn(name="tourney_id")
@@ -36,14 +32,12 @@ public class Tournament {
 
     }
 
-    public Tournament(String tournament_year_id, String dates, Long year, Long singles_draw, String conditions, String surface, String url_suffix, Tourney tourney, Player player) {
+    public Tournament(String tournament_year_id, String dates, int year, int singles_draw, String url_suffix, Tourney tourney, Player player) {
         this.tournament_year_id = tournament_year_id;
         this.dates = dates;
         this.year = year;
-        this.singles_draw = singles_draw;
-        this.conditions = conditions;
-        this.surface = surface;
-        this.url_suffix = url_suffix;
+        this.singlesDraw = singles_draw;
+        this.urlSuffix = url_suffix;
         this.tourney = tourney;
         this.player = player;
     }
@@ -64,44 +58,28 @@ public class Tournament {
         this.dates = dates;
     }
 
-    public Long getYear() {
+    public int getYear() {
         return year;
     }
 
-    public void setYear(Long year) {
+    public void setYear(int year) {
         this.year = year;
     }
 
-    public Long getSingles_draw() {
-        return singles_draw;
+    public int getSinglesDraw() {
+        return singlesDraw;
     }
 
-    public void setSingles_draw(Long singles_draw) {
-        this.singles_draw = singles_draw;
+    public void setSinglesDraw(int singlesDraw) {
+        this.singlesDraw = singlesDraw;
     }
 
-    public String getConditions() {
-        return conditions;
+    public String getUrlSuffix() {
+        return urlSuffix;
     }
 
-    public void setConditions(String conditions) {
-        this.conditions = conditions;
-    }
-
-    public String getSurface() {
-        return surface;
-    }
-
-    public void setSurface(String surface) {
-        this.surface = surface;
-    }
-
-    public String getUrl_suffix() {
-        return url_suffix;
-    }
-
-    public void setUrl_suffix(String url_suffix) {
-        this.url_suffix = url_suffix;
+    public void setUrlSuffix(String urlSuffix) {
+        this.urlSuffix = urlSuffix;
     }
 
     public Tourney getTourney() {

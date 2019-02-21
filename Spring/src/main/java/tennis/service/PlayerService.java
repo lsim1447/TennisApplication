@@ -30,6 +30,6 @@ public class PlayerService {
     public void deletePlayerById(String id){ playerRepository.deleteById(id); }
 
     public Player findByFirstNameLastName(String firstName, String lastName){
-        return playerRepository.findByFirst_nameAndLast_name(firstName, lastName);
+        return playerRepository.findByFirstNameAndLastName(firstName, lastName);
     }
 }

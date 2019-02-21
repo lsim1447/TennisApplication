@@ -20,7 +20,7 @@ public class TournamentController {
     }
 
     @GetMapping("/test")
-    public Iterable<Tournament> o_test(){
-        return tournamentService.getTournamentsByPlayerName("Roger", "Federer");
+    public Iterable<Tournament> getWonTournamentsByPlayerName(){
+        return tournamentService.getWonTournamentsByPlayerName("Roger", "Federer");
     }
 }

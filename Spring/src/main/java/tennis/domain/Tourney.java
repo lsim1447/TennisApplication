@@ -13,16 +13,20 @@ public class Tourney {
     private String name;
     private String slug;
     private String location;
+    private String conditions;
+    private String surface;
 
     public Tourney() {
 
     }
 
-    public Tourney(String tourney_id, String name, String slug, String location) {
+    public Tourney(String tourney_id, String name, String slug, String location, String conditions, String surface) {
         this.tourney_id = tourney_id;
-        this.name = name.replace("\"", "");
+        this.name = name;
         this.slug = slug;
-        this.location = location.replace("\"", "");
+        this.location = location;
+        this.conditions = conditions;
+        this.surface = surface;
     }
 
     public String getTourney_id() {
@@ -55,6 +59,22 @@ public class Tourney {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getConditions() {
+        return conditions;
+    }
+
+    public void setConditions(String conditions) {
+        this.conditions = conditions;
+    }
+
+    public String getSurface() {
+        return surface;
+    }
+
+    public void setSurface(String surface) {
+        this.surface = surface;
     }
 
     @Override

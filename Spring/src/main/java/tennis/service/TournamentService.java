@@ -2,7 +2,10 @@ package tennis.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tennis.domain.Player;
 import tennis.domain.Tournament;
+import tennis.repository.MatchRepository;
+import tennis.repository.PlayerRepository;
 import tennis.repository.TournamentRepository;
 
 import java.util.List;
@@ -13,6 +16,9 @@ public class TournamentService {
 
     @Autowired
     private TournamentRepository tournamentRepository;
+
+    @Autowired
+    private PlayerRepository playerRepository;
 
     public Tournament findTournamentById(String id){
         return tournamentRepository.findById(id).orElse(null);
@@ -30,16 +36,8 @@ public class TournamentService {
 
     public void deleteTournamentById(String id){ tournamentRepository.deleteById(id); }
 
-    public Iterable<Tournament> getTournamentsByPlayerName(String firstName, String lastName){
-        List<Tournament> tournaments = (List<Tournament>)tournamentRepository.findAll();
-        tournaments.stream()
-                .filter(tournament -> {
-
-                     return tournament.getPlayer().getFirst_name().equals(firstName) &&
-                            tournament.getPlayer().getLast_name().equals(lastName);
-                })
-                .collect(Collectors.toList());
-        return null;
+    public Iterable<Tournament> getWonTournamentsByPlayerName(String firstName, String lastName){
+        Player player = playerRepository.findByFirstNameAndLastName(firstName, lastName);
+        return tournamentRepository.findAllByPlayer(player);
     }
-
 }
