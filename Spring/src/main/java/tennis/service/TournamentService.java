@@ -4,12 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tennis.domain.Player;
 import tennis.domain.Tournament;
-import tennis.repository.MatchRepository;
 import tennis.repository.PlayerRepository;
 import tennis.repository.TournamentRepository;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TournamentService {

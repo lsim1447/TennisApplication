@@ -6,5 +6,5 @@ import tennis.domain.Tourney;
 
 @Repository
 public interface TourneyRepository extends CrudRepository<Tourney, String> {
-
+    
 }

@@ -37,6 +37,14 @@ public class MatchService {
         }
     }
 
+    private boolean filterBySurface(Match match, String surface){
+        try {
+            return match.getTournament().getTourney().getSurface().equals(surface);
+        } catch (Exception e){
+            return false;
+        }
+    }
+
     // DEFAULT METHODS
     public Match findMatchById(String id){ return matchesRepository.findById(id).orElse(null); }
 
@@ -92,5 +100,36 @@ public class MatchService {
     public Iterable<Match> findAllMatchesBetweenTwoPlayerInSelectedYearAndTourneyName(String firstName1, String lastName1, String firstName2, String lastName2, String tourneyName, int year){
         List<Match> matches = (List<Match>) findAllMatchesBetweenTwoPlayerInSelectedYear(firstName1, lastName1, firstName2, lastName2, year);
         return matches.stream().filter(match -> filterByTourneyName(match, tourneyName)).collect(Collectors.toList());
+    }
+
+    // FILTER BY SELECTED SURFACE
+    public Iterable<Match> findAllMatchesByPlayerNameAndSurface(String firstName, String lastName, String surface){
+        List<Match> matches = (List<Match>) findAllMatchesByPlayerName(firstName, lastName);
+        return matches.stream().filter(match -> filterBySurface(match, surface)).collect(Collectors.toList());
+    }
+
+    public Iterable<Match> findAllMatchesByPlayerNameAndTourneyNameAndSurface(String firstName, String lastName, String tourneyName, String surface){
+        List<Match> matches = (List<Match>) findAllMatchesByPlayerNameAndTourneyName(firstName, lastName, tourneyName);
+        return matches.stream().filter(match -> filterBySurface(match, surface)).collect(Collectors.toList());
+    }
+
+    public Iterable<Match> findAllMatchesByPlayerNameAndTourneyNameAndSurfaceInSelectedYear(String firstName, String lastName, String tourneyName, String surface, int year){
+        List<Match> matches = (List<Match>) findAllMatchesByPlayerNameAndTourneyNameAndSurface(firstName, lastName, tourneyName, surface);
+        return matches.stream().filter(match -> filterBySelectedYear(match, year)).collect(Collectors.toList());
+    }
+
+    public Iterable<Match> findAllMatchesBetweenTwoPlayerAndSurface(String firstName1, String lastName1, String firstName2, String lastName2, String surface){
+        List<Match> matches = (List<Match>) findAllMatchesBetweenTwoPlayer(firstName1, lastName1, firstName2, lastName2);
+        return matches.stream().filter(match -> filterBySurface(match, surface)).collect(Collectors.toList());
+    }
+
+    public Iterable<Match> findAllMatchesBetweenTwoPlayerAndTourneyNameAndSurface(String firstName1, String lastName1, String firstName2, String lastName2, String tourneyName, String surface){
+        List<Match> matches = (List<Match>) findAllMatchesBetweenTwoPlayerAndTourneyName(firstName1, lastName1, firstName2, lastName2, tourneyName);
+        return matches.stream().filter(match -> filterBySurface(match, surface)).collect(Collectors.toList());
+    }
+
+    public Iterable<Match> findAllMatchesBetweenTwoPlayerInSelectedYearAndTourneyNameAndSurface(String firstName1, String lastName1, String firstName2, String lastName2, String tourneyName, int year, String surface){
+        List<Match> matches = (List<Match>) findAllMatchesBetweenTwoPlayerInSelectedYearAndTourneyName(firstName1, lastName1, firstName2, lastName2, tourneyName, year);
+        return matches.stream().filter(match -> filterBySurface(match, surface)).collect(Collectors.toList());
     }
 }
