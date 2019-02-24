@@ -6,6 +6,7 @@ import tennis.domain.Player;
 import tennis.domain.Tournament;
 import tennis.domain.Tourney;
 import tennis.model.AllTimeChampions;
+import tennis.model.Champion;
 import tennis.repository.PlayerRepository;
 import tennis.repository.TournamentRepository;
 import tennis.repository.TourneyRepository;
@@ -80,5 +81,28 @@ public class TournamentService {
 
         AllTimeChampions allTimeChampion = new AllTimeChampions(players, times);
         return allTimeChampion;
+    }
+    
+    public Iterable<Champion> getChampions(String tourney_slug){
+        Tourney tourney = tourneyRepository.findBySlug(tourney_slug);
+        List<Tournament> tournaments = (List<Tournament>) getAllTournamentByTourney(tourney);
+
+        HashMap<String, Integer> myMmap = new HashMap<>();
+        tournaments.forEach(tournament -> {
+            if (myMmap.containsKey(tournament.getPlayer().getPlayerSlug())){
+                myMmap.put(tournament.getPlayer().getPlayerSlug(), myMmap.get(tournament.getPlayer().getPlayerSlug()) + 1);
+            } else {
+                myMmap.put(tournament.getPlayer().getPlayerSlug(), 1);
+            }
+        });
+
+        List<Champion> champions = new ArrayList<>();
+        myMmap.forEach((key, value) -> {
+           Champion champion = new Champion();
+           champion.setPlayer(playerRepository.findByPlayerSlug(key));
+           champion.setTimes(value);
+           champions.add(champion);
+        });
+        return  champions;
     }
 }

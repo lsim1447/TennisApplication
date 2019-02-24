@@ -6,6 +6,7 @@ import tennis.domain.Player;
 import tennis.domain.Tournament;
 import tennis.domain.Tourney;
 import tennis.model.AllTimeChampions;
+import tennis.model.Champion;
 import tennis.service.TournamentService;
 
 @RestController
@@ -36,5 +37,11 @@ public class TournamentController {
     @ResponseBody
     public AllTimeChampions getAllTimeChampion(@RequestParam String slug){
         return tournamentService.getAllTimeChampion(slug);
+    }
+
+    @GetMapping("/champions")
+    @ResponseBody
+    public Iterable<Champion> getChampions(@RequestParam String slug){
+        return tournamentService.getChampions(slug);
     }
 }
