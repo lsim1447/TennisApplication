@@ -21,6 +21,7 @@ function GrandSlam(props){
             tournaments: [],
             visibleTournaments: [],
             currentChampion: {},
+            champions: [],
             mostSinglesTitle: {
                 players: [],
                 times: 0
@@ -42,9 +43,9 @@ function GrandSlam(props){
                             <h5 className="">{tournament.year}</h5>
                         </div>
 
-                        <p className="mb-1">Winner player: <PlayerNameLink className="mb-1" href={tournament.player.playerUrl}><strong> {tournament.player.firstName}  {tournament.player.lastName}</strong></PlayerNameLink></p>
+                        <p className="mb-1"> { context.locales[context.actual].winner_player } <PlayerNameLink className="mb-1" href={tournament.player.playerUrl}><strong> {tournament.player.firstName}  {tournament.player.lastName}</strong></PlayerNameLink></p>
                         
-                        <small>Location: {tournament.tourney.location}</small>
+                        <small> { context.locales[context.actual].tournament_location } {tournament.tourney.location}</small>
                     </CursorDiv>
                 )
             })
@@ -58,6 +59,17 @@ function GrandSlam(props){
             })
         }
 
+        function renderChampionsList(champions){
+            return champions.map(champion => {
+                return (
+                    <li key={champion.player.player_id} className="list-group-item d-flex justify-content-between align-items-center">
+                        { champion.player.firstName} {champion.player.lastName}
+                        <span className="badge badge-primary badge-pill"> {champion.times} </span>
+                    </li>
+                )
+            })
+        }
+
         useEffect(() => {
             get_request(`http://localhost:8080/api/tourney/one?slug=${encodeURIComponent(props.match.params.id)}`)
                 .then( tourney => {
@@ -65,16 +77,24 @@ function GrandSlam(props){
                         .then(tournaments => {
                             get_request(`http://localhost:8080/api/tournament/all-time-champion?slug=${encodeURIComponent(tourney.slug)}`)
                                 .then(all_time_champion => {
-                                    const most_singles_title = {
-                                        players: all_time_champion.players,
-                                        times: all_time_champion.times
-                                    }
-                                    const champion = tournaments[tournaments.length - 1].player;
-                                    setState({...state, tourney: tourney, currentChampion: champion, mostSinglesTitle: most_singles_title, tournaments: tournaments, visibleTournaments: tournaments.reverse().slice(0, state.nrOfVisibleTournaments)});
+                                    get_request(`http://localhost:8080/api/tournament/champions?slug=${encodeURIComponent(props.match.params.id)}`)
+                                        .then(champions => {
+                                            
+                                            const champions_list = champions.sort((a, b) => {
+                                                return (a.times > b.times) ? -1 : 1;
+                                            })
+
+                                            const most_singles_title = {
+                                                players: all_time_champion.players,
+                                                times: all_time_champion.times
+                                            }
+                                            const champion = tournaments[tournaments.length - 1].player;
+                                            setState({...state, champions: champions_list,tourney: tourney, currentChampion: champion, mostSinglesTitle: most_singles_title, tournaments: tournaments, visibleTournaments: tournaments.reverse().slice(0, state.nrOfVisibleTournaments)});
+                                        })
+                                    
                                 })
                         })
                 })
-    
         }, []);
         
         return (
@@ -85,36 +105,47 @@ function GrandSlam(props){
                             <div className="card">
                                 <img src={`./../images/${props.match.params.id}.jpg`} className="card-img-top" alt=""/>
                                 <div className="card-body">
-                                    <h4 className="card-title">Tournament name: {state.tourney.name}</h4>
+                                    <h4 className="card-title"> { context.locales[context.actual].tournament_name } {state.tourney.name}</h4>
                                 </div>
                                 <ul className="list-group list-group-flush">
-                                    <li className="list-group-item">Location: {state.tourney.location} </li>
-                                    <li className="list-group-item">Condition: {state.tourney.conditions} </li>
-                                    <li className="list-group-item">Surface: {state.tourney.surface} </li>
+                                    <li className="list-group-item"> { context.locales[context.actual].tournament_location } {state.tourney.location} </li>
+                                    <li className="list-group-item"> { context.locales[context.actual].condition } {state.tourney.conditions} </li>
+                                    <li className="list-group-item"> { context.locales[context.actual].surface } {state.tourney.surface} </li>
                                     <li className="list-group-item">
-                                        Current champion: <a href={`/players/${state.currentChampion.playerSlug}`} className="card-link"> {state.currentChampion.firstName} {state.currentChampion.lastName} </a>
+                                        { context.locales[context.actual].current_champion }
+                                        <a href={`/players/${state.currentChampion.playerSlug}`} className="card-link"> {state.currentChampion.firstName} {state.currentChampion.lastName} </a>
                                     </li>
                                     <li className="list-group-item">
-                                        Most singles title: {renderAllTimeChampions(state.mostSinglesTitle.players)} ({state.mostSinglesTitle.times} x)
+                                        { context.locales[context.actual].most_singles_title }
+                                        {renderAllTimeChampions(state.mostSinglesTitle.players)} ({state.mostSinglesTitle.times} x)
                                     </li>
                                 </ul>
                                 <div className="card-body">
-                                    <div className="font-italic font-weight-bold">About the tournament:</div>
-                                    The French Open (French: Championnats Internationaux de France de Tennis), also called Roland-Garros (French: [ʁɔlɑ̃ ɡaʁos]), is a major tennis tournament held over two weeks between late May and early June at the Stade Roland-Garros in Paris, France. The venue is named after the French aviator Roland Garros. It is the premier clay court tennis championship event in the world and the second of four annual Grand Slam tournaments, the other three being the Australian Open, Wimbledon and the US Open. The French Open is currently the only Grand Slam event held on clay, and it is the zenith of the spring clay court season. Because of the seven rounds needed for a championship, the slow-playing surface and the best-of-five-set men's singles matches (without a tiebreak in the final set), the event is widely considered to be the most physically demanding tennis tournament in the world.
+                                    <div className="font-italic font-weight-bold"> { context.locales[context.actual].about_the_tournament } </div>
+                                    { 
+                                        props.match.params.id  === 'roland-garros' ? context.locales[context.actual].roland_garros_short_description : 
+                                        (props.match.params.id  === 'australian-open' ? context.locales[context.actual].australian_open_short_description : 
+                                        (props.match.params.id  === 'us-open' ?  context.locales[context.actual].us_open_short_description :  context.locales[context.actual].wimbledon_short_description))
+                                    }
                                 </div>
                             </div>
                         </div>
                         <div className="col-xl">
-                            One of three columns
+                            <ul className="list-group">
+                                <a href="#" className="list-group-item list-group-item-action">
+                                    <h1 className="mb-1 text-center font-weight-bold"> { context.locales[context.actual].list_of_champions } </h1>                     
+                                </a>
+                                {renderChampionsList(state.champions)}
+                            </ul>
                         </div>
                         <div className="col-xl">
                             <div className="list-group">
                                 <a href="#" className="list-group-item list-group-item-action">
-                                    <h1 className="mb-1 text-center font-weight-bold"> Former champions </h1>                     
+                                    <h1 className="mb-1 text-center font-weight-bold"> { context.locales[context.actual].former_champions } </h1>                     
                                 </a>
                                 {renderTournaments()}
                                 <CursorDiv className="list-group-item list-group-item-action" onClick={() => increaseNrOfVisibleTournaments(5)}>
-                                    <p className="mb-1 text-center font-weight-bold">Show more</p>                                
+                                    <p className="mb-1 text-center font-weight-bold"> { context.locales[context.actual].show_more } </p>                                
                                 </CursorDiv>
                             </div>
                         </div>
