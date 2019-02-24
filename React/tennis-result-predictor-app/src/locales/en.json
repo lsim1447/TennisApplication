@@ -1,0 +1,14 @@
+{
+    "nav_menu_item_player": "Players",
+    "nav_menu_item_tournaments": "Tournaments",
+    "nav_menu_item_grand_slams": "Grand Slams",
+    "nav_menu_item_search": "Search",
+
+    "australian_open_description": "The first Grand Slam of the season",
+    "roland_garros-description": "The second Grand Slam of the season",
+    "wimbledon_description": "The third Grand Slam of the season",
+    "us_open_description": "The last Grand Slam of the season",
+
+    "footer_where_comes_data": "This application get the match result and stats from ATP world tour tennis",
+    "footer_header" : "Tennis Masters - the stars of the 2000 years"
+}
