@@ -1,14 +1,16 @@
 package tennis.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import tennis.domain.Player;
 import tennis.domain.Tournament;
+import tennis.domain.Tourney;
+import tennis.model.AllTimeChampions;
 import tennis.service.TournamentService;
 
 @RestController
 @RequestMapping("/api/tournament")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TournamentController {
 
     @Autowired
@@ -19,8 +21,20 @@ public class TournamentController {
         return tournamentService.findAll();
     }
 
-    @GetMapping("/test")
-    public Iterable<Tournament> getWonTournamentsByPlayerName(){
-        return tournamentService.getWonTournamentsByPlayerName("Roger", "Federer");
+    @PostMapping("/name")
+    public Iterable<Tournament> getWonTournamentsByPlayer(@RequestBody Player player){
+        System.out.println(player);
+        return tournamentService.getWonTournamentsByPlayer(player);
+    }
+
+    @PostMapping("/tourney")
+    public Iterable<Tournament> getAllTournamentByTourney(@RequestBody Tourney tourney){
+        return tournamentService.getAllTournamentByTourney(tourney);
+    }
+
+    @GetMapping("/all-time-champion")
+    @ResponseBody
+    public AllTimeChampions getAllTimeChampion(@RequestParam String slug){
+        return tournamentService.getAllTimeChampion(slug);
     }
 }

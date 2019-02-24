@@ -32,4 +32,8 @@ public class PlayerService {
     public Player findByFirstNameLastName(String firstName, String lastName){
         return playerRepository.findByFirstNameAndLastName(firstName, lastName);
     }
+
+    public Player findBySlug(String slug){
+        return playerRepository.findByPlayerSlug(slug);
+    }
 }

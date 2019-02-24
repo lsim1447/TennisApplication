@@ -7,4 +7,5 @@ import tennis.domain.Player;
 @Repository
 public interface PlayerRepository extends CrudRepository<Player, String> {
     Player findByFirstNameAndLastName(String firstName, String lastName);
+    Player findByPlayerSlug(String slug);
 }

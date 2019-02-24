@@ -1,6 +1,7 @@
 package tennis.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/stats")
+@CrossOrigin(origins = "http://localhost:3000")
 public class StatsController {
 
     @Autowired
@@ -20,6 +22,13 @@ public class StatsController {
 
     @Autowired
     private StatsService statsService;
+
+    @GetMapping("/all")
+    public Iterable<Stats> getAll(){
+        List<Match> matches = (List<Match>) matchService.findAll();
+        System.out.println("All stats = " + matches.size());
+        return null;
+    }
 
     @GetMapping("/player/all/one")
     public Iterable<Stats> getAllStatsByPlayerName(){
@@ -59,7 +68,7 @@ public class StatsController {
 
     @GetMapping("/player/all/between/two/tourney/year")
     public Iterable<Stats> getAllMatchesBetweenTwoPlayerInSelectedYearAndTourneyName(){
-        List<Match> matches = (List<Match>) matchService.findAllMatchesBetweenTwoPlayerInSelectedYearAndTourneyName("Rafael", "Nadal", "Roger", "Federer", "Wimbledon", 2017);
+        List<Match> matches = (List<Match>) matchService.findAllMatchesBetweenTwoPlayerInSelectedYearAndTourneyName("Rafael", "Nadal", "Roger", "Federer", "Wimbledon", 2008);
         return statsService.findAllStatsByMatchIds(matches);
     }
 
@@ -95,7 +104,7 @@ public class StatsController {
 
     @GetMapping("/player/all/between/two/tourney/surface/year")
     public Iterable<Stats> getAllMatchesBetweenTwoPlayerInSelectedYearAndTourneyNameAndSurface(){
-        List<Match> matches = (List<Match>) matchService.findAllMatchesBetweenTwoPlayerInSelectedYearAndTourneyNameAndSurface("Rafael", "Nadal", "Roger", "Federer", "Wimbledon", 2017, "Grass");
+        List<Match> matches = (List<Match>) matchService.findAllMatchesBetweenTwoPlayerInSelectedYearAndTourneyNameAndSurface("Rafael", "Nadal", "Roger", "Federer", "Wimbledon", 2008, "Grass");
         return statsService.findAllStatsByMatchIds(matches);
     }
 }

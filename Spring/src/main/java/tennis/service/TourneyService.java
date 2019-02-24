@@ -22,4 +22,6 @@ public class TourneyService {
     }
 
     public Iterable<Tourney> saveAll(Iterable<Tourney> tourneys){ return tourneyRepository.saveAll(tourneys); }
+
+    public Tourney findBySlug(String slug){ return  tourneyRepository.findBySlug(slug);}
 }
