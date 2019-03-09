@@ -62,7 +62,7 @@ function NavigationBar(){
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item">
-                        <a className="nav-link" href="/player">
+                        <a className="nav-link" href="/players">
                             { context.locales[context.actual].nav_menu_item_player }
                         </a>
                     </li>

@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tennis.domain.Match;
 import tennis.domain.Player;
+import tennis.domain.Tournament;
 import tennis.repository.MatchRepository;
 import tennis.repository.PlayerRepository;
+import tennis.repository.TournamentRepository;
 
 import java.util.Comparator;
 import java.util.List;
@@ -138,12 +140,16 @@ public class MatchService {
         Player player = playerRepository.findByPlayerSlug(slug);
         List<Match> matches = (List<Match>)findAllMatchesByPlayerName(player.getFirstName(), player.getLastName());
 
-        Comparator<Match> matchComparator = Comparator.comparing(match -> match.getTournament().getTournament_year_id());
-        matchComparator.thenComparing(Comparator.comparing(match -> match.getRound_order())).reversed();
+        Comparator<Match> matchComparator = Comparator.comparing(match -> match.getTournament().getDates(), Comparator.reverseOrder());
+        matchComparator.thenComparing(Comparator.comparing(match -> match.getRound_order(), Comparator.reverseOrder()));
 
         return matches.stream()
                 .sorted(matchComparator)
-                .skip(matches.size()- nrVisibleMatches)
+                .limit(nrVisibleMatches)
                 .collect(Collectors.toList());
+    }
+
+    public List<Match> findAllMatchesByTournament(Tournament tournament){
+        return (List<Match>) matchesRepository.findAllByTournament(tournament);
     }
 }

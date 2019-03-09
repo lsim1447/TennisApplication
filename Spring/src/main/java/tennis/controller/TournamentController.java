@@ -32,6 +32,12 @@ public class TournamentController {
         return tournamentService.getWonTournamentsByPlayer(player);
     }
 
+    @GetMapping("/one")
+    @ResponseBody
+    public Tournament getTournamentById(@RequestParam String id){
+        return tournamentService.findTournamentById(id);
+    }
+
     @GetMapping("/won")
     @ResponseBody
     public Iterable<Tournament> getWonTournamentsByPlayerSlug(@RequestParam String slug){

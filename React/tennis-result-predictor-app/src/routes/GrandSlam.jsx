@@ -1,23 +1,13 @@
 import React , { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../AppContextProvider';
 import { get_request, post_request } from './../util/Request';
-import styled from 'styled-components';
-import { DEFALULT_SERVER_URL } from './../constants';
-
-const CursorDiv = styled.div `
-    cursor: pointer;
-`;
-
-const PlayerNameLink = styled.a `
-    &:hover {
-        color: #28a745;
-    }
-`;
+import { DEFALULT_SERVER_URL, HOVER_COLOR } from './../constants';
+import { Clickable, PlayerNameLink } from './../util/OftenUsedElements';
 
 function GrandSlam(props){
         const context =  useContext(AppContext);    
         const [state, setState] = useState({
-            nrOfVisibleTournaments: 5,
+            nrOfVisibleTournaments: 7,
             nrOfVisibleChampions: 11,
             tourney: '',
             tournaments: [],
@@ -42,7 +32,7 @@ function GrandSlam(props){
         function renderTournaments(){
             return state.tournaments.slice(0, state.nrOfVisibleTournaments).map( tournament => {
                 return (
-                    <CursorDiv href="#" className="list-group-item list-group-item-action" key={tournament.tournament_year_id}>
+                    <Clickable href={`/tournament/${tournament.tournament_year_id}`} className="list-group-item list-group-item-action" key={tournament.tournament_year_id}>
                         <div className="d-flex w-100 justify-content-between">
                             <h5 className="mb-1">{tournament.tourney.name}</h5>
                             <h5 className="">{tournament.year}</h5>
@@ -51,7 +41,7 @@ function GrandSlam(props){
                         <p className="mb-1"> { context.locales[context.actual].winner_player } <PlayerNameLink className="mb-1" href={tournament.player.playerUrl}><strong> {tournament.player.firstName}  {tournament.player.lastName}</strong></PlayerNameLink></p>
                         
                         <small> { context.locales[context.actual].tournament_location } {tournament.tourney.location}</small>
-                    </CursorDiv>
+                    </Clickable>
                 )
             })
         }
@@ -173,9 +163,9 @@ function GrandSlam(props){
                                     <h1 className="mb-1 text-center font-weight-bold"> { context.locales[context.actual].list_of_champions } </h1>                     
                                 </a>
                                 {renderChampionsList(state.champions)}
-                                <CursorDiv className="list-group-item list-group-item-action" onClick={() => increaseNrOfVisibleChampions(5)}>
+                                <Clickable className="list-group-item list-group-item-action" onClick={() => increaseNrOfVisibleChampions(5)}>
                                     <p className="mb-1 text-center font-weight-bold"> { context.locales[context.actual].show_more } </p>                                
-                                </CursorDiv>
+                                </Clickable>
                             </ul>
                         </div>
                         <div className="col-xl">
@@ -184,9 +174,9 @@ function GrandSlam(props){
                                     <h1 className="mb-1 text-center font-weight-bold"> { context.locales[context.actual].former_champions } </h1>                     
                                 </a>
                                 {renderTournaments()}
-                                <CursorDiv className="list-group-item list-group-item-action" onClick={() => increaseNrOfVisibleTournaments(5)}>
+                                <Clickable className="list-group-item list-group-item-action" onClick={() => increaseNrOfVisibleTournaments(5)}>
                                     <p className="mb-1 text-center font-weight-bold"> { context.locales[context.actual].show_more } </p>                                
-                                </CursorDiv>
+                                </Clickable>
                             </div>
                         </div>
                     </div>

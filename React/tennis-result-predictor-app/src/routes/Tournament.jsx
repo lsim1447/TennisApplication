@@ -1,18 +1,28 @@
-import React , { Component } from 'react';
+import React , { useContext, useState, useEffect } from 'react';
+import { AppContext } from '../AppContextProvider';
+import { get_request } from '../util/Request';
+import { DEFALULT_SERVER_URL } from '../constants';
 
-class Tournament extends Component {
+function Tournament(props) {
     
-    render(){
-        return (
-            <div> 
-                <select class="js-example-basic-single" name="state">
-                    <option value="AL">Alabama</option>
-                    <option value="BA">Barcelona</option>
-                    <option value="WY">Wyoming</option>
-                </select>
-            </div>
-        )
-    }
+    const context =  useContext(AppContext);
+
+    const [state, setState] = useState({
+        tournaments: []
+    })
+
+    useEffect(() => {
+        get_request(`${DEFALULT_SERVER_URL}/tournament/all`)
+            .then(tournaments => {
+                setState({...state, tournaments: tournaments})
+            })
+    }, []);
+
+    return (
+        <div> 
+              Number of tournaments in Database: {state.tournaments.length}  
+        </div>
+    )
 }
 
 export default Tournament;
