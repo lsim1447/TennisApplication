@@ -3,16 +3,17 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "matches")
-public class Match {
+public class Match implements Comparable<Match>{
     @Id
     private String match_id;
 
     private String round_name;
-    private int round_order;
-    private int match_order;
+    private static int round_order;
+    private static int match_order;
 
     @ManyToOne
     @JoinColumn(name="tournament_year_id")
+
     private Tournament tournament;
 
     @ManyToOne
@@ -192,5 +193,10 @@ public class Match {
 
     public void setMatch_stats_url_suffix(String match_stats_url_suffix) {
         this.match_stats_url_suffix = match_stats_url_suffix;
+    }
+
+    @Override
+    public int compareTo(Match o) {
+        return getTournament().getTournament_year_id().compareTo(o.getTournament().getTournament_year_id());
     }
 }

@@ -7,6 +7,7 @@ import tennis.domain.Player;
 import tennis.repository.MatchRepository;
 import tennis.repository.PlayerRepository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +47,7 @@ public class MatchService {
     }
 
     // DEFAULT METHODS
-    public Match findMatchById(String id){ return matchesRepository.findById(id).orElse(null); }
+    public Match findMatchById(String id){ return matchesRepository.findById(id).orElse(new Match());}
 
     public Iterable<Match> findAll(){ return matchesRepository.findAll(); }
 
@@ -131,5 +132,18 @@ public class MatchService {
     public Iterable<Match> findAllMatchesBetweenTwoPlayerInSelectedYearAndTourneyNameAndSurface(String firstName1, String lastName1, String firstName2, String lastName2, String tourneyName, int year, String surface){
         List<Match> matches = (List<Match>) findAllMatchesBetweenTwoPlayerInSelectedYearAndTourneyName(firstName1, lastName1, firstName2, lastName2, tourneyName, year);
         return matches.stream().filter(match -> filterBySurface(match, surface)).collect(Collectors.toList());
+    }
+
+    public List<Match> findLastNMatches(String slug, int nrVisibleMatches){
+        Player player = playerRepository.findByPlayerSlug(slug);
+        List<Match> matches = (List<Match>)findAllMatchesByPlayerName(player.getFirstName(), player.getLastName());
+
+        Comparator<Match> matchComparator = Comparator.comparing(match -> match.getTournament().getTournament_year_id());
+        matchComparator.thenComparing(Comparator.comparing(match -> match.getRound_order())).reversed();
+
+        return matches.stream()
+                .sorted(matchComparator)
+                .skip(matches.size()- nrVisibleMatches)
+                .collect(Collectors.toList());
     }
 }

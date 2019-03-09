@@ -19,7 +19,14 @@ public class StatsService {
     @Autowired
     private MatchRepository matchRepository;
 
-    public Stats findStatsByMatchId(String id){ return statsRepository.findById(id).orElse(null); }
+    public Stats findStatsByMatchId(String match_id){
+        Match match = matchRepository.findById(match_id).orElse(null);
+        if (match != null){
+            return statsRepository.findByMatch(match);
+        } else {
+            return new Stats();
+        }
+    }
 
     public Iterable<Stats> findAll(){ return statsRepository.findAll(); }
 

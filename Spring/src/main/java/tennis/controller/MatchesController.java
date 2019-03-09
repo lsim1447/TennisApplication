@@ -1,12 +1,11 @@
 package tennis.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tennis.domain.Match;
 import tennis.service.MatchService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/matches")
@@ -19,6 +18,12 @@ public class MatchesController {
     @GetMapping("/player/all/one")
     public Iterable<Match> getAllMatchesByPlayerName(){
         return matchService.findAllMatchesByPlayerName("Rafael", "Nadal");
+    }
+
+    @GetMapping("/one")
+    @ResponseBody
+    public Match getMatchById(@RequestParam String id){
+        return matchService.findMatchById(id);
     }
 
     @GetMapping("/player/all/between/two")
@@ -79,5 +84,12 @@ public class MatchesController {
     @GetMapping("/player/all/between/two/tourney/surface/year")
     public Iterable<Match> getAllMatchesBetweenTwoPlayerInSelectedYearAndTourneyNameAndSurface(){
         return matchService.findAllMatchesBetweenTwoPlayerInSelectedYearAndTourneyNameAndSurface("Rafael", "Nadal", "Roger", "Federer", "Wimbledon", 2017, "Grass");
+    }
+
+    @GetMapping("/player/last")
+    @ResponseBody
+    public List<Match> getLastNMatches(@RequestParam String slug, @RequestParam int nr){
+        System.out.println("slug = " + slug + "  number = " + nr);
+        return  matchService.findLastNMatches(slug, nr);
     }
 }

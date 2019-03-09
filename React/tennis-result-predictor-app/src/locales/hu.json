@@ -16,6 +16,8 @@
     "tournament_location": "Helyszin:",
     "winner_player": "Győztes játékos:",
     "former_champions": "Korábbi bajnokok",
+    "latest_won_tournaments": "Legutolsó győztes versenyek",
+    "latest_matches": "Legutóbbi meccsei",
     "list_of_champions": "Bajnokok listája",
     "condition": "Körülmények:",
     "surface": "Felület:",
@@ -27,5 +29,16 @@
     "roland_garros_short_description": "A Roland Garros (hivatalos nevén: „Tournoi de Roland-Garros”) egy párizsi salakpályás Grand Slam-teniszbajnokság. Kéthetes torna, melyet minden évben május közepétől június elejéig rendeznek meg az év második Grand Slam-tornájaként. Angol nyelvterületeken French Open (magyarul: francia nyílt teniszbajnokság) néven is emlegetik. Az első férfi tornát 1891-ben, az első nőit 1897-ben tartották. 1925-ig csak francia teniszezők vehettek részt a versenyen, vagy olyan külföldiek, akik valamelyik francia teniszklub tagjai voltak. 1927-ig a bajnokságot a Racing Club de France és a Stade Français füves pályáin tartották. A Roland Garros salakos pályáit 1928-ban hozták létre Porte d’Auteuilben, a Davis-kupa részére. 1968-ban, az open era kezdetével a Roland Garros lett az első olyan Grand Slam-torna, amelyen nem hazai profi versenyzők is részt vehettek.",
     "australian_open_short_description": "Az Australian Open a Grand Slam-sorozatba tartozó tenisztorna, mely minden év elején (legtöbbször január második felében) zajlik az ausztráliai Melbourne-ben. A kialakult rend szerint ez az év első Grand Slam-versenye. Először 1905-ben rendezték meg, női versenyeket 1922 óta tartanak. Eleinte (akárcsak a Grand Slam-sorozat többi tornájának első időszakában) amatőr játékosok számára hirdették meg a versenyt. Ekkor Australian Championship vagyis ausztrál bajnokság volt a neve, s ezt 1968-ig meg is tartotta. Eredetileg füves pályán zajlott, az első helyszín Kooyong volt, Melbourne délkeleti határában.",
     "us_open_short_description": "A US Open (United States Open) az év utolsó, negyedik Grand Slam-tenisztornája. Minden év augusztusában–szeptemberében rendezik meg, a torna két héten keresztül tart. A fő versenyszámok: női és férfi egyes, női és férfi páros és vegyes páros. Ezen kívül tartanak versenyeket a junioroknak és a kerekesszékeseknek, valamint meghívásos alapon a már visszavonult, s legendásnak tartott teniszezőknek is. Az első tornát férfiak számára 1881-ben, nők részére 1887-ben rendezték meg. A jelenlegi helyszínre 1978-ban költözött a viadal, amelyet kemény pályákon játszanak a New York-i Flushing Meadowsban található USTA Billie Jean King National Tennis Centerben.",
-    "wimbledon_short_description": "A wimbledoni tenisztorna (hivatalos nevén: The Championships), a legrégebbi és a legtöbb hagyománnyal bíró teniszverseny a világon. Az évente megrendezett négy legrangosabb teniszverseny, a Grand Slam-tornák egyike, és történelme, valamint nagy hagyományai miatt ezek közül is Wimbledon a leghíresebb és sokak szerint a legkiemelkedőbb. A wimbledoni tenisztornát minden évben nyár elején, június-július hónapban rendezik meg füves pályán, az All England Lawn Tennis and Croquet Clubban, Angliában. A négy Grand Slam-torna közül ezt az egyet játsszák füves borításon."
+    "wimbledon_short_description": "A wimbledoni tenisztorna (hivatalos nevén: The Championships), a legrégebbi és a legtöbb hagyománnyal bíró teniszverseny a világon. Az évente megrendezett négy legrangosabb teniszverseny, a Grand Slam-tornák egyike, és történelme, valamint nagy hagyományai miatt ezek közül is Wimbledon a leghíresebb és sokak szerint a legkiemelkedőbb. A wimbledoni tenisztornát minden évben nyár elején, június-július hónapban rendezik meg füves pályán, az All England Lawn Tennis and Croquet Clubban, Angliában. A négy Grand Slam-torna közül ezt az egyet játsszák füves borításon.",
+
+    "player_name": "Játékos neve:",
+    "country": "Oszág:",
+    "birthdate": "Születési dátum:",
+    "handedness": "Kezesség:",
+    "won_tournaments": "Nyert tornák:",
+    "won_grand_slams": "Nert Grand Slamek:",
+    "height": "Magasság:",
+    "turned_pro": "Profi pályafutásának kezdete:",
+    "weight_kg": "Testsúly:",
+    "weight_lbs": "Súly:"
 }

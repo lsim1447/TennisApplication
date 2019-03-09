@@ -2,6 +2,7 @@ import React , { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../AppContextProvider';
 import { get_request, post_request } from './../util/Request';
 import styled from 'styled-components';
+import { DEFALULT_SERVER_URL } from './../constants';
 
 const CursorDiv = styled.div `
     cursor: pointer;
@@ -16,10 +17,10 @@ const PlayerNameLink = styled.a `
 function GrandSlam(props){
         const context =  useContext(AppContext);    
         const [state, setState] = useState({
-            nrOfVisibleTournaments: 8,
+            nrOfVisibleTournaments: 5,
+            nrOfVisibleChampions: 11,
             tourney: '',
             tournaments: [],
-            visibleTournaments: [],
             currentChampion: {},
             champions: [],
             mostSinglesTitle: {
@@ -30,12 +31,16 @@ function GrandSlam(props){
     
         function increaseNrOfVisibleTournaments(value){
             const tmp_nr_of_visible_tournaments = state.nrOfVisibleTournaments + value;
-            const tmp_visible_tournaments = state.tournaments.slice(0, state.nrOfVisibleTournaments);
-            setState({...state, nrOfVisibleTournaments: tmp_nr_of_visible_tournaments, visibleTournaments: tmp_visible_tournaments})
+            setState({...state, nrOfVisibleTournaments: tmp_nr_of_visible_tournaments})
         }
         
+        function increaseNrOfVisibleChampions(value){
+            const tmp_nr_champ = state.nrOfVisibleChampions + value;
+            setState({...state, nrOfVisibleChampions: tmp_nr_champ});
+        }
+
         function renderTournaments(){
-            return state.visibleTournaments.map( tournament => {
+            return state.tournaments.slice(0, state.nrOfVisibleTournaments).map( tournament => {
                 return (
                     <CursorDiv href="#" className="list-group-item list-group-item-action" key={tournament.tournament_year_id}>
                         <div className="d-flex w-100 justify-content-between">
@@ -54,16 +59,16 @@ function GrandSlam(props){
         function renderAllTimeChampions(players){
             return players.map(player => {
                 return (
-                    <a key={player.player_id} href={`/players/${player.playerSlug}`} className="card-link"> {player.firstName} {player.lastName}</a>
+                    <PlayerNameLink key={player.player_id} href={`/players/${player.playerSlug}`} className="card-link font-weight-bold"> {player.firstName} {player.lastName}</PlayerNameLink>
                 )
             })
         }
 
         function renderChampionsList(champions){
-            return champions.map(champion => {
+            return champions.slice(0, state.nrOfVisibleChampions).map(champion => {
                 return (
                     <li key={champion.player.player_id} className="list-group-item d-flex justify-content-between align-items-center">
-                        { champion.player.firstName} {champion.player.lastName}
+                        <PlayerNameLink href={`/players/${champion.player.playerSlug}`} className="font-weight-bold"> { champion.player.firstName} {champion.player.lastName} </PlayerNameLink>
                         <span className="badge badge-primary badge-pill"> {champion.times} </span>
                     </li>
                 )
@@ -71,13 +76,13 @@ function GrandSlam(props){
         }
 
         useEffect(() => {
-            get_request(`http://localhost:8080/api/tourney/one?slug=${encodeURIComponent(props.match.params.id)}`)
+            get_request(`${DEFALULT_SERVER_URL}/tourney/one?slug=${encodeURIComponent(props.match.params.id)}`)
                 .then( tourney => {
-                    post_request('http://localhost:8080/api/tournament/tourney', tourney)
+                    post_request(`${DEFALULT_SERVER_URL}/tournament/tourney`, tourney)
                         .then(tournaments => {
-                            get_request(`http://localhost:8080/api/tournament/all-time-champion?slug=${encodeURIComponent(tourney.slug)}`)
+                            get_request(`${DEFALULT_SERVER_URL}/tournament/all-time-champion?slug=${encodeURIComponent(tourney.slug)}`)
                                 .then(all_time_champion => {
-                                    get_request(`http://localhost:8080/api/tournament/champions?slug=${encodeURIComponent(props.match.params.id)}`)
+                                    get_request(`${DEFALULT_SERVER_URL}/tournament/champions?slug=${encodeURIComponent(props.match.params.id)}`)
                                         .then(champions => {
                                             
                                             const champions_list = champions.sort((a, b) => {
@@ -89,7 +94,7 @@ function GrandSlam(props){
                                                 times: all_time_champion.times
                                             }
                                             const champion = tournaments[tournaments.length - 1].player;
-                                            setState({...state, champions: champions_list,tourney: tourney, currentChampion: champion, mostSinglesTitle: most_singles_title, tournaments: tournaments, visibleTournaments: tournaments.reverse().slice(0, state.nrOfVisibleTournaments)});
+                                            setState({...state, champions: champions_list,tourney: tourney, currentChampion: champion, mostSinglesTitle: most_singles_title, tournaments: tournaments.reverse()});
                                         })
                                     
                                 })
@@ -107,19 +112,51 @@ function GrandSlam(props){
                                 <div className="card-body">
                                     <h4 className="card-title"> { context.locales[context.actual].tournament_name } {state.tourney.name}</h4>
                                 </div>
-                                <ul className="list-group list-group-flush">
-                                    <li className="list-group-item"> { context.locales[context.actual].tournament_location } {state.tourney.location} </li>
-                                    <li className="list-group-item"> { context.locales[context.actual].condition } {state.tourney.conditions} </li>
-                                    <li className="list-group-item"> { context.locales[context.actual].surface } {state.tourney.surface} </li>
-                                    <li className="list-group-item">
-                                        { context.locales[context.actual].current_champion }
-                                        <a href={`/players/${state.currentChampion.playerSlug}`} className="card-link"> {state.currentChampion.firstName} {state.currentChampion.lastName} </a>
-                                    </li>
-                                    <li className="list-group-item">
-                                        { context.locales[context.actual].most_singles_title }
-                                        {renderAllTimeChampions(state.mostSinglesTitle.players)} ({state.mostSinglesTitle.times} x)
-                                    </li>
-                                </ul>
+                                <table className="table text-left">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                { context.locales[context.actual].tournament_location }
+                                            </td>
+                                            <td>
+                                                {state.tourney.location}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                { context.locales[context.actual].condition }
+                                            </td>
+                                            <td>
+                                                {state.tourney.conditions}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                { context.locales[context.actual].surface }
+                                            </td>
+                                            <td>
+                                                {state.tourney.surface}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                { context.locales[context.actual].current_champion }
+                                            </td>
+                                            <td>
+                                                <PlayerNameLink href={`/players/${state.currentChampion.playerSlug}`} className="card-link font-weight-bold"> {state.currentChampion.firstName} {state.currentChampion.lastName} </PlayerNameLink>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                { context.locales[context.actual].most_singles_title }
+                                            </td>
+                                            <td>
+                                                {renderAllTimeChampions(state.mostSinglesTitle.players)} ({state.mostSinglesTitle.times} x)
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>     
+
                                 <div className="card-body">
                                     <div className="font-italic font-weight-bold"> { context.locales[context.actual].about_the_tournament } </div>
                                     { 
@@ -136,6 +173,9 @@ function GrandSlam(props){
                                     <h1 className="mb-1 text-center font-weight-bold"> { context.locales[context.actual].list_of_champions } </h1>                     
                                 </a>
                                 {renderChampionsList(state.champions)}
+                                <CursorDiv className="list-group-item list-group-item-action" onClick={() => increaseNrOfVisibleChampions(5)}>
+                                    <p className="mb-1 text-center font-weight-bold"> { context.locales[context.actual].show_more } </p>                                
+                                </CursorDiv>
                             </ul>
                         </div>
                         <div className="col-xl">

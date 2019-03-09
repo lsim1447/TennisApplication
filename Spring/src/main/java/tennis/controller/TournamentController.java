@@ -7,6 +7,7 @@ import tennis.domain.Tournament;
 import tennis.domain.Tourney;
 import tennis.model.AllTimeChampions;
 import tennis.model.Champion;
+import tennis.service.PlayerService;
 import tennis.service.TournamentService;
 
 @RestController
@@ -17,6 +18,9 @@ public class TournamentController {
     @Autowired
     private TournamentService tournamentService;
 
+    @Autowired
+    private PlayerService playerService;
+
     @GetMapping("/all")
     public Iterable<Tournament> getAllTournaments(){
         return tournamentService.findAll();
@@ -25,6 +29,13 @@ public class TournamentController {
     @PostMapping("/name")
     public Iterable<Tournament> getWonTournamentsByPlayer(@RequestBody Player player){
         System.out.println(player);
+        return tournamentService.getWonTournamentsByPlayer(player);
+    }
+
+    @GetMapping("/won")
+    @ResponseBody
+    public Iterable<Tournament> getWonTournamentsByPlayerSlug(@RequestParam String slug){
+        Player player = playerService.findBySlug(slug);
         return tournamentService.getWonTournamentsByPlayer(player);
     }
 
