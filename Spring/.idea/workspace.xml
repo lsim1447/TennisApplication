@@ -2,22 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b0392ac-c066-4eee-a024-48f2ef94d32f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/Router.js" beforeDir="false" afterPath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/Router.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/components/NavigationBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/components/NavigationBar.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/constants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/locales/en.json" beforeDir="false" afterPath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/locales/en.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/routes/GrandSlam.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/routes/GrandSlam.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/routes/Player.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/routes/Player.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/routes/Tournament.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/routes/Tournament.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/routes/Stats.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/routes/Stats.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tennis/controller/MatchesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tennis/controller/MatchesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tennis/controller/TournamentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tennis/controller/TournamentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tennis/repository/MatchRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tennis/repository/MatchRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tennis/service/MatchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tennis/service/MatchService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tennis/controller/MatchesController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/tennis/controller/MatchesController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tennis/controller/TournamentController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/tennis/controller/TournamentController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tennis/repository/MatchRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/tennis/repository/MatchRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tennis/service/MatchService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/tennis/service/MatchService.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -57,7 +46,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/TournamentService.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="272">
@@ -69,7 +58,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tennis/domain/Tournament.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="425">
@@ -292,8 +281,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -392,6 +379,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -479,16 +468,18 @@
       <workItem from="1552076246752" duration="3299000" />
       <workItem from="1552116873610" duration="12747000" />
       <workItem from="1552164026135" duration="2293000" />
+      <workItem from="1552205410143" duration="719000" />
+      <workItem from="1552229974121" duration="1405000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="155049000" />
+    <option name="totallyTimeSpent" value="157173000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="1920" height="1047" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3075269" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3139785" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -760,16 +751,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/TournamentService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="28" column="40" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/MatchesController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1547">
@@ -880,6 +861,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
           <caret line="27" column="33" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/TournamentService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="28" column="40" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

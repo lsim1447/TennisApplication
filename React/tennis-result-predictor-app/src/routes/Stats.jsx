@@ -15,10 +15,14 @@ const Container = styled.div `
 `;
 
 const DescriptionText = styled.p `
-    font-size: 30px;
+    font-size: 42px;
     font-weight: bold;
     padding-top: 24px;
     padding-bottom: 24px;
+
+    @media (max-width: 768px) {
+        font-size: 24px;
+    }
 `;
 
 function Stats(props) {

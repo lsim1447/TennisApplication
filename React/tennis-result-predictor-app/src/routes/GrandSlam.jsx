@@ -3,12 +3,13 @@ import { AppContext } from '../AppContextProvider';
 import { get_request, post_request } from './../util/Request';
 import { DEFALULT_SERVER_URL, HOVER_COLOR } from './../constants';
 import { Clickable, PlayerNameLink } from './../util/OftenUsedElements';
+import CarouselIndicator from '../components/CarouselIndicator';
 
 function GrandSlam(props){
         const context =  useContext(AppContext);    
         const [state, setState] = useState({
             nrOfVisibleTournaments: 7,
-            nrOfVisibleChampions: 11,
+            nrOfVisibleChampions: 5,
             tourney: '',
             tournaments: [],
             currentChampion: {},
@@ -166,6 +167,8 @@ function GrandSlam(props){
                                 <Clickable className="list-group-item list-group-item-action" onClick={() => increaseNrOfVisibleChampions(5)}>
                                     <p className="mb-1 text-center font-weight-bold"> { context.locales[context.actual].show_more } </p>                                
                                 </Clickable>
+
+                                <CarouselIndicator grandslam={props.match.params.id}/>
                             </ul>
                         </div>
                         <div className="col-xl">

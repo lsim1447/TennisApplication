@@ -3,15 +3,18 @@ import Router from '../Router';
 import NavigationBar from './NavigationBar';
 import Footer from './Footer';
 import AppContextProvider from "./../AppContextProvider";
+import PlayerContextProvider from './../context-providers/PlayerContextProvider';
 
 class App extends Component {
 
   render() {
     return (
       <AppContextProvider>
-         <NavigationBar />
-         <Router />
-         <Footer />
+          <PlayerContextProvider>
+            <NavigationBar />
+            <Router />
+            <Footer />
+          </PlayerContextProvider>
       </AppContextProvider>
     );
   }

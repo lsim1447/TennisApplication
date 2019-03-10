@@ -36,7 +36,6 @@ function NavigationBar(){
         }).then( (response) => {
             return response.json() })   
                 .then( (json) => {
-                    //console.log(json);
                     setState({...state, grand_slams: json})
                 });
 
