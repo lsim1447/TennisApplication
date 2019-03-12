@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tennis.domain.Match;
 import tennis.domain.Tournament;
+import tennis.domain.Tourney;
 import tennis.service.MatchService;
 import tennis.service.TournamentService;
+import tennis.service.TourneyService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,6 +22,9 @@ public class MatchesController {
 
     @Autowired
     private TournamentService tournamentService;
+
+    @Autowired
+    private TourneyService tourneyService;
 
     @GetMapping("/player/all/one")
     public Iterable<Match> getAllMatchesByPlayerName(){
@@ -103,5 +109,19 @@ public class MatchesController {
     public List<Match> getMatchesByTournament(@RequestParam String id){
         Tournament tournament = tournamentService.findTournamentById(id);
         return  matchService.findAllMatchesByTournament(tournament);
+    }
+
+    @GetMapping("/tourney")
+    @ResponseBody
+    public List<Match> getMatchesByTourney(@RequestParam String id){
+        Tourney tourney = tourneyService.findTourneyById(id);
+        List<Tournament> tournaments = (List<Tournament>) tournamentService.getAllTournamentByTourney(tourney);
+
+        List<Match> matches = new ArrayList<>();
+        tournaments.forEach(tournament -> {
+            List<Match> partial_result = matchService.findAllMatchesByTournament(tournament);
+            matches.addAll(partial_result);
+        });
+        return  matches;
     }
 }

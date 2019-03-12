@@ -4,6 +4,7 @@ import NavigationBar from './NavigationBar';
 import Footer from './Footer';
 import AppContextProvider from "./../AppContextProvider";
 import PlayerContextProvider from './../context-providers/PlayerContextProvider';
+import TournamentContextProvider from './../context-providers/TournamentContextProvider';
 
 class App extends Component {
 
@@ -11,9 +12,12 @@ class App extends Component {
     return (
       <AppContextProvider>
           <PlayerContextProvider>
-            <NavigationBar />
-            <Router />
-            <Footer />
+            <TournamentContextProvider>
+              <NavigationBar>
+                <Router />
+                <Footer />
+              </NavigationBar>
+            </TournamentContextProvider>
           </PlayerContextProvider>
       </AppContextProvider>
     );

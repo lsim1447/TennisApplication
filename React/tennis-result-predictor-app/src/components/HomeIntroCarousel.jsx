@@ -25,8 +25,8 @@ function HomeIntroCarousel() {
                 </ol>
                 <div className="carousel-inner">
                     <div className="carousel-item active">
-                        <a href="/player">
-                            <img src="./images/australian-open.jpg" className="d-block w-100" alt="..."/>
+                        <a href="/grand-slam/australian-open">
+                            <img src="./images/grand-slams/australian-open.jpg" className="d-block w-100" alt="..."/>
                         </a>
                         <div className="carousel-caption d-none d-md-block">
                         <h5>Australian Open</h5>
@@ -36,7 +36,9 @@ function HomeIntroCarousel() {
                         </div>
                     </div>
                     <div className="carousel-item">
-                        <img src="./images/roland-garros.jpg" className="d-block w-100" alt="..."/>
+                        <a href="/grand-slam/roland-garros">
+                            <img src="./images/grand-slams/roland-garros.jpg" className="d-block w-100" alt="..."/>
+                        </a>
                         <div className="carousel-caption d-none d-md-block">
                         <h5>Roland Garros</h5>
                         <p>
@@ -45,7 +47,9 @@ function HomeIntroCarousel() {
                         </div>
                     </div>
                     <div className="carousel-item">
-                        <img src="./images/wimbledon.jpg" className="d-block w-100" alt="..."/>
+                        <a href="/grand-slam/wimbledon">
+                            <img src="./images/grand-slams/wimbledon.jpg" className="d-block w-100" alt="..."/>
+                        </a>
                         <div className="carousel-caption d-none d-md-block">
                         <h5>Wimbledon</h5>
                         <p>
@@ -54,7 +58,9 @@ function HomeIntroCarousel() {
                         </div>
                     </div>
                     <div className="carousel-item">
-                        <img src="./images/us-open.jpg" className="d-block w-100" alt="..."/>
+                        <a href="/grand-slam/us-open">
+                            <img src="./images/grand-slams/us-open.jpg" className="d-block w-100" alt="..."/>
+                        </a>
                         <div className="carousel-caption d-none d-md-block">
                         <h5>US Open</h5>
                         <p>

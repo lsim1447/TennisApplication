@@ -2,12 +2,11 @@ import React , { useContext, useState, useEffect } from 'react';
 import { get_request } from '../util/Request';
 import styled from 'styled-components';
 import { DEFALULT_SERVER_URL } from '../constants';
-import AutoCompleteText from './../components/AutoCompleteText';
+import AutoCompletePlayer from '../components/autocomplete/AutoCompletePlayer';
 import PlayerContextProvider from './../context-providers/PlayerContextProvider';
 import { PlayerContext } from './../context-providers/PlayerContextProvider';
 import { AppContext } from '../AppContextProvider';
 import { Clickable, PlayerNameLink } from './../util/OftenUsedElements';
-import AnimateHeight from 'react-animate-height';
 
 const FlagIcon = styled.img `
     padding-left: 10px;
@@ -29,7 +28,19 @@ const NameTD = styled.td `
 const PlayerSelectorContainer = styled.div `
     padding-top: 50px;
     padding-bottom: 50px;
-    background-image: url('./images/gifs/net.gif')
+    background-image: url('https://www.tennisworldusa.org/imgb/40797/if-tennis-players-were-game-of-thrones-characters.jpg')
+`;
+
+const PlayerSelectorCol = styled.div `
+    @media (max-width: 1200px) {
+        flex: none;
+        max-width: 50%;
+    }
+
+    @media (max-width: 768px) {
+        flex: none;
+        max-width: 100%;
+    }
 `;
 
 function Player(props){
@@ -149,20 +160,18 @@ function Player(props){
     }
 
     return (
-        <PlayerContextProvider>
-            <PlayerSelectorContainer className="row">
-                <div className="col col-lg-4"></div>
-                    <div className="col">
-                        <AutoCompleteText 
-                            items={state.players} 
-                            placeholder={"Please select a player"} 
-                            changeSelectedPlayer={playerContext ? playerContext.changeSelectedPlayer : null}
-                            changeTournaments={ playerContext ? playerContext.changeTournaments : null }
-                            changeGrandSlams={ playerContext ? playerContext.changeGrandSlams : null }
-                            changeLastMatches={ playerContext ? playerContext.changeLastMatches : null}
-                        />
-                    </div>
-                <div className="col col-lg-4"></div>
+        <div>
+            <PlayerSelectorContainer className="row justify-content-center">
+                <PlayerSelectorCol className="col-4">
+                    <AutoCompletePlayer 
+                        items={state.players} 
+                        placeholder={"Please select a player"} 
+                        changeSelectedPlayer={playerContext ? playerContext.changeSelectedPlayer : null}
+                        changeTournaments={ playerContext ? playerContext.changeTournaments : null }
+                        changeGrandSlams={ playerContext ? playerContext.changeGrandSlams : null }
+                        changeLastMatches={ playerContext ? playerContext.changeLastMatches : null}
+                    />
+                </PlayerSelectorCol>
             </PlayerSelectorContainer>
             <div className="row">
                 <div className="col">
@@ -274,7 +283,7 @@ function Player(props){
                     </div>
                 </div>
             </div>
-        </PlayerContextProvider>        
+        </div>        
     );
 }
 
