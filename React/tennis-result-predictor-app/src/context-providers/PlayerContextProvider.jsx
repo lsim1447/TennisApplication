@@ -13,7 +13,6 @@ export default class PlayerContextProvider extends Component {
     };
 
     changeSelectedPlayer = (newPlayer) => {
-        console.log('newPlayer = ', newPlayer);
         this.setState({selectedPlayer: newPlayer})
     }
 

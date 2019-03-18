@@ -5,6 +5,7 @@ import Footer from './Footer';
 import AppContextProvider from "./../AppContextProvider";
 import PlayerContextProvider from './../context-providers/PlayerContextProvider';
 import TournamentContextProvider from './../context-providers/TournamentContextProvider';
+import PredicterContextProvider from './../context-providers/PredicterContextProvider';
 
 class App extends Component {
 
@@ -13,10 +14,12 @@ class App extends Component {
       <AppContextProvider>
           <PlayerContextProvider>
             <TournamentContextProvider>
-              <NavigationBar>
-                <Router />
-                <Footer />
-              </NavigationBar>
+              <PredicterContextProvider>
+                <NavigationBar>
+                  <Router />
+                  <Footer />
+                </NavigationBar>
+              </PredicterContextProvider>
             </TournamentContextProvider>
           </PlayerContextProvider>
       </AppContextProvider>

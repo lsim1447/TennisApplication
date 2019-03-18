@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { HOVER_COLOR } from './../constants';
+import { HOVER_COLOR, TABLE_BACKGROUND } from './../constants';
 
 export const Clickable = styled.a `
     cursor: pointer;
@@ -15,4 +15,10 @@ export const PlayerNameLink = styled.a `
         color: ${HOVER_COLOR};
         text-decoration: none;
     }
+`;
+
+export const TableTournamentName = styled.div `
+    border-left: 4px solid ${TABLE_BACKGROUND};
+    border-right: 4px solid ${TABLE_BACKGROUND};
+    border-top: 4px solid ${TABLE_BACKGROUND};
 `;

@@ -6,7 +6,7 @@ import AutoCompleteTournament from '../components/autocomplete/AutoCompleteTourn
 import TournamentContextProvider from './../context-providers/TournamentContextProvider';
 import { TournamentContext } from './../context-providers/TournamentContextProvider';
 import { AppContext } from '../AppContextProvider';
-import { Clickable, PlayerNameLink } from './../util/OftenUsedElements';
+import { Clickable, PlayerNameLink, TableTournamentName } from './../util/OftenUsedElements';
 
 const NameTD = styled.td `
     width: 200px;
@@ -23,12 +23,6 @@ const TournamentName = styled.div `
         padding-top: 24px;
         padding-bottom: 24px;
     }
-`;
-
-const TableTournamentName = styled.div `
-    border-left: 4px solid ${TABLE_BACKGROUND};
-    border-right: 4px solid ${TABLE_BACKGROUND};
-    border-top: 4px solid ${TABLE_BACKGROUND};
 `;
 
 const TournamentSelectorContainer = styled.div `
@@ -172,9 +166,9 @@ function Tournament(props) {
     }
 
     return (
-        <div> 
+        <div class="container"> 
             <TournamentSelectorContainer className="row justify-content-center">
-                <TournamentSelectorCol className="col-4">
+                <TournamentSelectorCol className="col-lg-6">
                     <AutoCompleteTournament 
                         items={ state.tourneys } 
                         placeholder={ "Please select a tournament" } 

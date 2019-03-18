@@ -113,14 +113,11 @@ export default class AutoCompletePlayer extends React.Component {
 
         get_request(`${DEFALULT_SERVER_URL}/tournament/won?slug=${encodeURIComponent(player.playerSlug)}`)
             .then(tournaments => {
-                console.log('tournaments = ', tournaments);
                 get_request(`${DEFALULT_SERVER_URL}/matches/player/last?slug=${encodeURIComponent(player.playerSlug)}&nr=${encodeURIComponent(VISIBLE_MATCHES)}`)
                     .then(lastmatches => {
-                        console.log('last_matches = ', lastmatches)
                         const won_grand_slams = tournaments.filter(tournament => {
                             return (tournament.tourney.tourney_id === '520') || (tournament.tourney.tourney_id === '540') || (tournament.tourney.tourney_id === '560') || (tournament.tourney.tourney_id === '580');
                         })
-                        console.log('grand slams = ', won_grand_slams);
                         this.props.changeTournaments(tournaments.reverse());
                         this.props.changeLastMatches(lastmatches);
                         this.props.changeGrandSlams(won_grand_slams);

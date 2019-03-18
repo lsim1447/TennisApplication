@@ -75,7 +75,9 @@ public class MatchService {
         List<Match> second_round = (List<Match>) matchesRepository.findAllByWinnerPlayerAndLoserPlayer(player2, player1);
 
         first_round.addAll(second_round);
-        return first_round;
+        return first_round.stream()
+                .sorted(Comparator.comparing(match -> match.getTournament().getDates(), Comparator.reverseOrder()))
+                .collect(Collectors.toList());
     }
 
     // FILTER BY SELECTED YEAR

@@ -6,7 +6,7 @@ import AutoCompletePlayer from '../components/autocomplete/AutoCompletePlayer';
 import PlayerContextProvider from './../context-providers/PlayerContextProvider';
 import { PlayerContext } from './../context-providers/PlayerContextProvider';
 import { AppContext } from '../AppContextProvider';
-import { Clickable, PlayerNameLink } from './../util/OftenUsedElements';
+import { Clickable, PlayerNameLink, TableTournamentName } from './../util/OftenUsedElements';
 
 const FlagIcon = styled.img `
     padding-left: 10px;
@@ -108,7 +108,7 @@ function Player(props){
     }
 
     function renderMatchResult(matches){
-        return matches.slice(0, state.nrOfVisibleMatches).map(match => {
+        return matches.slice(0,state.nrOfVisibleMatches).map(match => {
             let results = match.match_score_tiebreaks.split(" ");
             let player1 = [];
             let player2 = [];
@@ -139,7 +139,7 @@ function Player(props){
             });
             return (
                 <div key={match.match_id}>
-                    <span className="font-weight-bold">{match.tournament.tourney.name}, {match.tournament.year}, {match.round_name}</span>
+                    <TableTournamentName className="font-weight-bold text-center">{match.tournament.tourney.name}, {match.tournament.year}, {match.round_name}</TableTournamentName>
                     <a href={`/match/stats/${match.match_id}`}>
                         <table className="table table-dark">
                             <tbody>
@@ -195,7 +195,7 @@ function Player(props){
                                     </tr>
                                     <tr>
                                         <td>
-                                            <span className="font-weight-bold">{ context.locales[context.actual].birthdate } </span>
+                                            <span className="font-weight-bold"> { context.locales[context.actual].birthdate } </span>
                                         </td>
                                         <td>
                                             {playerContext.selectedPlayer.birthdate}
@@ -203,7 +203,7 @@ function Player(props){
                                     </tr>
                                     <tr>
                                         <td>
-                                            <span className="font-weight-bold">{ context.locales[context.actual].handedness } </span>
+                                            <span className="font-weight-bold"> { context.locales[context.actual].handedness } </span>
                                         </td>
                                         <td>
                                             {playerContext.selectedPlayer.handedness}
@@ -211,7 +211,7 @@ function Player(props){
                                     </tr>
                                     <tr>
                                         <td>
-                                            <span className="font-weight-bold">{ context.locales[context.actual].won_tournaments } </span>
+                                            <span className="font-weight-bold"> { context.locales[context.actual].won_tournaments } </span>
                                         </td>
                                         <td>
                                             { playerContext.tournaments.length }
@@ -219,7 +219,7 @@ function Player(props){
                                     </tr>
                                     <tr>
                                         <td>
-                                            <span className="font-weight-bold">{ context.locales[context.actual].won_grand_slams } </span>
+                                            <span className="font-weight-bold"> { context.locales[context.actual].won_grand_slams } </span>
                                         </td>
                                         <td>
                                             { playerContext.grand_slams.length }
@@ -227,7 +227,7 @@ function Player(props){
                                     </tr>
                                     <tr>
                                         <td>
-                                            <span className="font-weight-bold">{ context.locales[context.actual].height } </span>
+                                            <span className="font-weight-bold"> { context.locales[context.actual].height } </span>
                                         </td>
                                         <td>
                                             {playerContext.selectedPlayer.heightCm} cm

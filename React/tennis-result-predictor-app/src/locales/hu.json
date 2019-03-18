@@ -3,6 +3,7 @@
     "nav_menu_item_tournaments": "Tornák",
     "nav_menu_item_grand_slams": "Grand Slamek",
     "nav_menu_item_search": "Keresés",
+    "nav_menu_item_predict": "Párharc megjóslása",
 
     "australian_open_description": "Az év első Grand Slam tornája",
     "roland_garros-description": "Az év második Grand Slam tornája",
@@ -12,6 +13,7 @@
     "footer_where_comes_data": "Ez az alkalmazás a meccsereményeket és a statisztikákat az ATP world tour tennis oldaláról veszi igénybe.",
     "footer_header" : "Tennis Masters - a 2000-es évek sztárjai",
 
+    "age":"Kor",
     "tournament_name": "Torna neve:",
     "tournament_location": "Helyszin:",
     "winner_player": "Győztes játékos:",

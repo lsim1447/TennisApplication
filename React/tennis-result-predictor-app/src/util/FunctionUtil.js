@@ -13,3 +13,20 @@ export const getPageX = () => {
     const isCSS1Compat = ((document.compatMode || '') === 'CSS1Compat');
     return isCSS1Compat ? document.documentElement.scrollLeft : document.body.scrollLeft;
 };
+
+export const isGrandSlam = (tournament) => {
+    return (tournament.tourney.tourney_id === '520') || (tournament.tourney.tourney_id === '540') 
+            || (tournament.tourney.tourney_id === '560') || (tournament.tourney.tourney_id === '580');
+}
+
+export const wonMatchesBy = (matches, player) => {
+    return matches.filter(match => {
+        return match.winnerPlayer.playerSlug === player.playerSlug;
+    })
+}
+
+export const wonMatchesOn = (matches, surface) => {
+    return matches.filter(match => {
+        return match.tournament.tourney.surface === surface;
+    })
+}

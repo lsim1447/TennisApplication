@@ -3,9 +3,11 @@ package tennis.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tennis.domain.Match;
+import tennis.domain.Player;
 import tennis.domain.Tournament;
 import tennis.domain.Tourney;
 import tennis.service.MatchService;
+import tennis.service.PlayerService;
 import tennis.service.TournamentService;
 import tennis.service.TourneyService;
 
@@ -26,6 +28,9 @@ public class MatchesController {
     @Autowired
     private TourneyService tourneyService;
 
+    @Autowired
+    private PlayerService playerService;
+
     @GetMapping("/player/all/one")
     public Iterable<Match> getAllMatchesByPlayerName(){
         return matchService.findAllMatchesByPlayerName("Rafael", "Nadal");
@@ -38,8 +43,11 @@ public class MatchesController {
     }
 
     @GetMapping("/player/all/between/two")
-    public Iterable<Match> getAllMatchesBetweenTwoPlayer(){
-        return matchService.findAllMatchesBetweenTwoPlayer("Rafael", "Nadal", "Novak", "Djokovic");
+    @ResponseBody
+    public Iterable<Match> getAllMatchesBetweenTwoPlayer(@RequestParam String playerOne, @RequestParam String playerTwo){
+        Player player1 = playerService.findBySlug(playerOne);
+        Player player2 = playerService.findBySlug(playerTwo);
+        return matchService.findAllMatchesBetweenTwoPlayer(player1.getFirstName(), player1.getLastName(), player2.getFirstName(), player2.getLastName());
     }
 
     @GetMapping("/player/all/one/year")

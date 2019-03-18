@@ -9,6 +9,7 @@ import GrandSlam from './routes/GrandSlam';
 import Stats from './routes/Stats';
 import CustomTournament from './routes/CustomTournament';
 import Player from './routes/Player';
+import Prediction from './routes/Prediction';
 
 class Router extends Component {
     render(){
@@ -22,6 +23,7 @@ class Router extends Component {
                     <Route exact path="/players" render={ (props) => <Player {...props}/>} />
                     <Route exact path="/players/:slug" render={ (props) => <CustomPlayer {...props}/>} />
                     <Route exact path="/match/stats/:id" render={ (props) => <Stats {...props}/>} />
+                    <Route exact path="/prediction" render={ (props) => <Prediction {...props}/>} />
                     <Route render={ (props) => <PageNotFound {...props}/>} />
                 </Switch>
             </BrowserRouter>

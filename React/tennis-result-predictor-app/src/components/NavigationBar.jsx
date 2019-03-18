@@ -78,6 +78,11 @@ function NavigationBar(props){
                                 {renderGrandSlams()}
                             </div>
                         </li>
+                        <li className="nav-item">
+                            <a className="nav-link" href="/prediction">
+                                { context.locales[context.actual].nav_menu_item_predict }
+                            </a>
+                        </li>
                     </ul>
                     <form className="form-inline my-2 my-lg-0">
                         <input className="form-control mr-sm-2" type="search" placeholder={context.locales[context.actual].nav_menu_item_search} aria-label="Search"/>
