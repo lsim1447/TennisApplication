@@ -22,3 +22,31 @@ export const TableTournamentName = styled.div `
     border-right: 4px solid ${TABLE_BACKGROUND};
     border-top: 4px solid ${TABLE_BACKGROUND};
 `;
+
+export const NameTD = styled.td `
+    width: 200px;
+`;
+
+export const MatchesContainer = styled.div `
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-bottom: 5px;
+    background-image: url('./../images/others/light-background.jpg');
+`;
+
+export const FlagIcon = styled.img `
+    padding-left: 10px;
+`;
+
+export const PlayerName = styled.tr `
+    color: #28a745;
+    font-size: 34px;
+`;
+
+export const CardImage = styled.img `
+    max-height: 400px;
+`;
+
+export const PlayerCardImage = styled.img `
+    max-height: 400px;
+`;

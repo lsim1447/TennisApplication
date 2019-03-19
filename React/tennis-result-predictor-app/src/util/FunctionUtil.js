@@ -19,6 +19,10 @@ export const isGrandSlam = (tournament) => {
             || (tournament.tourney.tourney_id === '560') || (tournament.tourney.tourney_id === '580');
 }
 
+export const getGrandSlamsFromMatches = (matches) => {
+    return matches.filter(match => isGrandSlam(match.tournament))
+}
+
 export const wonMatchesBy = (matches, player) => {
     return matches.filter(match => {
         return match.winnerPlayer.playerSlug === player.playerSlug;

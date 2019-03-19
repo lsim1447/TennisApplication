@@ -16,14 +16,14 @@ class Router extends Component {
         return (
             <BrowserRouter>
                 <Switch>
-                    <Route exact path="/" render={ () => <Home />}/>
-                    <Route exact path="/tournament" render={ (props) => <Tournament {...props}/>} />
-                    <Route exact path="/tournament/:id" render={ (props) => <CustomTournament {...props}/>} />
-                    <Route exact path="/grand-slam/:id" render={ (props) => <GrandSlam {...props}/>} />
-                    <Route exact path="/players" render={ (props) => <Player {...props}/>} />
-                    <Route exact path="/players/:slug" render={ (props) => <CustomPlayer {...props}/>} />
-                    <Route exact path="/match/stats/:id" render={ (props) => <Stats {...props}/>} />
-                    <Route exact path="/prediction" render={ (props) => <Prediction {...props}/>} />
+                    <Route exact path="/"                   render={ () => <Home />}/>
+                    <Route exact path="/tournament"         render={ (props) => <Tournament {...props}/>} />
+                    <Route exact path="/tournament/:id"     render={ (props) => <CustomTournament {...props}/>} />
+                    <Route exact path="/grand-slam/:id"     render={ (props) => <GrandSlam {...props}/>} />
+                    <Route exact path="/players"            render={ (props) => <Player {...props}/>} />
+                    <Route exact path="/players/:slug"      render={ (props) => <CustomPlayer {...props}/>} />
+                    <Route exact path="/match/stats/:id"    render={ (props) => <Stats {...props}/>} />
+                    <Route exact path="/prediction"         render={ (props) => <Prediction {...props}/>} />
                     <Route render={ (props) => <PageNotFound {...props}/>} />
                 </Switch>
             </BrowserRouter>

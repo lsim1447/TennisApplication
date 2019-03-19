@@ -5,13 +5,9 @@ import { DEFALULT_SERVER_URL } from '../constants';
 import AutoCompletePredicter from '../components/autocomplete/AutoCompletePredicter';
 import { PredicterContext } from './../context-providers/PredicterContextProvider';
 import { AppContext } from '../AppContextProvider';
-import { TableTournamentName } from './../util/OftenUsedElements';
 import StatProgressBar from './../components/StatProgressBar';
 import { isGrandSlam, wonMatchesBy, wonMatchesOn } from './../util/FunctionUtil';
-
-const NameTD = styled.td `
-    width: 200px;
-`;
+import Matches from './../util/elements/Matches';
 
 const HeaderDiv = styled.div `
     height: 250px;
@@ -22,11 +18,6 @@ const HeaderDiv = styled.div `
 
 const CardDiv = styled.div `
     margin-top: 15px;
-`;
-
-const MatchesContainer = styled.div `
-    padding-top: 15px;
-    background-image: url('./../images/others/light-background.jpg');
 `;
 
 const PlayerCard = styled.div `
@@ -133,16 +124,6 @@ function Prediction(props){
         }).length;
     }
 
-    function renderStats(matches){
-        if (contextPredicter.selectedPlayerOne.firstName && contextPredicter.selectedPlayerTwo.firstName &&
-            contextPredicter.selectedPlayerOne.firstName !== contextPredicter.selectedPlayerTwo.firstName){
-            return(
-                <div>
-                    {renderMatchResult(matches)}
-                </div>
-            )
-        }
-    }
 
     useEffect(() => {
         get_request(`${DEFALULT_SERVER_URL}/player/all`)
@@ -150,71 +131,6 @@ function Prediction(props){
                 setState({...state, players: players})
             })
     }, []);
-
-    function renderSetResults(games){
-        let index = games.length;
-        while (index < 5){
-            games.push(" ");
-            index = index + 1;
-        }
-        return games.map((game, index) => {
-            return (
-                <td key={index} className="text-left">{game}</td>
-            );
-        })
-    }
-
-    function renderMatchResult(matches){
-        return matches.slice(0,state.nrOfVisibleMatches).map(match => {
-            let results = match.match_score_tiebreaks.split(" ");
-            let player1 = [];
-            let player2 = [];
-            results.forEach(element => {
-                if (element.indexOf('(') > -1){      // if was tiebreak in the set
-                    const val = parseInt(element.charAt(3));
-                    if (element.charAt(0) === '7'){
-                        if (val >= 5){
-                            player1.push(`7 (${val + 2})`)
-                            player2.push(`6 (${val})`);
-                        } else {
-                            player1.push("7 (7)");
-                            player2.push(`7 (${val})`);
-                        }
-                    } else {
-                        if (val > 5){
-                            player1.push(`6 (${val})`)
-                            player2.push(`7 (${val+2})`);
-                        } else {
-                            player1.push(`6 (${val})`);
-                            player2.push("7 (7)");
-                        }
-                    }
-                } else {
-                    player1.push(element.charAt(0));
-                    player2.push(element.charAt(1));
-                } 
-            });
-            return (
-                <div key={match.match_id}>
-                    <TableTournamentName className="font-weight-bold text-center">{match.tournament.tourney.name}, {match.tournament.year}, {match.round_name}</TableTournamentName>
-                    <a href={`/match/stats/${match.match_id}`}>
-                        <table className="table table-dark">
-                            <tbody>
-                                <tr>
-                                    <NameTD className="font-weight-bold">{match.winnerPlayer.firstName} {match.winnerPlayer.lastName}</NameTD>
-                                    { renderSetResults(player1) }
-                                </tr>
-                                <tr>
-                                    <NameTD>{match.loserPlayer.firstName} {match.loserPlayer.lastName}</NameTD>
-                                    { renderSetResults(player2) }
-                                </tr>
-                            </tbody>
-                        </table>
-                    </a>
-                </div>
-            )
-        })
-    }
 
     function renderStatistics(){
         if (!contextPredicter.matches_between_those_two || contextPredicter.matches_between_those_two.length == 0) return;
@@ -447,50 +363,19 @@ function Prediction(props){
                                 { renderStatistics() }
                             </StatisticsCardsContainer>
                         </div>
-                
                     </PlayerCardsContainer>
+
+                    <div className="col-lg-3">
+                        <Matches
+                            matches = {contextPredicter.matches_between_those_two}
+                            grand_slam_matches = { contextPredicter.grand_slam_matches_between_those_two }
+                            selectedPlayerOne = { contextPredicter.selectedPlayerOne }
+                            selectedPlayerTwo = { contextPredicter.selectedPlayerTwo }
+                            nrOfVisibleMatches = { state.nrOfVisibleMatches }
+                            same = { -1 }
+                        />
+                    </div>
                     
-                    <MatchesContainer className="col-lg-3">
-                        <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                            <li className="nav-item">
-                                <a className="nav-link active font-weight-bold" id="pills-latest-tab" data-toggle="pill" href="#pills-latest" role="tab" aria-controls="pills-latest" aria-selected="true"> Latest </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link font-weight-bold" id="pills-grand-slam-tab" data-toggle="pill" href="#pills-grand-slam" role="tab" aria-controls="pills-grand-slam" aria-selected="false"> Grand Slams </a>
-                            </li>
-                            <div className="nav-item dropdown">
-                                <button style={{color: "#007bff"}} className="btn btn-transparent dropdown-toggle font-weight-bold" type="button" id="dropdownMenuButton" data-toggle="dropdown">
-                                    Surface
-                                </button>
-                                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a className="dropdown-item" id="pills-surface-hard-tab"   data-toggle="pill" href="#pills-surface-hard"   role="tab" aria-controls="pills-surface-hard"   aria-selected="false"> Hard   </a>
-                                    <a className="dropdown-item" id="pills-surface-clay-tab"   data-toggle="pill" href="#pills-surface-clay"   role="tab" aria-controls="pills-surface-clay"   aria-selected="false"> Clay   </a>
-                                    <a className="dropdown-item" id="pills-surface-grass-tab"  data-toggle="pill" href="#pills-surface-grass"  role="tab" aria-controls="pills-surface-grass"  aria-selected="false"> Grass  </a>
-                                    <a className="dropdown-item" id="pills-surface-carpet-tab" data-toggle="pill" href="#pills-surface-carpet" role="tab" aria-controls="pills-surface-carpet" aria-selected="false"> Carpet </a>
-                                </div>
-                            </div>
-                        </ul>
-                        <div className="tab-content" id="pills-tabContent">
-                            <div className="tab-pane fade show active" id="pills-latest" role="tabpanel" aria-labelledby="pills-latest-tab">
-                                { renderStats(contextPredicter.matches_between_those_two) }
-                            </div>
-                            <div className="tab-pane fade" id="pills-grand-slam" role="tabpanel" aria-labelledby="pills-grand-slam-tab">
-                                { renderStats(contextPredicter.grand_slam_matches_between_those_two) }
-                            </div>
-                            <div className="tab-pane fade" id="pills-surface-hard" role="tabpanel" aria-labelledby="pills-surface-hard-tab">
-                                { renderStats(wonMatchesOn(contextPredicter.matches_between_those_two, 'Hard')) }
-                            </div>
-                            <div className="tab-pane fade" id="pills-surface-clay" role="tabpanel" aria-labelledby="pills-surface-clay-tab">
-                                { renderStats(wonMatchesOn(contextPredicter.matches_between_those_two, 'Clay')) }
-                            </div>
-                            <div className="tab-pane fade" id="pills-surface-grass" role="tabpanel" aria-labelledby="pills-surface-grass-tab">
-                                { renderStats(wonMatchesOn(contextPredicter.matches_between_those_two, 'Grass')) }
-                            </div>
-                            <div className="tab-pane fade" id="pills-surface-carpet" role="tabpanel" aria-labelledby="pills-surface-carpet-tab">
-                                { renderStats(wonMatchesOn(contextPredicter.matches_between_those_two, 'Carpet')) }
-                            </div>
-                        </div>
-                </MatchesContainer>
             </div>
         </div>
     );
