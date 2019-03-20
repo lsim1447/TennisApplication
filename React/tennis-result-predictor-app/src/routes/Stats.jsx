@@ -1,7 +1,6 @@
-import React , { useContext, useState, useEffect } from 'react';
-import { AppContext } from '../AppContextProvider';
-import { get_request, post_request } from './../util/Request';
-import { DEFALULT_SERVER_URL, VISIBLE_MATCHES, HOVER_COLOR } from './../constants';
+import React , { useState, useEffect } from 'react';
+import { get_request } from './../util/Request';
+import { DEFALULT_SERVER_URL } from './../constants';
 import styled from 'styled-components';
 import StatProgressBar from './../components/StatProgressBar';
 import PlayerProfile from './../components/PlayerProfile';
@@ -27,8 +26,6 @@ const DescriptionText = styled.p `
 
 function Stats(props) {
     
-    const context =  useContext(AppContext);
-
     const [state, setState] = useState({
         match: {}, 
         stats: {},

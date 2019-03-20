@@ -28,9 +28,9 @@ export const NameTD = styled.td `
 `;
 
 export const MatchesContainer = styled.div `
-    padding-top: 15px;
-    padding-left: 15px;
-    padding-bottom: 5px;
+    padding-top: ${props => props.isEmpty ? "0" : "15px"};
+    padding-left: ${props => props.isEmpty ? "0" : "15px"};
+    padding-bottom: ${props => props.isEmpty ? "0" : "5px"};
     background-image: url('./../images/others/light-background.jpg');
 `;
 

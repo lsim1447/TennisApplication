@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { AUTOCOMPLITE_SHOW_FIRST_N, TABLE_BACKGROUND, WHITE, DEFALULT_SERVER_URL, VISIBLE_MATCHES } from './../../constants';
+import { AUTOCOMPLITE_SHOW_FIRST_N, TABLE_BACKGROUND, WHITE, DEFALULT_SERVER_URL } from './../../constants';
 import { get_request, post_request } from '../../util/Request';
 import AnimateHeight from 'react-animate-height';
 

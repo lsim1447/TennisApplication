@@ -6,9 +6,6 @@ const Container = styled.div `
 `;
 
 class StatProgressBar extends Component {
-    constructor(props){
-        super(props);
-    }
 
     render(){
         let player_one_percentage = ((this.props.data.firstPlayerValue / this.props.data.firstPlayerTotal) * 100);

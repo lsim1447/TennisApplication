@@ -37,7 +37,7 @@ function Player(props){
     const [state, setState] = useState({
         players: [],
         nrOfVisibleTournaments: 5,
-        nrOfVisibleMatches: 8,
+        nrOfVisibleMatches: 5,
     })
 
     useEffect(() => {

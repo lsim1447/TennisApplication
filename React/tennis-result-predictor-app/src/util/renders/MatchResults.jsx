@@ -66,9 +66,9 @@ function renderMatchResult(matches, nrOfVisibleMatches){
     })
 }
 
-export function renderStats(matches, selectedPlayerOne, selectedPlayerTwo, nrOfVisibleMatches, same){
-    if (selectedPlayerOne && selectedPlayerOne.firstName && selectedPlayerTwo && selectedPlayerTwo.firstName &&
-        (selectedPlayerOne.firstName !== selectedPlayerTwo.firstName  || same === 1)){
+export function renderStats(matches, selectedPlayerOne, selectedPlayerTwo, nrOfVisibleMatches, same, isTour){
+    if ((selectedPlayerOne && selectedPlayerOne.firstName && selectedPlayerTwo && selectedPlayerTwo.firstName &&
+        (selectedPlayerOne.firstName !== selectedPlayerTwo.firstName  || same === 1)) || (isTour !== 0)){
         return(
             <div>
                 { renderMatchResult(matches, nrOfVisibleMatches) }

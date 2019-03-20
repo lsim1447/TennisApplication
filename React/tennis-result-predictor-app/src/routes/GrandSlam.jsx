@@ -1,7 +1,7 @@
 import React , { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../AppContextProvider';
 import { get_request, post_request } from './../util/Request';
-import { DEFALULT_SERVER_URL, HOVER_COLOR } from './../constants';
+import { DEFALULT_SERVER_URL } from './../constants';
 import { Clickable, PlayerNameLink } from './../util/OftenUsedElements';
 import CarouselIndicator from '../components/CarouselIndicator';
 

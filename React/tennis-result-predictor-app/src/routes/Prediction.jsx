@@ -8,6 +8,8 @@ import { AppContext } from '../AppContextProvider';
 import StatProgressBar from './../components/StatProgressBar';
 import { isGrandSlam, wonMatchesBy, wonMatchesOn } from './../util/FunctionUtil';
 import Matches from './../util/elements/Matches';
+import { Clickable } from './../util/OftenUsedElements';
+import PredictModal from './../components/PredictModal';
 
 const HeaderDiv = styled.div `
     height: 250px;
@@ -20,13 +22,9 @@ const CardDiv = styled.div `
     margin-top: 15px;
 `;
 
-const PlayerCard = styled.div `
+const PlayerCard = styled.div ``;
 
-`;
-
-const PlayerCardsContainer = styled.div `
-
-`;
+const PlayerCardsContainer = styled.div ``;
 
 const StatisticsCardsContainer = styled.div `
     border: 1px solid rgba(0,0,0,.125);
@@ -40,6 +38,31 @@ const StatisticsH1 = styled.h1 `
     padding-top: 12px;
 `;
 
+const VSButton = styled.button `
+    @media (max-width: 992px) {
+        background-color: #dc3545;
+        color: white;
+        width: 100%
+        border: 3px solid white;
+        padding: 10px 30px;
+        margin-bottom: 12px;
+        font-weight: bold;
+    }
+    @media (min-width: 992px) {
+        background-color: #dc3545;
+        color: white;
+        font-size: 18px;
+        padding: 10px 30px;
+        border-radius: 50%;
+        border: 3px solid white;
+        margin-bottom: 12px;
+        font-weight: bold;
+        &: hover {
+            color: black;
+        }
+    }
+`;
+
 function Prediction(props){
     
     const contextPredicter =  useContext(PredicterContext);
@@ -47,8 +70,13 @@ function Prediction(props){
 
     const [state, setState] = useState({
         players: [],
-        nrOfVisibleMatches: 100,
+        nrOfVisibleMatches: 7,
     })
+
+    function increaseNrOfVisibleMatches(value){
+        const tmp_nr_of_visible_matches = state.nrOfVisibleMatches + value;
+        setState({...state, nrOfVisibleMatches: tmp_nr_of_visible_matches})
+    }
 
     function renderCardPlayerName(player){
         if (player.firstName){
@@ -133,7 +161,7 @@ function Prediction(props){
     }, []);
 
     function renderStatistics(){
-        if (!contextPredicter.matches_between_those_two || contextPredicter.matches_between_those_two.length == 0) return;
+        if (!contextPredicter.matches_between_those_two || contextPredicter.matches_between_those_two.length === 0) return;
 
         const to_progress = [];
 
@@ -231,151 +259,162 @@ function Prediction(props){
     return (
         <div>
             <HeaderDiv></HeaderDiv>
-                <div className="row">
-                    <PlayerCardsContainer className="col-lg-9">
-                        <div className="container">
-                            <div className="row">
-                                <PlayerCard className="col-lg">
-                                    <AutoCompletePredicter
-                                        which       = {1}
-                                        items       = {state.players} 
-                                        placeholder = {"Please select a player"} 
-                                        changeSelectedPlayer             = { contextPredicter ? contextPredicter.changeSelectedPlayerOne : null}
-                                        changeTournaments                = { contextPredicter ? contextPredicter.changePlayerOneTournaments : null }
-                                        changeLastMatches                = { contextPredicter ? contextPredicter.changePlayerOneLastMatches : null}
-                                        changeLastMatchesBetweenTwo      = { contextPredicter ? contextPredicter.changeLastMatchesBetweenTwo : null}
-                                        changeGrandSlamMatchesBetweenTwo = { contextPredicter ? contextPredicter.changeGrandSlamMatchesBetweenTwo : null}
-                                    />
-                                    <CardDiv className="card mb-3">
-                                        <div className="row no-gutters">
-                                            <div className="col-md-4">
-                                                <img src={`./../images/players/${contextPredicter.selectedPlayerOne.playerSlug}.jpg`} onError={(e)=>{e.target.onerror = null; e.target.src="./../../images/players/unknown.jpg"}} className="card-img" alt="..."/>
-                                            </div>
-                                            <div className="col-md-8">
-                                                <div className="card-body">
-                                                    { renderCardPlayerName(contextPredicter.selectedPlayerOne) }
-                                                    <table className="table text-left">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    { context.locales[context.actual].birthdate }
-                                                                </td>
-                                                                <td>
-                                                                    { renderBirthDate(contextPredicter.selectedPlayerOne) }
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    { context.locales[context.actual].age }
-                                                                </td>
-                                                                <td>
-                                                                    { renderAge(contextPredicter.selectedPlayerOne) }
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    { context.locales[context.actual].won_tournaments }
-                                                                </td>
-                                                                <td>
-                                                                    { renderNrOfWonTournaments(contextPredicter.tournaments_player_one) }
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    { context.locales[context.actual].won_grand_slams }
-                                                                </td>
-                                                                <td>
-                                                                    { renderNrOfWonGrandSlams(contextPredicter.tournaments_player_one) }
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
-                                                </div>
+            <div className="row">
+                <PlayerCardsContainer className="col-lg-9">
+                    <div className="container">
+                        <div className="row">
+                            <PlayerCard className="col-lg">
+                                <AutoCompletePredicter
+                                    which       = {1}
+                                    items       = {state.players} 
+                                    placeholder = {"Please select a player"} 
+                                    changeSelectedPlayer             = { contextPredicter ? contextPredicter.changeSelectedPlayerOne : null}
+                                    changeTournaments                = { contextPredicter ? contextPredicter.changePlayerOneTournaments : null }
+                                    changeLastMatches                = { contextPredicter ? contextPredicter.changePlayerOneLastMatches : null}
+                                    changeLastMatchesBetweenTwo      = { contextPredicter ? contextPredicter.changeLastMatchesBetweenTwo : null}
+                                    changeGrandSlamMatchesBetweenTwo = { contextPredicter ? contextPredicter.changeGrandSlamMatchesBetweenTwo : null}
+                                />
+                                <CardDiv className="card mb-3">
+                                    <div className="row no-gutters">
+                                        <div className="col-md-4">
+                                            <img src={`./../images/players/${contextPredicter.selectedPlayerOne.playerSlug}.jpg`} onError={(e)=>{e.target.onerror = null; e.target.src="./../../images/players/unknown.jpg"}} className="card-img" alt="..."/>
+                                        </div>
+                                        <div className="col-md-8">
+                                            <div className="card-body">
+                                                { renderCardPlayerName(contextPredicter.selectedPlayerOne) }
+                                                <table className="table text-left">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                { context.locales[context.actual].birthdate }
+                                                            </td>
+                                                            <td>
+                                                                { renderBirthDate(contextPredicter.selectedPlayerOne) }
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                { context.locales[context.actual].age }
+                                                            </td>
+                                                            <td>
+                                                                { renderAge(contextPredicter.selectedPlayerOne) }
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                { context.locales[context.actual].won_tournaments }
+                                                            </td>
+                                                            <td>
+                                                                { renderNrOfWonTournaments(contextPredicter.tournaments_player_one) }
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                { context.locales[context.actual].won_grand_slams }
+                                                            </td>
+                                                            <td>
+                                                                { renderNrOfWonGrandSlams(contextPredicter.tournaments_player_one) }
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
                                             </div>
                                         </div>
-                                    </CardDiv>
-                                </PlayerCard>
-                                <PlayerCard className="col-lg">
-                                    <AutoCompletePredicter
-                                        which       = {2}
-                                        items       = {state.players} 
-                                        placeholder = {"Please select a player"} 
-                                        changeSelectedPlayer             = { contextPredicter ? contextPredicter.changeSelectedPlayerTwo : null}
-                                        changeTournaments                = { contextPredicter ? contextPredicter.changePlayerTwoTournaments : null }
-                                        changeLastMatches                = { contextPredicter ? contextPredicter.changePlayerTwoLastMatches : null}
-                                        changeLastMatchesBetweenTwo      = { contextPredicter ? contextPredicter.changeLastMatchesBetweenTwo : null}
-                                        changeGrandSlamMatchesBetweenTwo = { contextPredicter ? contextPredicter.changeGrandSlamMatchesBetweenTwo : null}
-                                    />
-                                    <CardDiv className="card mb-3">
-                                        <div className="row no-gutters">
-                                            <div className="col-md-4">
-                                                <img src={`./../images/players/${contextPredicter.selectedPlayerTwo.playerSlug}.jpg`} onError={(e)=>{e.target.onerror = null; e.target.src="./../../images/players/unknown.jpg"}} className="card-img" alt="..."/>
-                                            </div>
-                                            <div className="col-md-8">
-                                                <div className="card-body">
-                                                    { renderCardPlayerName(contextPredicter.selectedPlayerTwo) }
-                                                    <table className="table text-left">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    { context.locales[context.actual].birthdate }
-                                                                </td>
-                                                                <td>
-                                                                    { renderBirthDate(contextPredicter.selectedPlayerTwo) }
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    { context.locales[context.actual].age }
-                                                                </td>
-                                                                <td>
-                                                                    { renderAge(contextPredicter.selectedPlayerTwo) }
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    { context.locales[context.actual].won_tournaments }
-                                                                </td>
-                                                                <td>
-                                                                    { renderNrOfWonTournaments(contextPredicter.tournaments_player_two) }
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    { context.locales[context.actual].won_grand_slams }
-                                                                </td>
-                                                                <td>
-                                                                    { renderNrOfWonGrandSlams(contextPredicter.tournaments_player_two) }
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
-                                                </div>
+                                    </div>
+                                </CardDiv>
+                            </PlayerCard>
+                            <PlayerCard className="col-lg">
+                                <AutoCompletePredicter
+                                    which       = {2}
+                                    items       = {state.players} 
+                                    placeholder = {"Please select a player"} 
+                                    changeSelectedPlayer             = { contextPredicter ? contextPredicter.changeSelectedPlayerTwo : null}
+                                    changeTournaments                = { contextPredicter ? contextPredicter.changePlayerTwoTournaments : null }
+                                    changeLastMatches                = { contextPredicter ? contextPredicter.changePlayerTwoLastMatches : null}
+                                    changeLastMatchesBetweenTwo      = { contextPredicter ? contextPredicter.changeLastMatchesBetweenTwo : null}
+                                    changeGrandSlamMatchesBetweenTwo = { contextPredicter ? contextPredicter.changeGrandSlamMatchesBetweenTwo : null}
+                                />
+                                <CardDiv className="card mb-3">
+                                    <div className="row no-gutters">
+                                        <div className="col-md-4">
+                                            <img src={`./../images/players/${contextPredicter.selectedPlayerTwo.playerSlug}.jpg`} onError={(e)=>{e.target.onerror = null; e.target.src="./../../images/players/unknown.jpg"}} className="card-img" alt="..."/>
+                                        </div>
+                                        <div className="col-md-8">
+                                            <div className="card-body">
+                                                { renderCardPlayerName(contextPredicter.selectedPlayerTwo) }
+                                                <table className="table text-left">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                { context.locales[context.actual].birthdate }
+                                                            </td>
+                                                            <td>
+                                                                { renderBirthDate(contextPredicter.selectedPlayerTwo) }
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                { context.locales[context.actual].age }
+                                                            </td>
+                                                            <td>
+                                                                { renderAge(contextPredicter.selectedPlayerTwo) }
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                { context.locales[context.actual].won_tournaments }
+                                                            </td>
+                                                            <td>
+                                                                { renderNrOfWonTournaments(contextPredicter.tournaments_player_two) }
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                { context.locales[context.actual].won_grand_slams }
+                                                            </td>
+                                                            <td>
+                                                                { renderNrOfWonGrandSlams(contextPredicter.tournaments_player_two) }
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
                                             </div>
                                         </div>
-                                    </CardDiv>
-                                </PlayerCard>
-                            </div>
-                            <StatisticsCardsContainer>
-                                <StatisticsH1>General statistics</StatisticsH1>
-                                { renderStatistics() }
-                            </StatisticsCardsContainer>
+                                    </div>
+                                </CardDiv>
+                            </PlayerCard>
                         </div>
-                    </PlayerCardsContainer>
-
-                    <div className="col-lg-3">
-                        <Matches
-                            matches = {contextPredicter.matches_between_those_two}
-                            grand_slam_matches = { contextPredicter.grand_slam_matches_between_those_two }
-                            selectedPlayerOne = { contextPredicter.selectedPlayerOne }
-                            selectedPlayerTwo = { contextPredicter.selectedPlayerTwo }
-                            nrOfVisibleMatches = { state.nrOfVisibleMatches }
-                            same = { -1 }
-                        />
+                        <div className="row">
+                            <div className="col-lg text-center">
+                                <VSButton type="button" data-toggle="modal" data-target="#exampleModal"> Predict duel</VSButton>
+                                <PredictModal
+                                    selectedPlayerOne = { contextPredicter.selectedPlayerOne }
+                                    selectedPlayerTwo = { contextPredicter.selectedPlayerTwo }
+                                />
+                            </div>
+                        </div>
+                        <StatisticsCardsContainer>
+                            <StatisticsH1>General statistics</StatisticsH1>
+                            { renderStatistics() }
+                        </StatisticsCardsContainer>
                     </div>
-                    
+                </PlayerCardsContainer>
+
+                <div className="col-lg-3">
+                    <Matches
+                        matches = {contextPredicter.matches_between_those_two}
+                        grand_slam_matches = { contextPredicter.grand_slam_matches_between_those_two }
+                        selectedPlayerOne = { contextPredicter.selectedPlayerOne }
+                        selectedPlayerTwo = { contextPredicter.selectedPlayerTwo }
+                        nrOfVisibleMatches = { state.nrOfVisibleMatches }
+                        same = { -1 }
+                    />
+                    <Clickable className="list-group-item list-group-item-action" onClick={() => increaseNrOfVisibleMatches(5)}>
+                        <p className="mb-1 text-center font-weight-bold"> { context.locales[context.actual].show_more } </p>                                
+                    </Clickable>
+                </div>
             </div>
         </div>
     );

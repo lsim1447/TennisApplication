@@ -12,9 +12,11 @@ export default function Matches(props){
         nrOfVisibleMatches, 
         same
     } = props;
+    const isTour = props.isTour ? props.isTour : 0;
 
-    return (
-        <MatchesContainer>
+    function renderTabsOrNot(){
+        if (isTour !== 0) return;
+        return (
             <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li className="nav-item">
                     <a className="nav-link active font-weight-bold" id="pills-latest-tab" data-toggle="pill" href="#pills-latest" role="tab" aria-controls="pills-latest" aria-selected="true"> Latest </a>
@@ -34,24 +36,30 @@ export default function Matches(props){
                     </div>
                 </div>
             </ul>
+        )
+    }
+
+    return (
+        <MatchesContainer isEmpty={props.matches.length === 0}>
+            { renderTabsOrNot() }
             <div className="tab-content" id="pills-tabContent">
                 <div className="tab-pane fade show active" id="pills-latest" role="tabpanel" aria-labelledby="pills-latest-tab">
-                    { renderStats(matches, selectedPlayerOne, selectedPlayerTwo, nrOfVisibleMatches, same) }
+                    { renderStats(matches, selectedPlayerOne, selectedPlayerTwo, nrOfVisibleMatches, same, isTour) }
                 </div>
                 <div className="tab-pane fade" id="pills-grand-slam" role="tabpanel" aria-labelledby="pills-grand-slam-tab">
-                    { renderStats(grand_slam_matches, selectedPlayerOne, selectedPlayerTwo, nrOfVisibleMatches, same) }
+                    { renderStats(grand_slam_matches, selectedPlayerOne, selectedPlayerTwo, nrOfVisibleMatches, same, isTour) }
                 </div>
                 <div className="tab-pane fade" id="pills-surface-hard" role="tabpanel" aria-labelledby="pills-surface-hard-tab">
-                    { renderStats(wonMatchesOn(matches, 'Hard'), selectedPlayerOne, selectedPlayerTwo, nrOfVisibleMatches, same) }
+                    { renderStats(wonMatchesOn(matches, 'Hard'), selectedPlayerOne, selectedPlayerTwo, nrOfVisibleMatches, same, isTour) }
                 </div>
                 <div className="tab-pane fade" id="pills-surface-clay" role="tabpanel" aria-labelledby="pills-surface-clay-tab">
-                    { renderStats(wonMatchesOn(matches, 'Clay'), selectedPlayerOne, selectedPlayerTwo, nrOfVisibleMatches, same) }
+                    { renderStats(wonMatchesOn(matches, 'Clay'), selectedPlayerOne, selectedPlayerTwo, nrOfVisibleMatches, same, isTour) }
                 </div>
                 <div className="tab-pane fade" id="pills-surface-grass" role="tabpanel" aria-labelledby="pills-surface-grass-tab">
-                    { renderStats(wonMatchesOn(matches, 'Grass'), selectedPlayerOne, selectedPlayerTwo, nrOfVisibleMatches, same) }
+                    { renderStats(wonMatchesOn(matches, 'Grass'), selectedPlayerOne, selectedPlayerTwo, nrOfVisibleMatches, same, isTour) }
                 </div>
                 <div className="tab-pane fade" id="pills-surface-carpet" role="tabpanel" aria-labelledby="pills-surface-carpet-tab">
-                    { renderStats(wonMatchesOn(matches, 'Carpet'), selectedPlayerOne, selectedPlayerTwo, nrOfVisibleMatches, same) }
+                    { renderStats(wonMatchesOn(matches, 'Carpet'), selectedPlayerOne, selectedPlayerTwo, nrOfVisibleMatches, same, isTour) }
                 </div>
             </div>
         </MatchesContainer>

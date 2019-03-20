@@ -1,8 +1,7 @@
 import React , { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../AppContextProvider';
-import { get_request, post_request } from '../util/Request';
+import { get_request } from '../util/Request';
 import { DEFALULT_SERVER_URL, VISIBLE_MATCHES } from '../constants';
-import styled from 'styled-components';
 import { Clickable, PlayerCardImage } from './../util/OftenUsedElements';
 import Matches from './../util/elements/Matches';
 import { getGrandSlamsFromMatches } from './../util/FunctionUtil';
