@@ -69,11 +69,12 @@ function Prediction(props){
     
     const context =  useContext(AppContext);
     const contextPredicter =  useContext(PredicterContext);
-    const statisticsContext = useContext(StatisticsContext);
+    const contextStatistics = useContext(StatisticsContext);
 
     const [state, setState] = useState({
         players: [],
         nrOfVisibleMatches: 7,
+        statistics: {}
     })
 
     function increaseNrOfVisibleMatches(value){
@@ -177,9 +178,6 @@ function Prediction(props){
             secondPlayerValue: contextPredicter.tournaments_player_two.length,
             secondPlayerTotal: contextPredicter.tournaments_player_one.length + contextPredicter.tournaments_player_two.length,
         });
-        statisticsContext.changeNrOfWonTournamentByPlayerOne(contextPredicter.tournaments_player_one.length);
-        statisticsContext.changeNrOfWonTournamentByPlayerTwo(contextPredicter.tournaments_player_two.length);
-        statisticsContext.changeNrOfTotalWonTournament(contextPredicter.tournaments_player_one.length + contextPredicter.tournaments_player_two.length);
 
         const p1_gr_sl = contextPredicter.tournaments_player_one.filter(t => isGrandSlam(t));
         const p2_gr_sl = contextPredicter.tournaments_player_two.filter(t => isGrandSlam(t));
@@ -190,9 +188,6 @@ function Prediction(props){
             secondPlayerValue: p2_gr_sl.length,
             secondPlayerTotal: p1_gr_sl.length + p2_gr_sl.length,
         });
-        statisticsContext.changeNrOfWonGrandSlamByPlayerOne(p1_gr_sl.length);
-        statisticsContext.changeNrOfWonGrandSlamByPlayerTwo(p2_gr_sl.length);
-        statisticsContext.changeNrOfTotalWonGrandSlam(p1_gr_sl.length + p2_gr_sl.length);
 
         to_progress.push({
             title: 'Duels',
@@ -201,9 +196,6 @@ function Prediction(props){
             secondPlayerValue: player_two_won_matches.length,
             secondPlayerTotal: player_one_won_matches.length + player_two_won_matches.length,
         });
-        statisticsContext.changeNrOfWonDuelByPlayerOne(player_one_won_matches.length);
-        statisticsContext.changeNrOfWonDuelByPlayerTwo(player_two_won_matches.length);
-        statisticsContext.changeNrOfTotalDuelsBetweenTwo(player_one_won_matches.length + player_two_won_matches.length);
 
         const player_one_won_matches_on_gr = player_one_won_matches.filter(t => isGrandSlam(t.tournament));
         const player_two_won_matches_on_gr = player_two_won_matches.filter(t => isGrandSlam(t.tournament));
@@ -214,9 +206,6 @@ function Prediction(props){
             secondPlayerValue: player_two_won_matches_on_gr.length,
             secondPlayerTotal: player_one_won_matches_on_gr.length + player_two_won_matches_on_gr.length,
         });
-        statisticsContext.changeNrOfWonGrandSlamDuelsByPlayerOne(player_one_won_matches_on_gr.length);
-        statisticsContext.changeNrOfWonGrandSlamDuelsByPlayerTwo(player_two_won_matches_on_gr.length);
-        statisticsContext.changeNrOfTotalGrandSlamDuels(player_one_won_matches_on_gr.length + player_two_won_matches_on_gr.length);
 
         const player_one_won_matches_on_clay = wonMatchesOn(player_one_won_matches, 'Clay');
         const player_two_won_matches_on_clay = wonMatchesOn(player_two_won_matches, 'Clay');
@@ -228,9 +217,6 @@ function Prediction(props){
             secondPlayerValue: player_two_won_matches_on_clay.length,
             secondPlayerTotal: all_matches_on_clay.length,
         });
-        statisticsContext.changeNrOfWonGrandSlamDuelsByPlayerOne(player_one_won_matches_on_clay.length);
-        statisticsContext.changeNrOfWonGrandSlamDuelsByPlayerTwo(player_two_won_matches_on_clay.length);
-        statisticsContext.changeNrOfTotalGrandSlamDuels(all_matches_on_clay.length);
 
         const player_one_won_matches_on_grass = wonMatchesOn(player_one_won_matches, 'Grass');
         const player_two_won_matches_on_grass = wonMatchesOn(player_two_won_matches, 'Grass');
@@ -242,9 +228,6 @@ function Prediction(props){
             secondPlayerValue: player_two_won_matches_on_grass.length,
             secondPlayerTotal: all_matches_on_grass.length,
         });
-        statisticsContext.changeNrOfDuelsOnGrassByPlayerOne(player_one_won_matches_on_grass.length);
-        statisticsContext.changeNrOfDuelsOnGrassByPlayerTwo(player_two_won_matches_on_grass.length);
-        statisticsContext.changeNrOfTotalDuelsOnGrass(all_matches_on_grass.length);
 
         const player_one_won_matches_on_hard = wonMatchesOn(player_one_won_matches, 'Hard');
         const player_two_won_matches_on_hard = wonMatchesOn(player_two_won_matches, 'Hard');
@@ -256,9 +239,6 @@ function Prediction(props){
             secondPlayerValue: player_two_won_matches_on_hard.length,
             secondPlayerTotal: all_matches_on_hard.length,
         });
-        statisticsContext.changeNrOfDuelsOnHardByPlayerOne(player_one_won_matches_on_hard.length);
-        statisticsContext.changeNrOfDuelsOnHardByPlayerTwo(player_two_won_matches_on_hard.length);
-        statisticsContext.changeNrOfTotalDuelsOnHard(all_matches_on_hard.length);
 
         const player_one_won_matches_on_carpet = wonMatchesOn(player_one_won_matches, 'Carpet');
         const player_two_won_matches_on_carpet = wonMatchesOn(player_two_won_matches, 'Carpet');
@@ -270,9 +250,36 @@ function Prediction(props){
             secondPlayerValue: player_two_won_matches_on_carpet.length,
             secondPlayerTotal: all_matches_on_carpet.length,
         });
-        statisticsContext.changeNrOfDuelsOnCarpetByPlayerOne(player_one_won_matches_on_carpet.length);
-        statisticsContext.changeNrOfDuelsOnCarpetByPlayerTwo(player_two_won_matches_on_carpet.length);
-        statisticsContext.changeNrOfTotalDuelsOnCarpet(all_matches_on_carpet.length);
+
+        const newStatistics = {
+            nrOfWonTournamentByPlayerOne:     contextPredicter.tournaments_player_one.length,
+            nrOfWonTournamentByPlayerTwo:     contextPredicter.tournaments_player_two.length,
+            nrOfTotalWonTournament:           contextPredicter.tournaments_player_one.length + contextPredicter.tournaments_player_two.length,
+            nrOfWonGrandSlamByPlayerOne:      p1_gr_sl.length,
+            nrOfWonGrandSlamByPlayerTwo:      p2_gr_sl.length,
+            nrOfTotalWonGrandSlam:            p1_gr_sl.length + p2_gr_sl.length,
+            nrOfWonDuelByPlayerOne:           player_one_won_matches.length,
+            nrOfWonDuelByPlayerTwo:           player_two_won_matches.length,
+            nrOfTotalDuelsBetweenTwo:         player_one_won_matches.length + player_two_won_matches.length,
+            nrOfWonGrandSlamDuelsByPlayerOne: player_one_won_matches_on_gr.length,
+            nrOfWonGrandSlamDuelsByPlayerTwo: player_two_won_matches_on_gr.length,
+            nrOfTotalGrandSlamDuels:          player_one_won_matches_on_gr.length + player_two_won_matches_on_gr.length,
+            nrOfDuelsOnClayByPlayerOne:       player_one_won_matches_on_clay.length,
+            nrOfDuelsOnClayByPlayerTwo:       player_two_won_matches_on_clay.length,
+            nrOfTotalDuelsOnClay:             all_matches_on_clay.length,
+            nrOfDuelsOnGrassByPlayerOne:      player_one_won_matches_on_grass.length,
+            nrOfDuelsOnGrassByPlayerTwo:      player_two_won_matches_on_grass.length,
+            nrOfTotalDuelsOnGrass:            all_matches_on_grass.length,
+            nrOfDuelsOnHardByPlayerOne:       player_one_won_matches_on_hard.length,
+            nrOfDuelsOnHardByPlayerTwo:       player_two_won_matches_on_hard.length,
+            nrOfTotalDuelsOnHard:             all_matches_on_hard.length,
+            nrOfDuelsOnCarpetByPlayerOne:     player_one_won_matches_on_carpet.length,
+            nrOfDuelsOnCarpetByPlayerTwo:     player_two_won_matches_on_carpet.length,
+            nrOfTotalDuelsOnCarpet:           all_matches_on_carpet.length,
+        }
+        //console.log('statistics = ', newStatistics)
+        //contextStatistics.changeStatistics(newStatistics);
+
         return(
             to_progress.map((stat, index) => {
                 return(
@@ -415,7 +422,7 @@ function Prediction(props){
                         <div className="row">
                             <div className="col-lg text-center">
                                 <VSButton type="button" data-toggle="modal" data-target="#exampleModal" disabled={!contextPredicter.matches_between_those_two || contextPredicter.matches_between_those_two.length === 0}> Predict duel</VSButton>
-                                <PredictModal />
+                                <PredictModal statistics={ state.statistics }/>
                             </div>
                         </div>
                         <StatisticsCardsContainer>

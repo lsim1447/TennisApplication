@@ -15,7 +15,7 @@ export default function Matches(props){
     const isTour = props.isTour ? props.isTour : 0;
 
     function renderTabsOrNot(){
-        if (isTour !== 0) return;
+        if (isTour !== 0 || matches.length === 0) return;
         return (
             <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li className="nav-item">

@@ -64,7 +64,7 @@ export default class AutoCompleteTournament extends React.Component {
     }
 
     _handleEnterPress = (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && this.state.suggestions && this.state.suggestions.length > 0) {
           this.suggestionSelected(this.state.suggestions[0]);
         }
     }

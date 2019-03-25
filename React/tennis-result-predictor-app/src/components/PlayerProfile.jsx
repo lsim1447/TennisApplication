@@ -33,7 +33,7 @@ class PlayerProfile extends Component {
                                     :
                                     <ImageText className="card-text text-danger" href={`/players/${this.props.player.playerSlug}`}> {this.props.player.firstName} {this.props.player.lastName} </ImageText>
                                 }
-                                <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <p className="card-text">Zverev is the reigning champion at the ATP Finals, making him the youngest winner at the year-end championship in a decade. Zverev is the only active player outside of the Big Four with three Masters titles..</p>
                                 <p className="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                             </div>
                         </div>

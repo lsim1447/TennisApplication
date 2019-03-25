@@ -5,10 +5,9 @@ import { isGrandSlam, wonMatchesBy, wonMatchesOn } from './../util/FunctionUtil'
 import { get_request } from '../util/Request';
 import { DEFALULT_SERVER_URL } from '../constants';
 import { PredicterContext }  from './../context-providers/PredicterContextProvider';
-import { StatisticsContext } from './../context-providers/StatisticsContextProvider';
 import { CustomSelect, CustomOption, SelectLabel } from './../util/OftenUsedElements';
 import CircularProgressbar from 'react-circular-progressbar';
-
+import Select from 'react-select';
 
 const VSImageContainer = styled.div `
     @media (max-width: 992px) {
@@ -22,10 +21,11 @@ const VSImageContainer = styled.div `
 const ProbabilityLabel = styled.label `
     font-size: 32px;
     font-weight: bold;
+    color: white;
 `;
 
 const ProbabilityContainer = styled.div `
-    background-color: white;
+    background-image: url('./../images/others/modal-bet-container.jpg');
     border: 1px solid rgba(0,0,0,.2);
     margin-top: 24px;
     padding-top: 24px;
@@ -35,98 +35,58 @@ const ProbabilityContainer = styled.div `
 function PredictModal(props){
 
     const contextPredicter =  useContext(PredicterContext);
-    const contextStatistics = useContext(StatisticsContext);
 
-    console.log('contextStatistics = ', contextStatistics);
     const {
         selectedPlayerOne,
         selectedPlayerTwo,
-        last_matches_player_one,
-        last_matches_player_two,
-        tournaments_player_one,
-        tournaments_player_two,
-        matches_between_those_two,
-        grand_slam_matches_between_those_two,
     } = contextPredicter;
 
     const [state, setState] = useState({
-        surfaces: ["Hard", "Clay", "Grass", "Carpet"],
         tourneys: [],
-        possibleTourneys: [],
-        selectedSurface: '',
+        selectedTourney: null,
+        selectedSurface: null,
         firstPlayerProbability: 64,
         secondPlayerProbability: 36,
-        isLoading: true
+        isLoading: true,
+        surfaceOptions: [
+            { value: 'Hard', label: 'Hard'},
+            { value: 'Grass', label: 'Grass'},
+            { value: 'Clay', label: 'Clay'},
+            { value: 'Carpet', label: 'Carpet'},
+        ],
+        tournamentOptions: [],
     });
 
+    function convertTourneysToOption(tourneys){
+        return tourneys.map(tourney => {
+            return {
+                value: tourney.surface,
+                label: tourney.name
+            }
+        })
+    }
 
     useEffect(() => {
         get_request(`${DEFALULT_SERVER_URL}/tourney/all`)
             .then(tourneys => {
-                setState({...state, tourneys: tourneys, possibleTourneys: tourneys})
+                setState({...state, tourneys: tourneys, tournamentOptions: convertTourneysToOption(tourneys)})
             })
     }, []);
 
-    function renderSurfaceOptions(list){
-        return list.map((element, index) => {
-            if (element === state.selectedSurface){
-                return (
-                    <CustomOption key={index} value={element} selected>{element}</CustomOption>
-                )
-            } else {
-                return (
-                    <CustomOption key={index} value={element}>{element}</CustomOption>
-                )
-            }
-        })
+    function surfaceOnChanged(surface){
+        const  tournament_options = convertTourneysToOption(state.tourneys.filter(t => t.surface === surface.value));
+
+        setState({ ...state, tournamentOptions: tournament_options, selectedSurface: surface, selectedTourney: tournament_options[0] })
     }
 
-    function renderTourneyOptions(list){
-        return list.map((element, index) => {
-            return (
-                <CustomOption key={index} value={element}>{element}</CustomOption>
-            )
-        })
-    }
-
-    function surfaceChange(e){
-        const value = e.target.value;
-        const possibleTourneys = state.tourneys.filter(t => t.surface === value);
-        setState({...state, possibleTourneys: possibleTourneys })
-    }
-
-    function tourneyChange(e){
-        const tourneyName = e.target.value;
-        let tmp_surface = '';
-        state.tourneys.forEach(element => {
-            if (element.name === tourneyName) {
-                tmp_surface = element.surface;
-                return;
-            }
-        });
-        setState({...state, selectedSurface: tmp_surface});
+    function tourneyOnChanged(tourney){
+        const selectedSurface = state.surfaceOptions.filter(t => t.value === tourney.value);
+        setState({ ...state, selectedTourney: tourney, selectedSurface: selectedSurface})
     }
 
     function predictResult(e){
-        const selectedTournament = document.getElementById("tourney_dropdown").value;
-        const selectedSurface = document.getElementById("surface_dropdown").value;
-        
-        const nrOfCheckedMatches = 100;
-        const wonMatchesByPlayerOne = (wonMatchesBy(last_matches_player_one.slice(0, nrOfCheckedMatches), selectedPlayerOne)).length;
-        const wonMatchesByPlayerTwo = (wonMatchesBy(last_matches_player_two.slice(0, nrOfCheckedMatches), selectedPlayerTwo)).length;
-
-        const nrOfWonMatchesAgainsOpponentP1 = (wonMatchesBy(matches_between_those_two, selectedPlayerOne)).length;
-        const nrOfWonMatchesAgainsOpponentP2 = (wonMatchesBy(matches_between_those_two, selectedPlayerTwo)).length;
-
-        const nrOfWonGrandSlamMatchesAgainstOpponentP1 = (wonMatchesBy(grand_slam_matches_between_those_two, selectedPlayerOne)).length;
-        const nrOfWonGrandSlamMatchesAgainstOpponentP2 = (wonMatchesBy(grand_slam_matches_between_those_two, selectedPlayerTwo)).length;
-        
-        console.log('wonMatchesByPlayerOne = ', wonMatchesByPlayerOne);
-        console.log('wonMatchesByPlayerTwo = ', wonMatchesByPlayerTwo);
-        console.log('nrOfWonMatchesAgainsOpponentP1 = ', nrOfWonMatchesAgainsOpponentP1);
-        console.log('nrOfWonMatchesAgainsOpponentP2 = ', nrOfWonMatchesAgainsOpponentP2);
-        console.log('nrOfWonGrandSlamMatchesAgainstOpponentP1 = ', nrOfWonGrandSlamMatchesAgainstOpponentP1);
-        console.log('nrOfWonGrandSlamMatchesAgainstOpponentP2 = ', nrOfWonGrandSlamMatchesAgainstOpponentP2);
+        const selectedSurface = state.selectedTourney.value;
+        const selectedTourney = state.selectedTourney.label;
 
         const tmp1 = Math.floor(Math.random() * 100) + 1;
         const tmp2 = 100 - tmp1;
@@ -169,29 +129,68 @@ function PredictModal(props){
                             <div className="row">
                                 <div className="col col-lg">
                                     <SelectLabel>Surface:</SelectLabel>
-                                    <CustomSelect id="surface_dropdown" onChange={(e) => surfaceChange(e)}>
-                                        { renderSurfaceOptions(state.surfaces) }
-                                    </CustomSelect>
+                                    <Select value={state.selectedSurface} options={state.surfaceOptions} onChange={(e) => surfaceOnChanged(e)}></Select>
                                 </div>
                                 <div className="col col-lg">
                                     <SelectLabel>Tournament:</SelectLabel>
-                                    <CustomSelect id="tourney_dropdown" onChange={(e) => tourneyChange(e)}>
-                                        { renderTourneyOptions(state.possibleTourneys.map(t => t.name).sort()) }
-                                    </CustomSelect>
+                                    <Select value={state.selectedTourney} options={state.tournamentOptions} onChange={(e) => tourneyOnChanged(e)}></Select>
                                 </div>
                             </div>
-                            <ProbabilityContainer className="row justify-content-md-center">
-                                <div className="col col-lg-4">
-                                    <ProbabilityLabel> { selectedPlayerOne.firstName } { selectedPlayerOne.lastName }'s probability</ProbabilityLabel>
-                                    <div>
-                                        <CircularProgressbar style={{maxWidth: "100px"}} percentage={state.firstPlayerProbability} text={`${state.firstPlayerProbability}%`} />
+                            <ProbabilityContainer>
+                                <div className="row justify-content-md-center">
+                                    <div className="col col-lg-4">
+                                        <ProbabilityLabel> { selectedPlayerOne.firstName } { selectedPlayerOne.lastName }'s probability</ProbabilityLabel>
+                                    </div>
+                                    
+                                    <div className="col col-lg-4">
+                                        <ProbabilityLabel> { selectedPlayerTwo.firstName } { selectedPlayerTwo.lastName }'s probability</ProbabilityLabel>
                                     </div>
                                 </div>
-                                
-                                <div className="col col-lg-4">
-                                    <ProbabilityLabel> { selectedPlayerTwo.firstName } { selectedPlayerTwo.lastName }'s probability</ProbabilityLabel>
-                                    <div>
-                                        <CircularProgressbar style={{maxWidth: "100px"}} percentage={state.secondPlayerProbability} text={`${state.secondPlayerProbability}%`} />
+                                <div className="row justify-content-md-center">
+                                    <div className="col col-lg-4">
+                                        <div style={{maxWidth: "150px", marginLeft: "25%"}}>
+                                            <CircularProgressbar 
+                                                percentage={state.firstPlayerProbability} 
+                                                text={`${state.firstPlayerProbability}%`} 
+                                                background
+                                                backgroundPadding={6}
+                                                styles={{
+                                                    background: {
+                                                        fill: '#3e98c7',
+                                                    },
+                                                    text: {
+                                                        fill: '#fff',
+                                                    },
+                                                    path: {
+                                                        stroke: '#fff',
+                                                    },
+                                                    trail: { stroke: 'transparent' },
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="col col-lg-4">
+                                        <div style={{maxWidth: "150px", marginLeft: "25%"}}>
+                                            <CircularProgressbar 
+                                                percentage={state.secondPlayerProbability} 
+                                                text={`${state.secondPlayerProbability}%`} 
+                                                background
+                                                backgroundPadding={6}
+                                                styles={{
+                                                    background: {
+                                                        fill: '#3e98c7',
+                                                    },
+                                                    text: {
+                                                        fill: '#fff',
+                                                    },
+                                                    path: {
+                                                        stroke: '#fff',
+                                                    },
+                                                    trail: { stroke: 'transparent' },
+                                                }}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </ProbabilityContainer>

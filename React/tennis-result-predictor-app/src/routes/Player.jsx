@@ -29,6 +29,14 @@ const PlayerSelectorCol = styled.div `
     }
 `;
 
+const TournamentsContainer = styled.div `
+
+    @media (min-width: 992px) {
+        padding-left: 15% ;
+        padding-right: 15%;
+    }
+`;
+
 function Player(props){
     
     const context =  useContext(AppContext);
@@ -72,7 +80,7 @@ function Player(props){
                 </PlayerSelectorCol>
             </PlayerSelectorContainer>
             <div className="row">
-                <div className="col">
+                <div className="col col-lg-3">
                     <div className="card">
                         <PlayerCardImage src={`./../images/players/${playerContext.selectedPlayer.playerSlug}.jpg`} className="card-img" alt="" onError={(e)=>{e.target.onerror = null; e.target.src="./../../images/players/unknown.jpg"}}/>
                         <div className="card-body">
@@ -96,8 +104,8 @@ function Player(props){
                     </div>
                 </div>
 
-                <div className="col col-lg-4">
-                    <div className="list-group">
+                <div className="col col-lg">
+                    <TournamentsContainer className="list-group">
                         <a className="list-group-item list-group-item-action">
                             <h1 className="mb-1 text-center font-weight-bold"> { context.locales[context.actual].latest_won_tournaments } </h1>                     
                         </a>
@@ -105,10 +113,10 @@ function Player(props){
                         <Clickable className="list-group-item list-group-item-action" onClick={() => increaseNrOfVisibleTournaments(5)}>
                             <p className="mb-1 text-center font-weight-bold"> { context.locales[context.actual].show_more } </p>                                
                         </Clickable>
-                    </div>
+                    </TournamentsContainer>
                 </div>
 
-                <div className="col col-lg-4">
+                <div className="col col-lg-3">
                     <a href="#" className="list-group-item list-group-item-action">
                         <h1 className="mb-1 text-center font-weight-bold"> { context.locales[context.actual].latest_matches } </h1>                     
                     </a>

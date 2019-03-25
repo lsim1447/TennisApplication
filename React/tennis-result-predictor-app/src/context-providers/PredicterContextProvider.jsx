@@ -17,7 +17,13 @@ export default class PredicterContextProvider extends Component {
 
         matches_between_those_two: [],
         grand_slam_matches_between_those_two: [],
+
+        statistics: {}
     };
+
+    changeStatistics = (newStatistics) => {
+        this.setState({statistics: newStatistics})
+    }
 
     changeSelectedPlayerOne = (newPlayer) => {
         this.setState({selectedPlayerOne: newPlayer})
