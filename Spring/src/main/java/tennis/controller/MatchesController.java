@@ -108,7 +108,6 @@ public class MatchesController {
     @GetMapping("/player/last")
     @ResponseBody
     public List<Match> getLastNMatches(@RequestParam String slug, @RequestParam int nr){
-        System.out.println("slug = " + slug + "  number = " + nr);
         return  matchService.findLastNMatches(slug, nr);
     }
 

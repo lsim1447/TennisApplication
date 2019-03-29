@@ -23,7 +23,6 @@ public class StatsController {
     @GetMapping("/all")
     public Iterable<Stats> getAll(){
         List<Match> matches = (List<Match>) matchService.findAll();
-        System.out.println("All stats = " + matches.size());
         return null;
     }
 

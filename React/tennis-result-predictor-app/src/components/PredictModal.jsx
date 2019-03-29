@@ -1,13 +1,15 @@
 import React , { useContext, useState, useEffect } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
 import styled from 'styled-components';
-import { isGrandSlam, wonMatchesBy, wonMatchesOn } from './../util/FunctionUtil';
 import { get_request } from '../util/Request';
 import { DEFALULT_SERVER_URL } from '../constants';
 import { PredicterContext }  from './../context-providers/PredicterContextProvider';
-import { CustomSelect, CustomOption, SelectLabel } from './../util/OftenUsedElements';
+import { SelectLabel } from './../util/OftenUsedElements';
 import CircularProgressbar from 'react-circular-progressbar';
 import Select from 'react-select';
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+import 'rc-tooltip/assets/bootstrap.css';
 
 const VSImageContainer = styled.div `
     @media (max-width: 992px) {
@@ -32,6 +34,14 @@ const ProbabilityContainer = styled.div `
     padding-bottom: 24px;
 `;
 
+const SliderContainer = styled.div `
+    .rc-slider-mark {
+        font-size: 18px;
+    }
+    padding-bottom: 45px;
+    margin-top: 25px;
+`;
+
 function PredictModal(props){
 
     const contextPredicter =  useContext(PredicterContext);
@@ -47,6 +57,7 @@ function PredictModal(props){
         selectedSurface: null,
         firstPlayerProbability: 64,
         secondPlayerProbability: 36,
+        nrOfCheckedMatches: 5,
         isLoading: true,
         surfaceOptions: [
             { value: 'Hard', label: 'Hard'},
@@ -64,6 +75,10 @@ function PredictModal(props){
                 label: tourney.name
             }
         })
+    }
+
+    function sliderValueChanged(value){
+        setState({...state, nrOfCheckedMatches: value});
     }
 
     useEffect(() => {
@@ -91,6 +106,11 @@ function PredictModal(props){
         const tmp1 = Math.floor(Math.random() * 100) + 1;
         const tmp2 = 100 - tmp1;
         setState({...state, firstPlayerProbability: tmp1, secondPlayerProbability: tmp2})
+        
+        get_request(`${DEFALULT_SERVER_URL}/prediction/calculate?playerOneSlug=${encodeURIComponent(selectedPlayerOne.playerSlug)}&playerTwoSlug=${encodeURIComponent(selectedPlayerTwo.playerSlug)}&surface=${encodeURIComponent(selectedSurface)}&tourneyName=${encodeURIComponent(selectedTourney)}&nrOfCheckedElements=${encodeURIComponent(state.nrOfCheckedMatches)}`)
+            .then( response => {
+                console.log('response = ', response);
+            })
     }
 
     return (
@@ -136,6 +156,12 @@ function PredictModal(props){
                                     <Select value={state.selectedTourney} options={state.tournamentOptions} onChange={(e) => tourneyOnChanged(e)}></Select>
                                 </div>
                             </div>
+                            <SliderContainer className="row">
+                                <div className="col col-lg">
+                                    <SelectLabel>Number of last checked matches per player:</SelectLabel>
+                                    <Slider min={0} max={30} defaultValue={state.nrOfCheckedMatches} marks={{ 0:0, 5: 5, 10: 10, 15: 15, 20: 20, 25: 25, 30: 30 }} step={null} onChange={(e) => sliderValueChanged(e)}/>
+                                </div>
+                            </SliderContainer>
                             <ProbabilityContainer>
                                 <div className="row justify-content-md-center">
                                     <div className="col col-lg-4">

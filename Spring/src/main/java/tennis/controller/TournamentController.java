@@ -28,7 +28,6 @@ public class TournamentController {
 
     @PostMapping("/name")
     public Iterable<Tournament> getWonTournamentsByPlayer(@RequestBody Player player){
-        System.out.println(player);
         return tournamentService.getWonTournamentsByPlayer(player);
     }
 

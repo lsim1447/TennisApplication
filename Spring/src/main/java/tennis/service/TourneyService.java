@@ -24,4 +24,8 @@ public class TourneyService {
     public Iterable<Tourney> saveAll(Iterable<Tourney> tourneys){ return tourneyRepository.saveAll(tourneys); }
 
     public Tourney findBySlug(String slug){ return  tourneyRepository.findBySlug(slug);}
+
+    public Tourney findByName(String name){ return  tourneyRepository.findByName(name);}
+
+    public Iterable<Tourney> findAllBySurface(String surface){ return tourneyRepository.findAllBySurface(surface); }
 }
