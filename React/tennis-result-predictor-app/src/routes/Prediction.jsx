@@ -5,7 +5,6 @@ import { DEFALULT_SERVER_URL } from '../constants';
 import AutoCompletePredicter from '../components/autocomplete/AutoCompletePredicter';
 import { AppContext } from '../AppContextProvider';
 import { PredicterContext } from './../context-providers/PredicterContextProvider';
-import { StatisticsContext } from './../context-providers/StatisticsContextProvider';
 
 import StatProgressBar from './../components/StatProgressBar';
 import { isGrandSlam, wonMatchesBy, wonMatchesOn } from './../util/FunctionUtil';
@@ -69,7 +68,6 @@ function Prediction(props){
     
     const context =  useContext(AppContext);
     const contextPredicter =  useContext(PredicterContext);
-    const contextStatistics = useContext(StatisticsContext);
 
     const [state, setState] = useState({
         players: [],
@@ -250,35 +248,6 @@ function Prediction(props){
             secondPlayerValue: player_two_won_matches_on_carpet.length,
             secondPlayerTotal: all_matches_on_carpet.length,
         });
-
-        const newStatistics = {
-            nrOfWonTournamentByPlayerOne:     contextPredicter.tournaments_player_one.length,
-            nrOfWonTournamentByPlayerTwo:     contextPredicter.tournaments_player_two.length,
-            nrOfTotalWonTournament:           contextPredicter.tournaments_player_one.length + contextPredicter.tournaments_player_two.length,
-            nrOfWonGrandSlamByPlayerOne:      p1_gr_sl.length,
-            nrOfWonGrandSlamByPlayerTwo:      p2_gr_sl.length,
-            nrOfTotalWonGrandSlam:            p1_gr_sl.length + p2_gr_sl.length,
-            nrOfWonDuelByPlayerOne:           player_one_won_matches.length,
-            nrOfWonDuelByPlayerTwo:           player_two_won_matches.length,
-            nrOfTotalDuelsBetweenTwo:         player_one_won_matches.length + player_two_won_matches.length,
-            nrOfWonGrandSlamDuelsByPlayerOne: player_one_won_matches_on_gr.length,
-            nrOfWonGrandSlamDuelsByPlayerTwo: player_two_won_matches_on_gr.length,
-            nrOfTotalGrandSlamDuels:          player_one_won_matches_on_gr.length + player_two_won_matches_on_gr.length,
-            nrOfDuelsOnClayByPlayerOne:       player_one_won_matches_on_clay.length,
-            nrOfDuelsOnClayByPlayerTwo:       player_two_won_matches_on_clay.length,
-            nrOfTotalDuelsOnClay:             all_matches_on_clay.length,
-            nrOfDuelsOnGrassByPlayerOne:      player_one_won_matches_on_grass.length,
-            nrOfDuelsOnGrassByPlayerTwo:      player_two_won_matches_on_grass.length,
-            nrOfTotalDuelsOnGrass:            all_matches_on_grass.length,
-            nrOfDuelsOnHardByPlayerOne:       player_one_won_matches_on_hard.length,
-            nrOfDuelsOnHardByPlayerTwo:       player_two_won_matches_on_hard.length,
-            nrOfTotalDuelsOnHard:             all_matches_on_hard.length,
-            nrOfDuelsOnCarpetByPlayerOne:     player_one_won_matches_on_carpet.length,
-            nrOfDuelsOnCarpetByPlayerTwo:     player_two_won_matches_on_carpet.length,
-            nrOfTotalDuelsOnCarpet:           all_matches_on_carpet.length,
-        }
-        //console.log('statistics = ', newStatistics)
-        //contextStatistics.changeStatistics(newStatistics);
 
         return(
             to_progress.map((stat, index) => {

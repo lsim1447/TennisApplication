@@ -32,6 +32,7 @@ export const MatchesContainer = styled.div `
     background-image: url('./../images/others/light-background.jpg');
     padding-top: ${props => props.isEmpty ? "0" : "15px"};
     padding-left: ${props => props.isEmpty ? "0" : "15px"};
+    padding-right: ${props => props.isEmpty ? "0" : "15px"};
     padding-bottom: ${props => props.isEmpty ? "0" : "5px"};
 `;
 

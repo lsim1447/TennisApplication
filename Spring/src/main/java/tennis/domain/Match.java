@@ -1,5 +1,6 @@
 package tennis.domain;
 import javax.persistence.*;
+import java.util.Comparator;
 
 @Entity
 @Table(name = "matches")
@@ -197,6 +198,8 @@ public class Match implements Comparable<Match>{
 
     @Override
     public int compareTo(Match o) {
-        return getTournament().getTournament_year_id().compareTo(o.getTournament().getTournament_year_id());
+        Comparator<Match> matchComparator = (o1, o2) -> o2.getTournament().getDates().compareTo(o1.getTournament().getDates());
+        matchComparator.thenComparing(Comparator.comparing(match -> match.getRound_order(), Comparator.reverseOrder()));
+        return matchComparator.compare(this, o);
     }
 }

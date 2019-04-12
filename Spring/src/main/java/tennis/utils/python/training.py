@@ -1,0 +1,118 @@
+import numpy
+import sys
+import os
+import json
+
+NR_OF_INPUTS = 4
+NR_OF_OUTPUTS = 2
+
+class Network(object):
+    def __init__(self, sizes):
+        self.layers = len(sizes)
+        self.sizes = sizes
+        self.biases = [numpy.random.randn(x, 1) for x in sizes[1:]]
+        self.weights = [numpy.random.randn(y, x) for x, y in zip(sizes[:-1], sizes[1:])]
+
+    def feedforward(self, a):
+        for bias, weight in zip(self.biases, self.weights):
+            a = sigmoid(numpy.dot(weight, a) + bias)
+        return a
+
+    def training(self, data, eta, epsilon):
+        j = 0
+        while True:
+            j += 1
+            self.update(data, eta)
+            right = self.evaluate(data)
+            whole = len(data)
+            cur = right / whole
+            print("Epoch", j, ":", cur)
+            if cur >= epsilon:
+                break
+
+    def update(self, data, eta):
+        dif_bias = [numpy.zeros(b.shape) for b in self.biases]
+        dif_weight = [numpy.zeros(w.shape) for w in self.weights]
+        for x, y in data:
+            delta_dif_bias, delta_dif_weight = self.backpropagation(x, y)
+            dif_bias = [newbias + difnewbias for newbias, difnewbias in zip(dif_bias, delta_dif_bias)]
+            dif_weight = [newweight + difnewweight for newweight, difnewweight in zip(dif_weight, delta_dif_weight)]
+        self.weights = [weight - (eta / len(data)) * newweight for weight, newweight in zip(self.weights, dif_weight)]
+        self.biases = [bias - (eta / len(data)) * newbias for bias, newbias in zip(self.biases, dif_bias)]
+
+    def backpropagation(self, x, y):
+        dif_bias = [numpy.zeros(bias.shape) for bias in self.biases]
+        dif_weight = [numpy.zeros(weight.shape) for weight in self.weights]
+        activation = x
+        activations = [x]
+        results = []
+        for bias, weight in zip(self.biases, self.weights):
+            result = numpy.dot(weight, activation) + bias
+            results.append(result)
+            activation = sigmoid(result)
+            activations.append(activation)
+        delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(results[-1])
+        dif_bias[-1] = delta
+        dif_weight[-1] = numpy.dot(delta, activations[-2].transpose())
+        for l in range(2, self.layers):
+            result = results[-l]
+            sp = sigmoid_prime(result)
+            delta = numpy.dot(self.weights[-l + 1].transpose(), delta) * sp
+            dif_bias[-l] = delta
+            dif_weight[-l] = numpy.dot(delta, activations[-l - 1].transpose())
+        return (dif_bias, dif_weight)
+
+    def evaluate(self, data):
+        test_results = [(numpy.argmax(self.feedforward(x)), y) for (x, y) in data]
+        return sum(int(x == numpy.argmax(y)) for (x, y) in test_results)
+
+    def cost_derivative(self, output_activations, y):
+        return (output_activations - y)
+
+def sigmoid(x):
+    return 1.0 / (1.0 + numpy.exp(-x))
+
+def sigmoid_prime(x):
+    return sigmoid(x) * (1 - sigmoid(x))
+
+def vectorized_result(j):
+    x = numpy.zeros((NR_OF_OUTPUTS, 1))
+    x[j] = 1.0
+    return x
+
+if __name__ == '__main__':
+    data = []
+    try:
+        config = json.loads(open('./training-data.txt').read())
+        tr_data = config['data']
+        i = 0
+        for line in tr_data:
+            exist = 0
+            try:
+                my_input = line['inputs']
+                my_output = line['outputs']
+                l = ()
+                temp = []
+                for j in range(NR_OF_INPUTS):
+                    x = float(my_input[j])
+                    temp.append(x)
+                temp = numpy.asarray(temp)
+                l += (temp,)
+                res = 0
+                if my_output[0] == 0:
+                    res = 0
+                else:
+                    res = 1
+                res = numpy.asarray(res)
+                l += (res,)
+                data.append(l)
+                i += 1
+            except Exception as ex:
+                raise Exception("Corrupted file", ex)
+    except Exception as ex:
+        raise Exception("Error opening file", ex)
+
+    data = [(numpy.reshape(x, (NR_OF_INPUTS, 1)), vectorized_result(y)) for x, y in data]
+    network = Network([NR_OF_INPUTS, 20, NR_OF_OUTPUTS])
+    network.training(data, 1.0, 0.9)
+

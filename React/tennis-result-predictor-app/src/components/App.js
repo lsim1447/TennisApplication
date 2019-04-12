@@ -6,7 +6,6 @@ import AppContextProvider from "./../AppContextProvider";
 import PlayerContextProvider from './../context-providers/PlayerContextProvider';
 import TournamentContextProvider from './../context-providers/TournamentContextProvider';
 import PredicterContextProvider from './../context-providers/PredicterContextProvider';
-import StatisticsContextProvider from './../context-providers/StatisticsContextProvider';
 
 class App extends Component {
 
@@ -16,12 +15,10 @@ class App extends Component {
           <PlayerContextProvider>
             <TournamentContextProvider>
               <PredicterContextProvider>
-                <StatisticsContextProvider>
-                  <NavigationBar>
-                    <Router />
-                    <Footer />
-                  </NavigationBar>
-                </StatisticsContextProvider>
+                <NavigationBar>
+                  <Router />
+                  <Footer />
+                </NavigationBar>
               </PredicterContextProvider>
             </TournamentContextProvider>
           </PlayerContextProvider>

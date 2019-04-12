@@ -133,6 +133,7 @@ public class UploadDatabaseController {
                 })
                 .collect(Collectors.toList());
 
+        System.out.println("All players = " + players.size());
         playerService.saveAll(players);
         return players;
     }
@@ -141,12 +142,13 @@ public class UploadDatabaseController {
     public List<Tourney> uploadDatabaseWithTourneys(){
         List<List<String>> data = CSVReader.getData("tournaments").stream().collect(Collectors.toList());
 
-        List<Tourney> tourneys = data.stream()
+        List<Tourney> tourneys = data. stream()
                 .map(line -> new Tourney(line.get(2), line.get(1), line.get(3), line.get(4), line.get(7), line.get(8)))
-                .distinct()
                 .collect(Collectors.toList());
 
-        tourneyService.saveAll(tourneys);
+        for (Tourney tourney : tourneys) {
+            tourneyService.save(tourney);
+        }
         return tourneys;
     }
 
@@ -186,7 +188,7 @@ public class UploadDatabaseController {
 
     @GetMapping("/matches")
     public List<Match> uploadDatabaseWithMatches(){
-        List<List<String>> data = CSVReader.getData("match_scores_1991-2016").stream().collect(Collectors.toList());
+        List<List<String>> data = CSVReader.getData("match_scores_2017-2020").stream().collect(Collectors.toList());
         List<Match> matches = data.stream()
                 .map((line) -> {
                     Match match = new Match();
@@ -224,20 +226,22 @@ public class UploadDatabaseController {
                 })
                 .collect(Collectors.toList());
 
-        matches.forEach(match -> {
+        System.out.println("matches length = " + matches.size());
+        for (int i = 0; i < matches.size(); i++) {
             try{
-                matchService.save(match);
+                matchService.save(matches.get(i));
+                System.out.println("MATCH nr = " + i + "  ===> id = " + matches.get(i).getMatch_id());
             } catch (Exception e){
                 System.out.println(e.getMessage());
             }
-        });
-
+        }
+        System.out.println("FINISHED");
         return matches;
     }
 
     @GetMapping("/stats")
     public List<Stats> uploadDatabaseWithStats(){
-        List<List<String>> data = CSVReader.getData("match_stats_1991-2016").stream().collect(Collectors.toList());
+        List<List<String>> data = CSVReader.getData("match_stats_2018_0").stream().collect(Collectors.toList());
         List<Stats> stats = data.stream()
                 .map((line) -> {
                     Stats stat = new Stats();
@@ -304,14 +308,16 @@ public class UploadDatabaseController {
                 })
                 .collect(Collectors.toList());
 
-        stats.forEach(stat -> {
+        System.out.println("STATS length = " + stats.size());
+        for (int i = 0; i < stats.size(); i++) {
             try{
-                statsService.save(stat);
-            } catch (Exception ex){
-                System.out.println("ERROR STATS");
+                statsService.save(stats.get(i));
+                System.out.println("STATS nr = " + i + "  ===> id = " + stats.get(i).getMatch().getMatch_id());
+            } catch (Exception e){
+                System.out.println(e.getMessage());
             }
-        });
-
+        }
+        System.out.println("FINISH");
         return stats;
     }
 

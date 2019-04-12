@@ -158,7 +158,7 @@ function PredictModal(props){
                             </div>
                             <SliderContainer className="row">
                                 <div className="col col-lg">
-                                    <SelectLabel>Number of last checked matches per player:</SelectLabel>
+                                    <SelectLabel>Number of checked matches (latest):</SelectLabel>
                                     <Slider min={0} max={30} defaultValue={state.nrOfCheckedMatches} marks={{ 0:0, 5: 5, 10: 10, 15: 15, 20: 20, 25: 25, 30: 30 }} step={null} onChange={(e) => sliderValueChanged(e)}/>
                                 </div>
                             </SliderContainer>
