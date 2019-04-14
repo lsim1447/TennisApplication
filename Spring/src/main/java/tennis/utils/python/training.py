@@ -5,6 +5,7 @@ import json
 
 NR_OF_INPUTS = 4
 NR_OF_OUTPUTS = 2
+NR_OF_LAY = 20
 
 class Network(object):
     def __init__(self, sizes):
@@ -68,6 +69,72 @@ class Network(object):
 
     def cost_derivative(self, output_activations, y):
         return (output_activations - y)
+		
+    def write_weights_to_file(self, weights, filename):
+        f = open(filename, "w")
+        first_part = weights[0]
+        second_part = weights[1]
+
+        for i in first_part:
+            line = ""
+            for j in i:
+                line = line + str(j) + " "
+            f.writelines(line + "\n");
+
+        second_part_one = second_part[0]
+        second_part_two = second_part[1]
+
+        line = ""
+        for k in second_part_one:
+            line = line + str(k) + " "
+        f.writelines(line + "\n")
+
+        line = ""
+        for k in second_part_two:
+            line = line + str(k) + " "
+        f.writelines(line + "\n")
+        f.close()
+
+    def read_weights_to_file(self, filename):
+        my_data = []
+        first_array = []
+        second_array = []
+        my_data = []
+        try:
+            with open(filename) as f:
+                counter = 0
+                for line in f:
+                    counter = counter + 1
+                    if counter <= NR_OF_LAY:
+                        try:
+                            prop = line.split(" ")
+                            prop = prop[:(len(prop)-1)]
+                            temp = []
+                            for j in prop:
+                                x = float(j)
+                                temp.append(x)
+                            temp = numpy.asarray(temp)
+                            first_array.append(temp);
+                        except Exception as ex:
+                            raise Exception("Corrupted file", ex)
+                    else:
+                        try:
+                            prop = line.split(" ")
+                            prop = prop[:(len(prop)-1)]
+                            temp = []
+                            for j in prop:
+                                x = float(j)
+                                temp.append(x)
+                            temp = numpy.asarray(temp)
+                            second_array.append(temp);
+                        except Exception as ex:
+                            raise Exception("Corrupted file", ex)
+            my_data.append(numpy.asarray(first_array))
+            my_data.append(numpy.asarray(second_array))
+            print("readed data = ")
+            print(my_data)
+        except Exception as ex:
+            raise Exception("Error opening file", ex)
 
 def sigmoid(x):
     return 1.0 / (1.0 + numpy.exp(-x))
@@ -113,6 +180,12 @@ if __name__ == '__main__':
         raise Exception("Error opening file", ex)
 
     data = [(numpy.reshape(x, (NR_OF_INPUTS, 1)), vectorized_result(y)) for x, y in data]
-    network = Network([NR_OF_INPUTS, 20, NR_OF_OUTPUTS])
-    network.training(data, 1.0, 0.9)
+    network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
+    network.training(data, 1.0, 0.7)
+    print('weights = ')
+    print(network.weights)
+    network.write_weights_to_file(network.weights, "weights.txt")
+    network.read_weights_to_file("weights.txt")
+    print('biases = ')
+    print(network.biases[0])
 
