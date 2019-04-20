@@ -70,6 +70,20 @@ class Network(object):
     def cost_derivative(self, output_activations, y):
         return (output_activations - y)
 		
+    def write_biases_to_file(self, biases, filename):
+        f = open(filename, "w")
+        first_part = biases[0]
+        second_part = biases[1]
+
+        for i in first_part:
+            line = str(i[0]) + "\n"
+            f.writelines(line)
+        for i in second_part:
+            line = str(i[0]) + "\n"
+            f.writelines(line)
+
+        f.close()
+
     def write_weights_to_file(self, weights, filename):
         f = open(filename, "w")
         first_part = weights[0]
@@ -94,8 +108,7 @@ class Network(object):
             line = line + str(k) + " "
         f.writelines(line + "\n")
         f.close()
-
-    def read_weights_to_file(self, filename):
+    def read_weights_from_file(self, filename):
         my_data = []
         first_array = []
         second_array = []
@@ -131,8 +144,39 @@ class Network(object):
                             raise Exception("Corrupted file", ex)
             my_data.append(numpy.asarray(first_array))
             my_data.append(numpy.asarray(second_array))
-            print("readed data = ")
-            print(my_data)
+            self.weights = my_data
+        except Exception as ex:
+            raise Exception("Error opening file", ex)
+
+    def read_biases_from_file(self, filename):
+        my_data = []
+        first_array = []
+        second_array = []
+        my_data = []
+        try:
+            with open(filename) as f:
+                counter = 0
+                for line in f:
+                    counter = counter + 1
+                    if counter <= NR_OF_LAY:
+                        try:
+                            temp = []
+                            temp.append(float(line))
+                            temp = numpy.asarray(temp)
+                            first_array.append(temp);
+                        except Exception as ex:
+                            raise Exception("Corrupted file", ex)
+                    else:
+                        try:
+                            temp = []
+                            temp.append(float(line))
+                            temp = numpy.asarray(temp)
+                            second_array.append(temp);
+                        except Exception as ex:
+                            raise Exception("Corrupted file", ex)
+            my_data.append(numpy.asarray(first_array))
+            my_data.append(numpy.asarray(second_array))
+            self.biases = my_data
         except Exception as ex:
             raise Exception("Error opening file", ex)
 
@@ -182,10 +226,14 @@ if __name__ == '__main__':
     data = [(numpy.reshape(x, (NR_OF_INPUTS, 1)), vectorized_result(y)) for x, y in data]
     network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
     network.training(data, 1.0, 0.7)
-    print('weights = ')
-    print(network.weights)
+
     network.write_weights_to_file(network.weights, "weights.txt")
-    network.read_weights_to_file("weights.txt")
-    print('biases = ')
-    print(network.biases[0])
+    network.write_biases_to_file(network.biases, "biases.txt")
+
+    print("------------------------------------")
+    print("Training after reading weights and biases from file")
+    
+    network.read_weights_from_file("weights.txt")    
+    network.read_biases_from_file("biases.txt")
+    network.training(data, 1.0, 0.9)	
 
