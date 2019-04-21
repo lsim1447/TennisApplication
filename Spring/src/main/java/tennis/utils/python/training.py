@@ -194,7 +194,7 @@ def vectorized_result(j):
 if __name__ == '__main__':
     data = []
     try:
-        config = json.loads(open('./training-data.txt').read())
+        config = json.loads(open('./training-data-extended.txt').read())
         tr_data = config['data']
         i = 0
         for line in tr_data:

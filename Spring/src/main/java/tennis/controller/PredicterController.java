@@ -10,6 +10,7 @@ import tennis.service.*;
 import tennis.utils.python.MyPythonInterpreter;
 import tennis.utils.python.TrainingDataToJSONConverter;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -49,6 +50,7 @@ public class PredicterController {
 
     private int numberOfLastMatches = 10;
     private int numberOfLastMatchesOnSpecificSurface = 10;
+    private DecimalFormat df = new DecimalFormat("####0.00");
 
     private double convertToPercentage(List<Match> matches, Player player){
         long counter = matches.stream()
@@ -154,17 +156,35 @@ public class PredicterController {
             double winnerPlayeWonPercentageFromSelectedSurface = convertToPercentage(winnerPlayerMatchesOnSurface, winnerPlayer);
             double loserPlayeWonPercentageFromSelectedSurface = convertToPercentage(loserPlayerMatchesOnSurface, loserPlayer);
 
+            // WON SETS PERCENTAGES
+            double nrOfSets = (double) (match.getWinner_sets_won() + match.getLoser_sets_won());
+            double winnerPlayerWonSetsPercentage = Double.parseDouble(df.format(match.getWinner_sets_won() / nrOfSets));
+            double loserPlayerWonSetsPercentage  = Double.parseDouble(df.format(match.getLoser_sets_won() / nrOfSets));
+
+            // WON GAMES PERCENTAGES
+            double nrOfGames = (double) (match.getWinner_games_won() + match.getLoser_games_won());
+            double winnerPlayerWonGamesPercentage = Double.parseDouble(df.format(match.getWinner_games_won() / nrOfGames));
+            double loserPlayerWonGamesPercentage  = Double.parseDouble(df.format(match.getLoser_games_won() / nrOfGames));
+
             List<Double> list = new ArrayList<Double>();
             if (winnerPlayer.getPlayerSlug().compareTo(loserPlayer.getPlayerSlug()) <= 0){
                 list.add(winnerPlayeWonPercentageFromAll);
                 list.add(loserPlayeWonPercentageFromAll);
                 list.add(winnerPlayeWonPercentageFromSelectedSurface);
                 list.add(loserPlayeWonPercentageFromSelectedSurface);
+                list.add(winnerPlayerWonSetsPercentage);
+                list.add(loserPlayerWonSetsPercentage);
+                list.add(winnerPlayerWonGamesPercentage);
+                list.add(loserPlayerWonGamesPercentage);
             } else {
                 list.add(loserPlayeWonPercentageFromAll);
                 list.add(winnerPlayeWonPercentageFromAll);
                 list.add(loserPlayeWonPercentageFromSelectedSurface);
                 list.add(winnerPlayeWonPercentageFromSelectedSurface);
+                list.add(loserPlayerWonSetsPercentage);
+                list.add(winnerPlayerWonSetsPercentage);
+                list.add(loserPlayerWonGamesPercentage);
+                list.add(winnerPlayerWonGamesPercentage);
             }
 
             return  list;
@@ -173,6 +193,22 @@ public class PredicterController {
             return null;
         }
 
+    }
+
+    @GetMapping("/training")
+    @ResponseBody
+    public void training(){
+        List<Match> allMatches = (List<Match>) matchService.findAll();
+        List<TrainData> trainData;
+
+        long startTime = System.nanoTime();
+            trainData = getTrainData(allMatches);
+        long endTime = System.nanoTime();
+        long duration = (endTime - startTime);
+        System.out.println("Duration of creating training data = " + duration);
+        System.out.println("Training data length = " + trainData.size());
+
+        TrainingDataToJSONConverter.writeToJSONFile(trainData, "training-data-extended.txt");
     }
 
     @GetMapping("/calculate")
@@ -197,7 +233,7 @@ public class PredicterController {
         System.out.println("Duration of creating training data = " + duration);
         System.out.println("Training data length = " + trainData.size());
 
-        TrainingDataToJSONConverter.writeToJSONFile(trainData, "training-data.txt");
+        TrainingDataToJSONConverter.writeToJSONFile(trainData, "training-data-extended.txt");
 
         //MyPythonInterpreter pythonInterpreter = new MyPythonInterpreter("Training", "learn", "training.py");
         //pythonInterpreter.executeScript();

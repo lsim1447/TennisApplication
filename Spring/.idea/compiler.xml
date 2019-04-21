@@ -6,8 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="tennis-application" />
         <module name="Tennis-application" />
+        <module name="tennis-application" />
       </profile>
     </annotationProcessing>
   </component>
