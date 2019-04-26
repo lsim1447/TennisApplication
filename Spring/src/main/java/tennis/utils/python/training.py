@@ -3,9 +3,10 @@ import sys
 import os
 import json
 
-NR_OF_INPUTS = 4
+NR_OF_INPUTS = 8
 NR_OF_OUTPUTS = 2
 NR_OF_LAY = 20
+NR_OF_EPOCH = 200
 
 class Network(object):
     def __init__(self, sizes):
@@ -21,15 +22,15 @@ class Network(object):
 
     def training(self, data, eta, epsilon):
         j = 0
-        while True:
+        while j < NR_OF_EPOCH:
             j += 1
             self.update(data, eta)
             right = self.evaluate(data)
             whole = len(data)
             cur = right / whole
             print("Epoch", j, ":", cur)
-            if cur >= epsilon:
-                break
+        self.write_weights_to_file(self.weights, "weights.txt")    
+        self.write_biases_to_file(self.biases, "biases.txt")
 
     def update(self, data, eta):
         dif_bias = [numpy.zeros(b.shape) for b in self.biases]
@@ -225,15 +226,7 @@ if __name__ == '__main__':
 
     data = [(numpy.reshape(x, (NR_OF_INPUTS, 1)), vectorized_result(y)) for x, y in data]
     network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
-    network.training(data, 1.0, 0.7)
-
-    network.write_weights_to_file(network.weights, "weights.txt")
-    network.write_biases_to_file(network.biases, "biases.txt")
-
-    print("------------------------------------")
-    print("Training after reading weights and biases from file")
-    
-    network.read_weights_from_file("weights.txt")    
-    network.read_biases_from_file("biases.txt")
-    network.training(data, 1.0, 0.9)	
+  
+    network.training(data, 1.0, 0.9)
+    print("actual percentage = ", network.evaluate(data)/len(data))
 
