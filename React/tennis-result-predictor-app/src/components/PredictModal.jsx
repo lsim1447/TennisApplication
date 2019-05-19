@@ -2,9 +2,9 @@ import React , { useContext, useState, useEffect } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
 import styled from 'styled-components';
 import { get_request } from '../util/Request';
-import { DEFALULT_SERVER_URL } from '../constants';
+import { DEFALULT_SERVER_URL, all_matches_marks, matches_on_seleceted_surface_marks, head_to_head_matches_marks } from '../constants';
 import { PredicterContext }  from './../context-providers/PredicterContextProvider';
-import { SelectLabel } from './../util/OftenUsedElements';
+import { SelectLabel, Icon } from './../util/OftenUsedElements';
 import CircularProgressbar from 'react-circular-progressbar';
 import Select from 'react-select';
 import Slider from 'rc-slider';
@@ -42,6 +42,16 @@ const SliderContainer = styled.div `
     margin-top: 25px;
 `;
 
+const SlidersContainer = styled.div `
+    margin-top: 24px;
+    border: 2px solid rgba(0,0,0,.125);;
+    padding: 10px 20px 10px 20px;
+
+    @media (max-width: 992px) {
+        padding: 0px;
+    }
+`;
+
 function PredictModal(props){
 
     const contextPredicter =  useContext(PredicterContext);
@@ -55,9 +65,13 @@ function PredictModal(props){
         tourneys: [],
         selectedTourney: null,
         selectedSurface: null,
-        firstPlayerProbability: 64,
-        secondPlayerProbability: 36,
-        nrOfCheckedMatches: 5,
+        firstPlayerProbability: 50,
+        secondPlayerProbability: 50,
+
+        nrOfAllCheckedMatches: 20,
+        nrOfCheckedMatchesOnSelectedSurface: 5,
+        nrOfHeadToHeadMatches: 2,
+
         isLoading: true,
         surfaceOptions: [
             { value: 'Hard', label: 'Hard'},
@@ -77,14 +91,21 @@ function PredictModal(props){
         })
     }
 
-    function sliderValueChanged(value){
-        setState({...state, nrOfCheckedMatches: value});
+    function sliderAllValueChanged(value){
+        setState({...state, nrOfAllCheckedMatches: value});
+    }
+    function sliderSurfaceValueChanged(value){
+        setState({...state, nrOfCheckedMatchesOnSelectedSurface: value});
+    }
+    function sliderHeadToHeadValueChanged(value){
+        setState({...state, nrOfHeadToHeadMatches: value});
     }
 
     useEffect(() => {
         get_request(`${DEFALULT_SERVER_URL}/tourney/all`)
             .then(tourneys => {
                 setState({...state, tourneys: tourneys, tournamentOptions: convertTourneysToOption(tourneys)})
+                
             })
     }, []);
 
@@ -102,14 +123,10 @@ function PredictModal(props){
     function predictResult(e){
         const selectedSurface = state.selectedTourney.value;
         const selectedTourney = state.selectedTourney.label;
-
-        const tmp1 = Math.floor(Math.random() * 100) + 1;
-        const tmp2 = 100 - tmp1;
-        setState({...state, firstPlayerProbability: tmp1, secondPlayerProbability: tmp2})
-        
-        get_request(`${DEFALULT_SERVER_URL}/prediction/calculate?playerOneSlug=${encodeURIComponent(selectedPlayerOne.playerSlug)}&playerTwoSlug=${encodeURIComponent(selectedPlayerTwo.playerSlug)}&surface=${encodeURIComponent(selectedSurface)}&tourneyName=${encodeURIComponent(selectedTourney)}&nrOfCheckedElements=${encodeURIComponent(state.nrOfCheckedMatches)}`)
+         
+        get_request(`${DEFALULT_SERVER_URL}/prediction/calculate?playerOneSlug=${encodeURIComponent(selectedPlayerOne.playerSlug)}&playerTwoSlug=${encodeURIComponent(selectedPlayerTwo.playerSlug)}&surface=${encodeURIComponent(selectedSurface)}&tourneyName=${encodeURIComponent(selectedTourney)}&nrOfAllCheckedMatches=${encodeURIComponent(state.nrOfAllCheckedMatches)}&nrOfCheckedMatchesOnSelectedSurface=${encodeURIComponent(state.nrOfCheckedMatchesOnSelectedSurface)}&nrOfHeadToHeadMatches=${encodeURIComponent(state.nrOfHeadToHeadMatches)}`)
             .then( response => {
-                console.log('response = ', response);
+                setState({...state, firstPlayerProbability: response[0], secondPlayerProbability: response[1]})
             })
     }
 
@@ -146,22 +163,61 @@ function PredictModal(props){
                                     </div>
                                 </div>
                             </div>
+                            
                             <div className="row">
-                                <div className="col col-lg">
-                                    <SelectLabel>Surface:</SelectLabel>
-                                    <Select value={state.selectedSurface} options={state.surfaceOptions} onChange={(e) => surfaceOnChanged(e)}></Select>
-                                </div>
-                                <div className="col col-lg">
-                                    <SelectLabel>Tournament:</SelectLabel>
-                                    <Select value={state.selectedTourney} options={state.tournamentOptions} onChange={(e) => tourneyOnChanged(e)}></Select>
+                                <div className="col-lg">
+                                    <p>
+                                        <a style={{marginTop: "24px"}} className="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                            Advanced settings
+                                            <Icon src="./../images/icons/settings.jpg" alt="" />
+                                        </a>
+                                        
+                                    </p>
+                                    <div className="collapse" id="collapseExample">
+                                        <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <strong>Be careful!</strong> These settings affect the outcome of the prediction!
+                                            <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col col-lg">
+                                                <SelectLabel>Surface:</SelectLabel>
+                                                <Select value={state.selectedSurface} options={state.surfaceOptions} onChange={(e) => surfaceOnChanged(e)}></Select>
+                                            </div>
+                                            <div className="col col-lg">
+                                                <SelectLabel>Tournament:</SelectLabel>
+                                                <Select value={state.selectedTourney} options={state.tournamentOptions} onChange={(e) => tourneyOnChanged(e)}></Select>
+                                            </div>
+                                        </div>
+                                        <SlidersContainer>
+                                            <h1>Number of checked matches</h1>
+                                            <SliderContainer className="row">
+                                                <div className="col col-lg">
+                                                    <SelectLabel>ALL (latest):</SelectLabel>
+                                                    <Slider min={0} max={100} defaultValue={state.nrOfAllCheckedMatches} marks={all_matches_marks} step={null} onChange={(e) => sliderAllValueChanged(e)}/>
+                                                </div>
+                                            </SliderContainer>
+
+                                            <SliderContainer className="row">
+                                                <div className="col col-lg">
+                                                    <SelectLabel>On the selected surface (latest):</SelectLabel>
+                                                    <Slider min={0} max={30} defaultValue={state.nrOfCheckedMatchesOnSelectedSurface} marks={matches_on_seleceted_surface_marks} step={null} onChange={(e) => sliderSurfaceValueChanged(e)}/>
+                                                </div>
+                                            </SliderContainer>
+
+                                            <SliderContainer className="row">
+                                                <div className="col col-lg">
+                                                    <SelectLabel>Head to Head (latest):</SelectLabel>
+                                                    <Slider min={0} max={10} defaultValue={state.nrOfHeadToHeadMatches} marks={head_to_head_matches_marks} step={null} onChange={(e) => sliderHeadToHeadValueChanged(e)}/>
+                                                </div>
+                                            </SliderContainer>
+                                        </SlidersContainer>
+                                    </div>
                                 </div>
                             </div>
-                            <SliderContainer className="row">
-                                <div className="col col-lg">
-                                    <SelectLabel>Number of checked matches (latest):</SelectLabel>
-                                    <Slider min={0} max={30} defaultValue={state.nrOfCheckedMatches} marks={{ 0:0, 5: 5, 10: 10, 15: 15, 20: 20, 25: 25, 30: 30 }} step={null} onChange={(e) => sliderValueChanged(e)}/>
-                                </div>
-                            </SliderContainer>
+
                             <ProbabilityContainer>
                                 <div className="row justify-content-md-center">
                                     <div className="col col-lg-4">

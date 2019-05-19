@@ -11,10 +11,7 @@ import tennis.utils.python.MyPythonInterpreter;
 import tennis.utils.python.TrainingDataToJSONConverter;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -50,14 +47,26 @@ public class PredicterController {
 
     private int numberOfLastMatches = 10;
     private int numberOfLastMatchesOnSpecificSurface = 10;
+    private int numberOfLastHeadToHeadMatches = 2;
     private DecimalFormat df = new DecimalFormat("####0.00");
 
     private double convertToPercentage(List<Match> matches, Player player){
+        if (matches.size() == 0) return 0.00;
         long counter = matches.stream()
                 .filter(match -> match.getWinnerPlayer().getPlayer_id() == player.getPlayer_id())
                 .count();
 
-        return (double) counter / (double) matches.size();
+        return Double.parseDouble(df.format((double) counter / (double) matches.size()));
+    }
+
+    private List<Match> matchFilter(List<Match> matches, int limit, String date){
+        return matches
+                .stream()
+                .filter(m -> m.getTournament().getDates().compareTo(date) <= 0)
+                .sorted(matchComparator)
+                .limit(limit)
+                .collect(Collectors.toList());
+
     }
 
     private List<Integer> getOutputs(Match match){
@@ -156,15 +165,54 @@ public class PredicterController {
             double winnerPlayeWonPercentageFromSelectedSurface = convertToPercentage(winnerPlayerMatchesOnSurface, winnerPlayer);
             double loserPlayeWonPercentageFromSelectedSurface = convertToPercentage(loserPlayerMatchesOnSurface, loserPlayer);
 
-            // WON SETS PERCENTAGES
-            double nrOfSets = (double) (match.getWinner_sets_won() + match.getLoser_sets_won());
-            double winnerPlayerWonSetsPercentage = Double.parseDouble(df.format(match.getWinner_sets_won() / nrOfSets));
-            double loserPlayerWonSetsPercentage  = Double.parseDouble(df.format(match.getLoser_sets_won() / nrOfSets));
+            // WON SETS PERCENTAGES && WON GAMES PERCENTAGES
+            double sum_winner_set_percentages = 0.0;
+            double sum_loser_set_percentages = 0.0;
 
-            // WON GAMES PERCENTAGES
-            double nrOfGames = (double) (match.getWinner_games_won() + match.getLoser_games_won());
-            double winnerPlayerWonGamesPercentage = Double.parseDouble(df.format(match.getWinner_games_won() / nrOfGames));
-            double loserPlayerWonGamesPercentage  = Double.parseDouble(df.format(match.getLoser_games_won() / nrOfGames));
+            double sum_winner_games_percentages = 0.0;
+            double sum_loser_games_percentages = 0.0;
+
+            for (Match m: winnerPlayerMatches) {
+                int all_nr_of_sets = m.getWinner_sets_won() + m.getLoser_sets_won();
+                int all_nr_of_games = m.getWinner_games_won() + m.getLoser_games_won();
+
+                if (m.getWinnerPlayer().getPlayerSlug().equals(winnerPlayer.getPlayerSlug())){
+                    sum_winner_set_percentages += m.getWinner_sets_won()/(double) all_nr_of_sets;
+                    sum_winner_games_percentages += m.getWinner_games_won()/(double) all_nr_of_games;
+                } else {
+                    sum_winner_set_percentages += m.getLoser_sets_won()/(double) all_nr_of_sets;
+                    sum_winner_games_percentages += m.getLoser_games_won()/(double) all_nr_of_games;
+                }
+            }
+
+            for (Match m: loserPlayerMatches) {
+                int all_nr_of_sets = m.getWinner_sets_won() + m.getLoser_sets_won();
+                int all_nr_of_games = m.getWinner_games_won() + m.getLoser_games_won();
+
+                if (m.getWinnerPlayer().getPlayerSlug().equals(loserPlayer.getPlayerSlug())){
+                    sum_loser_set_percentages += m.getWinner_sets_won()/(double) all_nr_of_sets;
+                    sum_loser_games_percentages += m.getWinner_games_won()/(double)all_nr_of_games;
+                } else {
+                    sum_loser_set_percentages += m.getLoser_sets_won()/(double) all_nr_of_sets;
+                    sum_loser_games_percentages += m.getLoser_games_won()/(double) all_nr_of_games;
+                }
+            }
+
+            double winnerPlayerWonSetsPercentage  = Double.parseDouble(df.format(sum_winner_set_percentages / winnerPlayerMatches.size()));
+            double loserPlayerWonSetsPercentage   = Double.parseDouble(df.format(sum_loser_set_percentages / loserPlayerMatches.size()));
+            double winnerPlayerWonGamesPercentage = Double.parseDouble(df.format(sum_winner_games_percentages /  winnerPlayerMatches.size()));
+            double loserPlayerWonGamesPercentage  = Double.parseDouble(df.format(sum_loser_games_percentages / loserPlayerMatches.size()));
+
+
+            // HEAD TO HEAD MATCHES
+            List<Match> headToHeadMatches = ((List<Match>) matchService
+                    .findAllMatchesBetweenTwoPlayer(winnerPlayer.getFirstName(), winnerPlayer.getLastName(), loserPlayer.getFirstName(), loserPlayer.getLastName()))
+                    .stream()
+                    .filter(m -> m.getTournament().getDates().compareTo(date) <= 0)
+                    .sorted(matchComparator)
+                    .limit(numberOfLastMatches)
+                    .collect(Collectors.toList());
+
 
             List<Double> list = new ArrayList<Double>();
             if (winnerPlayer.getPlayerSlug().compareTo(loserPlayer.getPlayerSlug()) <= 0){
@@ -195,6 +243,104 @@ public class PredicterController {
 
     }
 
+    private List<Double> getInputsToPredict(Player playerOne, Player playerTwo, String surface){
+            List<Match> playerOneAllMatches;
+            List<Match> playerTwoAllMatches;
+
+            List<Match> playerOneAllMatchesOnSelectedSurface;
+            List<Match> playerTwoAllMatchesOnSelectedSurface;
+
+            playerOneAllMatches = (List<Match>) matchService.findAllMatchesByPlayerName(playerOne.getFirstName(), playerOne.getLastName());
+            playerTwoAllMatches = (List<Match>) matchService.findAllMatchesByPlayerName(playerTwo.getFirstName(), playerTwo.getLastName());
+
+            playerOneAllMatchesOnSelectedSurface = (List<Match>) matchService.findAllMatchesByPlayerNameAndSurface(playerOne.getFirstName(), playerOne.getLastName(), surface);
+            playerTwoAllMatchesOnSelectedSurface = (List<Match>) matchService.findAllMatchesByPlayerNameAndSurface(playerTwo.getFirstName(), playerTwo.getLastName(), surface);
+
+            List<Match> playerOneMatches = playerOneAllMatches
+                    .stream()
+                    .sorted(matchComparator)
+                    .limit(numberOfLastMatches)
+                    .collect(Collectors.toList());
+
+            List<Match> playerTwoMatches = playerTwoAllMatches
+                    .stream()
+                    .sorted(matchComparator)
+                    .limit(numberOfLastMatches)
+                    .collect(Collectors.toList());
+
+
+            List<Match> playerOneMatchesOnSurface = playerOneAllMatchesOnSelectedSurface
+                    .stream()
+                    .sorted(matchComparator)
+                    .limit(numberOfLastMatchesOnSpecificSurface)
+                    .collect(Collectors.toList());
+
+            List<Match> playerTwoMatchesOnSurface = playerTwoAllMatchesOnSelectedSurface
+                    .stream()
+                    .sorted(matchComparator)
+                    .limit(numberOfLastMatchesOnSpecificSurface)
+                    .collect(Collectors.toList());
+
+            double playerOneWonPercentageFromAll = convertToPercentage(playerOneMatches, playerOne);
+            double playerTwoWonPercentageFromAll = convertToPercentage(playerTwoMatches, playerTwo);
+            double playerOneWonPercentageFromSelectedSurface = convertToPercentage(playerOneMatchesOnSurface, playerOne);
+            double playerTwoWonPercentageFromSelectedSurface = convertToPercentage(playerTwoMatchesOnSurface, playerTwo);
+
+            // WON SETS PERCENTAGES && WON GAMES PERCENTAGES
+            double sum_player_one_set_percentages = 0;
+            double sum_player_two_set_percentages = 0;
+            double sum_player_one_games_percentages = 0;
+            double sum_player_two_games_percentages = 0;
+
+            for (Match m: playerOneMatches) {
+                int all_nr_of_sets = m.getWinner_sets_won() + m.getLoser_sets_won();
+                int all_nr_of_games = m.getWinner_games_won() + m.getLoser_games_won();
+
+                if (all_nr_of_games != 0 && all_nr_of_sets != 0){
+                    if (m.getWinnerPlayer().getPlayerSlug().equals(playerOne.getPlayerSlug())){
+                        sum_player_one_set_percentages += m.getWinner_sets_won()/(double) all_nr_of_sets;
+                        sum_player_one_games_percentages += m.getWinner_games_won()/(double) all_nr_of_games;
+                    } else {
+                        sum_player_one_set_percentages += m.getLoser_sets_won()/(double) all_nr_of_sets;
+                        sum_player_one_games_percentages += m.getLoser_games_won()/(double) all_nr_of_games;
+                    }
+                }
+            }
+
+            for (Match m: playerTwoMatches) {
+                int all_nr_of_sets = m.getWinner_sets_won() + m.getLoser_sets_won();
+                int all_nr_of_games = m.getWinner_games_won() + m.getLoser_games_won();
+
+                if (all_nr_of_games != 0 && all_nr_of_sets != 0){
+                    if (m.getWinnerPlayer().getPlayerSlug().equals(playerTwo.getPlayerSlug())){
+                        sum_player_two_set_percentages += m.getWinner_sets_won()/(double) all_nr_of_sets;
+                        sum_player_two_games_percentages += m.getWinner_games_won()/(double)all_nr_of_games;
+                    } else {
+                        sum_player_two_set_percentages += m.getLoser_sets_won()/(double) all_nr_of_sets;
+                        sum_player_two_games_percentages += m.getLoser_games_won()/(double) all_nr_of_games;
+                    }
+                }
+            }
+
+            double playerOneWonSetsPercentage  = Double.parseDouble(df.format(sum_player_one_set_percentages / playerOneMatches.size()));
+            double playerTwoWonSetsPercentage   = Double.parseDouble(df.format(sum_player_two_set_percentages / playerTwoMatches.size()));
+            double playerOneWonGamesPercentage = Double.parseDouble(df.format(sum_player_one_games_percentages /  playerOneMatches.size()));
+            double playerTwoWonGamesPercentage  = Double.parseDouble(df.format(sum_player_two_games_percentages / playerTwoMatches.size()));
+
+            List<Double> list = new ArrayList<Double>();
+                list.add(playerOneWonPercentageFromAll);
+                list.add(playerTwoWonPercentageFromAll);
+                list.add(playerOneWonPercentageFromSelectedSurface);
+                list.add(playerTwoWonPercentageFromSelectedSurface);
+                list.add(playerOneWonSetsPercentage);
+                list.add(playerTwoWonSetsPercentage);
+                list.add(playerOneWonGamesPercentage);
+                list.add(playerTwoWonGamesPercentage);
+
+            return  list;
+
+    }
+
     @GetMapping("/training")
     @ResponseBody
     public void training(){
@@ -203,6 +349,7 @@ public class PredicterController {
 
         long startTime = System.nanoTime();
             trainData = getTrainData(allMatches);
+
         long endTime = System.nanoTime();
         long duration = (endTime - startTime);
         System.out.println("Duration of creating training data = " + duration);
@@ -211,33 +358,26 @@ public class PredicterController {
         TrainingDataToJSONConverter.writeToJSONFile(trainData, "training-data-extended.txt");
     }
 
+
+
     @GetMapping("/calculate")
     @ResponseBody
-    public List<TrainData> calculateProbability(@RequestParam String playerOneSlug, @RequestParam String playerTwoSlug, @RequestParam String surface, @RequestParam String tourneyName, @RequestParam String nrOfCheckedElements){
-        int nr = Integer.parseInt(nrOfCheckedElements);
-        int nrCheckedDuel = 5;
+    public List<Integer> calculateProbability(@RequestParam String playerOneSlug, @RequestParam String playerTwoSlug, @RequestParam String surface, @RequestParam String tourneyName, @RequestParam String nrOfAllCheckedMatches, @RequestParam String nrOfCheckedMatchesOnSelectedSurface, @RequestParam String nrOfHeadToHeadMatches){
+       List<Integer> probabilities = Arrays.asList(32, 68);
+       Player playerOne = playerService.findBySlug(playerOneSlug);
+       Player playerTwo = playerService.findBySlug(playerTwoSlug);
 
-        Player player1 = playerService.findBySlug(playerOneSlug);
-        Player player2 = playerService.findBySlug(playerTwoSlug);
+       System.out.println("Player one = " + playerOne.getFirstName() + playerOne.getLastName());
+       System.out.println("Player two = " + playerTwo.getFirstName() + playerTwo.getLastName());
+       System.out.println("Surface = " + surface);
+       System.out.println("Tournament = " + tourneyName);
 
-        List<Match> firstPlayerMatches  =  matchService.findLastNMatches(player1.getPlayerSlug(), nr);
-        List<Match> secondPlayerMatches =  matchService.findLastNMatches(player2.getPlayerSlug(), nr);
-
-        List<Match> allMatches = (List<Match>) matchService.findAll();
-
-        List<TrainData> trainData = new ArrayList<>();
-        long startTime = System.nanoTime();
-        trainData = getTrainData(allMatches);
-        long endTime = System.nanoTime();
-        long duration = (endTime - startTime);
-        System.out.println("Duration of creating training data = " + duration);
-        System.out.println("Training data length = " + trainData.size());
-
-        TrainingDataToJSONConverter.writeToJSONFile(trainData, "training-data-extended.txt");
-
-        //MyPythonInterpreter pythonInterpreter = new MyPythonInterpreter("Training", "learn", "training.py");
-        //pythonInterpreter.executeScript();
-
-        return trainData;
+       System.out.println("nrOfAllCheckedMatches = " + nrOfAllCheckedMatches);
+       System.out.println("nrOfCheckedMatchesOnSelectedSurface = " + nrOfCheckedMatchesOnSelectedSurface);
+       System.out.println("nrOfHeadToHeadMatches = " + nrOfHeadToHeadMatches);
+       System.out.println("---------------------------------------------------------");
+       List<Double> inputs = getInputsToPredict(playerOne, playerTwo, surface);
+       System.out.println("inputs = " + inputs);
+       return  probabilities;
     }
 }

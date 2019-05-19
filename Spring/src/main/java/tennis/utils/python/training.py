@@ -181,6 +181,12 @@ class Network(object):
         except Exception as ex:
             raise Exception("Error opening file", ex)
 
+    def get_predicted_result(self, input):
+        feed = self.feedforward(input)
+        print("input = ", input)
+        print("possibilities = ", feed[0][0], ", ", feed[1][0])
+        return(feed[0][0], feed[1][0])
+
 def sigmoid(x):
     return 1.0 / (1.0 + numpy.exp(-x))
 
@@ -226,7 +232,10 @@ if __name__ == '__main__':
 
     data = [(numpy.reshape(x, (NR_OF_INPUTS, 1)), vectorized_result(y)) for x, y in data]
     network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
-  
+    network.read_biases_from_file("biases.txt")
+    network.read_weights_from_file("weights.txt")
+    
     network.training(data, 1.0, 0.9)
-    print("actual percentage = ", network.evaluate(data)/len(data))
+    
+    network.get_predicted_result(data[148][0])
 

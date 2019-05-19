@@ -73,3 +73,9 @@ export const SelectLabel = styled.label `
     width: 100%;
     font-weight: 600;
 `;
+
+export const Icon = styled.img `
+    width:  ${props => props.width  ? props.width :  "25px"};
+    height: ${props => props.height ? props.height : "25px"};
+    margin-left: 8px;
+`;
