@@ -168,7 +168,7 @@ function PredictModal(props){
                                 <div className="col-lg">
                                     <p>
                                         <a style={{marginTop: "24px"}} className="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                            Advanced settings
+                                            Settings
                                             <Icon src="./../images/icons/settings.jpg" alt="" />
                                         </a>
                                         
@@ -192,7 +192,7 @@ function PredictModal(props){
                                             </div>
                                         </div>
                                         <SlidersContainer>
-                                            <h1>Number of checked matches</h1>
+                                            <h1>Advanced settings</h1>
                                             <SliderContainer className="row">
                                                 <div className="col col-lg">
                                                     <SelectLabel>ALL (latest):</SelectLabel>

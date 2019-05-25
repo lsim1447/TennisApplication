@@ -22,6 +22,7 @@ public class PredicterController {
     private Comparator<Match> matchComparator;
     private HashMap<String, List<Match>> matchMap = new HashMap<>();
     private HashMap<String, List<Match>> matchMapOnSurface = new HashMap<>();
+    private HashMap<String, List<Match>> matchMapHeadToHead = new HashMap<>();
 
     @Autowired
     private MatchService matchService;
@@ -129,34 +130,10 @@ public class PredicterController {
                 matchMapOnSurface.put(loserPlayer.getPlayerSlug(), loserPlayerAllMatchesOnSelectedSurface);
             }
 
-            List<Match> winnerPlayerMatches = winnerPlayerAllMatches
-                    .stream()
-                    .filter(m -> m.getTournament().getDates().compareTo(date) <= 0)
-                    .sorted(matchComparator)
-                    .limit(numberOfLastMatches)
-                    .collect(Collectors.toList());
-
-            List<Match> loserPlayerMatches = loserPlayerAllMatches
-                    .stream()
-                    .filter(m -> m.getTournament().getDates().compareTo(date) <= 0)
-                    .sorted(matchComparator)
-                    .limit(numberOfLastMatches)
-                    .collect(Collectors.toList());
-
-
-            List<Match> winnerPlayerMatchesOnSurface = winnerPlayerAllMatchesOnSelectedSurface
-                    .stream()
-                    .filter(m -> m.getTournament().getDates().compareTo(date) <= 0)
-                    .sorted(matchComparator)
-                    .limit(numberOfLastMatchesOnSpecificSurface)
-                    .collect(Collectors.toList());
-
-            List<Match> loserPlayerMatchesOnSurface = loserPlayerAllMatchesOnSelectedSurface
-                    .stream()
-                    .filter(m -> m.getTournament().getDates().compareTo(date) <= 0)
-                    .sorted(matchComparator)
-                    .limit(numberOfLastMatchesOnSpecificSurface)
-                    .collect(Collectors.toList());
+            List<Match> winnerPlayerMatches = matchFilter(winnerPlayerAllMatches, numberOfLastMatches, date);
+            List<Match> loserPlayerMatches = matchFilter(loserPlayerAllMatches, numberOfLastMatches, date);
+            List<Match> winnerPlayerMatchesOnSurface = matchFilter(winnerPlayerAllMatchesOnSelectedSurface, numberOfLastMatchesOnSpecificSurface, date);
+            List<Match> loserPlayerMatchesOnSurface = matchFilter(loserPlayerAllMatchesOnSelectedSurface, numberOfLastMatchesOnSpecificSurface, date);
 
             if (winnerPlayerMatches.size() < numberOfLastMatches || loserPlayerMatches.size() < numberOfLastMatches || winnerPlayerMatchesOnSurface.size() < numberOfLastMatchesOnSpecificSurface || loserPlayerMatchesOnSurface.size() < numberOfLastMatchesOnSpecificSurface) return null;
 
@@ -205,14 +182,36 @@ public class PredicterController {
 
 
             // HEAD TO HEAD MATCHES
-            List<Match> headToHeadMatches = ((List<Match>) matchService
-                    .findAllMatchesBetweenTwoPlayer(winnerPlayer.getFirstName(), winnerPlayer.getLastName(), loserPlayer.getFirstName(), loserPlayer.getLastName()))
+            List<Match> allHeadToHeadMatches;
+            String slug_combination = "";
+            if (winnerPlayer.getPlayerSlug().equals(loserPlayer.getPlayerSlug())){
+                slug_combination = winnerPlayer.getPlayerSlug() + loserPlayer.getPlayerSlug();
+            } else {
+                slug_combination = loserPlayer.getPlayerSlug() + winnerPlayer.getPlayerSlug();
+            }
+
+            if (matchMapHeadToHead.containsKey(slug_combination)){
+                allHeadToHeadMatches = matchMapHeadToHead.get(slug_combination);
+            } else {
+                allHeadToHeadMatches = (List<Match>) matchService.findAllMatchesBetweenTwoPlayer(winnerPlayer.getFirstName(), winnerPlayer.getLastName(), loserPlayer.getFirstName(), loserPlayer.getLastName());
+                matchMapHeadToHead.put(slug_combination, allHeadToHeadMatches);
+            }
+
+            List<Match> headToHeadMatches = matchFilter(
+                    allHeadToHeadMatches,
+                    numberOfLastHeadToHeadMatches,
+                    date);
+            List<Match> headToHeadMatchesWonByWinnerPlayer = headToHeadMatches
                     .stream()
-                    .filter(m -> m.getTournament().getDates().compareTo(date) <= 0)
-                    .sorted(matchComparator)
-                    .limit(numberOfLastMatches)
+                    .filter(m -> m.getWinnerPlayer().getPlayerSlug().equals(winnerPlayer.getPlayerSlug()))
+                    .collect(Collectors.toList());
+            List<Match> headToHeadMatchesWonByLoserPlayer = headToHeadMatches
+                    .stream()
+                    .filter(m -> m.getWinnerPlayer().getPlayerSlug().equals(loserPlayer.getPlayerSlug()))
                     .collect(Collectors.toList());
 
+            double winnerPlayerWonHeadToHeadPercentage = Double.parseDouble(df.format(headToHeadMatchesWonByWinnerPlayer.size() / headToHeadMatches.size()));
+            double loserPlayerWonHeadToHeadPercentage = Double.parseDouble(df.format(headToHeadMatchesWonByLoserPlayer.size() / headToHeadMatches.size()));
 
             List<Double> list = new ArrayList<Double>();
             if (winnerPlayer.getPlayerSlug().compareTo(loserPlayer.getPlayerSlug()) <= 0){
@@ -224,6 +223,8 @@ public class PredicterController {
                 list.add(loserPlayerWonSetsPercentage);
                 list.add(winnerPlayerWonGamesPercentage);
                 list.add(loserPlayerWonGamesPercentage);
+                list.add(winnerPlayerWonHeadToHeadPercentage);
+                list.add(loserPlayerWonHeadToHeadPercentage);
             } else {
                 list.add(loserPlayeWonPercentageFromAll);
                 list.add(winnerPlayeWonPercentageFromAll);
@@ -233,6 +234,8 @@ public class PredicterController {
                 list.add(winnerPlayerWonSetsPercentage);
                 list.add(loserPlayerWonGamesPercentage);
                 list.add(winnerPlayerWonGamesPercentage);
+                list.add(loserPlayerWonHeadToHeadPercentage);
+                list.add(winnerPlayerWonHeadToHeadPercentage);
             }
 
             return  list;
@@ -355,7 +358,7 @@ public class PredicterController {
         System.out.println("Duration of creating training data = " + duration);
         System.out.println("Training data length = " + trainData.size());
 
-        TrainingDataToJSONConverter.writeToJSONFile(trainData, "training-data-extended.txt");
+        TrainingDataToJSONConverter.writeToJSONFile(trainData, "training-data-extended-test2.txt");
     }
 
 

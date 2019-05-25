@@ -3,14 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="5b0392ac-c066-4eee-a024-48f2ef94d32f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/components/PredictModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/components/PredictModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/constants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/util/OftenUsedElements.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/util/OftenUsedElements.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tennis/utils/python/biases.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tennis/utils/python/biases.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tennis/utils/python/training-data-extended.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tennis/utils/python/training-data-extended.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tennis/utils/python/training.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tennis/utils/python/training.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tennis/utils/python/weights.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tennis/utils/python/weights.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/tennis/controller/PredicterController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/tennis/controller/PredicterController.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -40,8 +34,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="235">
-              <caret line="67" column="42" selection-start-line="67" selection-start-column="42" selection-end-line="67" selection-end-column="42" />
+            <state relative-caret-position="-47">
+              <caret line="229" column="58" lean-forward="true" selection-start-line="229" selection-start-column="58" selection-end-line="229" selection-end-column="58" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#getOutputs#0;class#PredicterController#0" />
@@ -193,6 +187,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -283,8 +279,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -434,7 +428,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23187633" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23454158" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -887,8 +881,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="67" column="42" selection-start-line="67" selection-start-column="42" selection-end-line="67" selection-end-column="42" />
+        <state relative-caret-position="-47">
+          <caret line="229" column="58" lean-forward="true" selection-start-line="229" selection-start-column="58" selection-end-line="229" selection-end-column="58" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#getOutputs#0;class#PredicterController#0" />
