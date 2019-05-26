@@ -192,3 +192,47 @@ class Network(object):
 
     def sigmoid_prime(self, x):
         return self.sigmoid(x) * (1 - self.sigmoid(x))
+
+    def vectorized_result(self, j):
+        x = numpy.zeros((NR_OF_OUTPUTS, 1))
+        x[j] = 1.0
+        return x
+	
+    def set_options_and_start_training(self, training_data_filename, weights_filename, biases_filename, is_already_calculated):
+        data = []
+        try:
+            config = json.loads(open('./' + training_data_filename).read())
+            tr_data = config['data']
+            i = 0
+            for line in tr_data:
+                exist = 0
+                try:
+                    my_input = line['inputs']
+                    my_output = line['outputs']
+                    l = ()
+                    temp = []
+                    for j in range(NR_OF_INPUTS):
+                        x = float(my_input[j])
+                        temp.append(x)
+                    temp = numpy.asarray(temp)
+                    l += (temp,)
+                    res = 0
+                    if my_output[0] == 0:
+                        res = 0
+                    else:
+                        res = 1
+                    res = numpy.asarray(res)
+                    l += (res,)
+                    data.append(l)
+                    i += 1
+                except Exception as ex:
+                    raise Exception("Corrupted file", ex)
+        except Exception as ex:
+            raise Exception("Error opening file", ex)
+
+        data = [(numpy.reshape(x, (NR_OF_INPUTS, 1)), self.vectorized_result(y)) for x, y in data]
+		
+        if is_already_calculated:
+            self.read_biases_from_file(biases_filename)
+            self.read_weights_from_file(weights_filename)
+        self.training(data, 1.0, 0.9)
