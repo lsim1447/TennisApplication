@@ -1,15 +1,17 @@
 package tennis.controller;
 
-import jep.Jep;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import tennis.domain.Match;
 import tennis.domain.Player;
-import tennis.model.TrainData;
+import tennis.model.*;
 import tennis.service.*;
-import tennis.utils.python.MyPythonInterpreter;
 import tennis.utils.python.TrainingDataToJSONConverter;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,6 +25,9 @@ public class PredicterController {
     private HashMap<String, List<Match>> matchMap = new HashMap<>();
     private HashMap<String, List<Match>> matchMapOnSurface = new HashMap<>();
     private HashMap<String, List<Match>> matchMapHeadToHead = new HashMap<>();
+
+    @Autowired
+    private PredicterService predicterService;
 
     @Autowired
     private MatchService matchService;
@@ -330,17 +335,64 @@ public class PredicterController {
             double playerOneWonGamesPercentage = Double.parseDouble(df.format(sum_player_one_games_percentages /  playerOneMatches.size()));
             double playerTwoWonGamesPercentage  = Double.parseDouble(df.format(sum_player_two_games_percentages / playerTwoMatches.size()));
 
-            List<Double> list = new ArrayList<Double>();
-                list.add(playerOneWonPercentageFromAll);
-                list.add(playerTwoWonPercentageFromAll);
-                list.add(playerOneWonPercentageFromSelectedSurface);
-                list.add(playerTwoWonPercentageFromSelectedSurface);
-                list.add(playerOneWonSetsPercentage);
-                list.add(playerTwoWonSetsPercentage);
-                list.add(playerOneWonGamesPercentage);
-                list.add(playerTwoWonGamesPercentage);
+            // HEAD TO HEAD MATCHES
+            List<Match> allHeadToHeadMatches;
+            String slug_combination = "";
+            if (playerOne.getPlayerSlug().equals(playerTwo.getPlayerSlug())){
+                slug_combination = playerOne.getPlayerSlug() + playerTwo.getPlayerSlug();
+            } else {
+                slug_combination = playerTwo.getPlayerSlug() + playerOne.getPlayerSlug();
+            }
 
-            return  list;
+            if (matchMapHeadToHead.containsKey(slug_combination)){
+                allHeadToHeadMatches = matchMapHeadToHead.get(slug_combination);
+            } else {
+                allHeadToHeadMatches = (List<Match>) matchService.findAllMatchesBetweenTwoPlayer(playerOne.getFirstName(), playerOne.getLastName(), playerTwo.getFirstName(), playerTwo.getLastName());
+                matchMapHeadToHead.put(slug_combination, allHeadToHeadMatches);
+            }
+
+            List<Match> headToHeadMatches = matchFilter(
+                    allHeadToHeadMatches,
+                    numberOfLastHeadToHeadMatches,
+                    "2099.01.01");
+            List<Match> headToHeadMatchesWonByPlayerOne = headToHeadMatches
+                    .stream()
+                    .filter(m -> m.getWinnerPlayer().getPlayerSlug().equals(playerOne.getPlayerSlug()))
+                    .collect(Collectors.toList());
+            List<Match> headToHeadMatchesWonByPlayerTwo = headToHeadMatches
+                    .stream()
+                    .filter(m -> m.getWinnerPlayer().getPlayerSlug().equals(playerTwo.getPlayerSlug()))
+                    .collect(Collectors.toList());
+
+            double winnerPlayerWonHeadToHeadPercentage = Double.parseDouble(df.format(headToHeadMatchesWonByPlayerOne.size() / headToHeadMatches.size()));
+            double loserPlayerWonHeadToHeadPercentage = Double.parseDouble(df.format(headToHeadMatchesWonByPlayerTwo.size() / headToHeadMatches.size()));
+
+        List<Double> list = new ArrayList<Double>();
+        if (playerOne.getPlayerSlug().compareTo(playerTwo.getPlayerSlug()) <= 0){
+            list.add(playerOneWonPercentageFromAll);
+            list.add(playerTwoWonPercentageFromAll);
+            list.add(playerOneWonPercentageFromSelectedSurface);
+            list.add(playerTwoWonPercentageFromSelectedSurface);
+            list.add(playerOneWonSetsPercentage);
+            list.add(playerTwoWonSetsPercentage);
+            list.add(playerOneWonGamesPercentage);
+            list.add(playerTwoWonGamesPercentage);
+            list.add(winnerPlayerWonHeadToHeadPercentage);
+            list.add(loserPlayerWonHeadToHeadPercentage);
+        } else {
+            list.add(playerTwoWonPercentageFromAll);
+            list.add(playerOneWonPercentageFromAll);
+            list.add(playerTwoWonPercentageFromSelectedSurface);
+            list.add(playerOneWonPercentageFromSelectedSurface);
+            list.add(playerTwoWonSetsPercentage);
+            list.add(playerOneWonSetsPercentage);
+            list.add(playerTwoWonGamesPercentage);
+            list.add(playerOneWonGamesPercentage);
+            list.add(loserPlayerWonHeadToHeadPercentage);
+            list.add(winnerPlayerWonHeadToHeadPercentage);
+        }
+
+        return  list;
 
     }
 
@@ -349,38 +401,57 @@ public class PredicterController {
     public void training(){
         List<Match> allMatches = (List<Match>) matchService.findAll();
         List<TrainData> trainData;
+        String training_url = "http://localhost:5000/training";
+        RestTemplate restTemplate = new RestTemplate();
 
         long startTime = System.nanoTime();
             trainData = getTrainData(allMatches);
-
         long endTime = System.nanoTime();
+
         long duration = (endTime - startTime);
+
         System.out.println("Duration of creating training data = " + duration);
         System.out.println("Training data length = " + trainData.size());
 
-        TrainingDataToJSONConverter.writeToJSONFile(trainData, "training-data-extended-test2.txt");
+        String training_data_filename = "training-data-extended-test3.txt";
+        String weight_filename = "weights-extended-test3.txt";
+        String biases_filename = "biases-extended-test3.txt";
+
+            TrainingDataToJSONConverter.writeToJSONFile(trainData, training_data_filename);
+
+        TrainingRequestDTO requestDTO = new TrainingRequestDTO(training_data_filename, weight_filename, biases_filename);
+        HttpEntity<TrainingRequestDTO> request = new HttpEntity<>(requestDTO);
+        ResponseEntity<TrainingResponseDTO> response = restTemplate.postForEntity(training_url, request, TrainingResponseDTO.class);
+        System.out.println(response.getBody().toString());
     }
-
-
 
     @GetMapping("/calculate")
     @ResponseBody
     public List<Integer> calculateProbability(@RequestParam String playerOneSlug, @RequestParam String playerTwoSlug, @RequestParam String surface, @RequestParam String tourneyName, @RequestParam String nrOfAllCheckedMatches, @RequestParam String nrOfCheckedMatchesOnSelectedSurface, @RequestParam String nrOfHeadToHeadMatches){
-       List<Integer> probabilities = Arrays.asList(32, 68);
+
+       RestTemplate restTemplate = new RestTemplate();
+       String URL = "http://localhost:5000/prediction";
+
        Player playerOne = playerService.findBySlug(playerOneSlug);
        Player playerTwo = playerService.findBySlug(playerTwoSlug);
 
-       System.out.println("Player one = " + playerOne.getFirstName() + playerOne.getLastName());
-       System.out.println("Player two = " + playerTwo.getFirstName() + playerTwo.getLastName());
-       System.out.println("Surface = " + surface);
-       System.out.println("Tournament = " + tourneyName);
-
-       System.out.println("nrOfAllCheckedMatches = " + nrOfAllCheckedMatches);
-       System.out.println("nrOfCheckedMatchesOnSelectedSurface = " + nrOfCheckedMatchesOnSelectedSurface);
-       System.out.println("nrOfHeadToHeadMatches = " + nrOfHeadToHeadMatches);
-       System.out.println("---------------------------------------------------------");
        List<Double> inputs = getInputsToPredict(playerOne, playerTwo, surface);
-       System.out.println("inputs = " + inputs);
-       return  probabilities;
+       String weight_filename = "weights-extended-test3.txt";
+       String biases_filename = "biases-extended-test3.txt";
+
+       PredictionRequestDTO requestDTO = new PredictionRequestDTO(playerOne.getPlayerSlug(), playerTwo.getPlayerSlug(), weight_filename, biases_filename, getInputsToPredict(playerOne, playerTwo, surface));
+       HttpEntity<PredictionRequestDTO> request = new HttpEntity<>(requestDTO);
+       ResponseEntity<PredictionResponseDTO> response;
+
+       try{
+           response = restTemplate.postForEntity(URL, request, PredictionResponseDTO.class);
+           PredictionResponseDTO responseDTO = response.getBody();
+           return predicterService.convertSumToOneHundredPercent(responseDTO.getFirst_percentage(), responseDTO.getSecond_percentage());
+       } catch (Exception e){
+           System.out.println(e);
+       }
+
+
+       return  Arrays.asList(50, 50);
     }
 }

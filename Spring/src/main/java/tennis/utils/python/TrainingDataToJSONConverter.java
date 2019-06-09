@@ -29,7 +29,7 @@ public class TrainingDataToJSONConverter {
             }
             obj.put("data", dataJSONArray);
 
-            FileWriter file = new FileWriter("./src/main/java/tennis/utils/python/" + filename);
+            FileWriter file = new FileWriter("../Python/" + filename);
             file.write(obj.toJSONString());
             System.out.println("Successfully Copied JSON Object to File...");
             file.close();

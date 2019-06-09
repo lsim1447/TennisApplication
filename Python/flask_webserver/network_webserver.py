@@ -1,6 +1,7 @@
 import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from NeuralNetwork import Network
+import json
 
 HOST_NAME = 'localhost'
 PORT_NUMBER = 9000
@@ -27,6 +28,23 @@ class MyHandler(BaseHTTPRequestHandler):
         else:
             self.respond({'status': 500})
 
+    def do_POST(self):
+        print("POST REQUEST HEY")
+        paths = {
+            '/training': {'status': 200},
+            '/prediction': {'status': 200},
+        }
+
+        if self.path in paths:
+            self.respond(paths[self.path])
+        else:
+            self.respond({'status': 500})
+
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(json.dumps({'name': 'Anonymous', 'age': 24}).encode())
+        return
+
     def handle_http(self, status_code, path):
         print('path = |', path, '|')
         if path == '/training':
@@ -35,6 +53,10 @@ class MyHandler(BaseHTTPRequestHandler):
             network.set_options_and_start_training('training-data-extended.txt', 'weights.txt', 'biases.txt', GET_EXISTING_DATA)
         else:
             print('predicting ...')
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(json.dumps({'hello': 'world', 'received': 'ok'}).encode())
+        return
 
     def respond(self, opts):
         response = self.handle_http(opts['status'], self.path)

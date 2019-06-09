@@ -8,7 +8,7 @@ import sys
 import os
 import json
 
-NR_OF_INPUTS = 10
+NR_OF_INPUTS = 8
 NR_OF_OUTPUTS = 2
 NR_OF_LAY = 20
 NR_OF_EPOCH = 200
@@ -24,7 +24,6 @@ class Network(object):
         self.data = []
 
     def feedforward(self, a):
-        print('feed = ', a)
         for bias, weight in zip(self.biases, self.weights):
             a = self.sigmoid(numpy.dot(weight, a) + bias)
         return a
@@ -208,7 +207,7 @@ class Network(object):
         x[j] = 1.0
         return x
 	
-    def set_init_settings_before_training(self, training_data_filename):
+    def set_init_settings(self, training_data_filename, weights_filename, biases_filename, read_weights_and_biases_from_file):
         self.data = []
         try:
             config = json.loads(open('./' + training_data_filename).read())
@@ -241,22 +240,9 @@ class Network(object):
             raise Exception("Error opening file", ex)
 
         self.data = [(numpy.reshape(x, (NR_OF_INPUTS, 1)), self.vectorized_result(y)) for x, y in self.data]
-		
-    def set_weights_and_biases(self, weights_filename, biases_filename, read_weights_and_biases_from_file):
         if read_weights_and_biases_from_file:
             self.read_biases_from_file(biases_filename)
             self.read_weights_from_file(weights_filename)
-
-
-def convert_data_to_input_data(data):
-    return_value = []
-    for j in data:
-        temp = []
-        x = float(j)
-        temp.append(x)
-        temp = numpy.asarray(temp)
-        return_value.append(temp)
-    return return_value
 
 @app.route('/training', methods=['POST'])
 def train():
@@ -264,9 +250,8 @@ def train():
     print('request = ', request.json)
 
     network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
-    network.set_init_settings_before_training(request.json['training_data_filename'])
-    network.set_weights_and_biases(request.json['weights_filename'], request.json['biases_filename'], False)
-    network.training(network.data, 1.0, 0.9, request.json['weights_filename'], request.json['biases_filename'])
+    network.set_init_settings(request.json['training_data_filename'], request.json['weight_filename'], request.json['biases_filename'], False)
+    network.training(network.data, 1.0, 0.9)
 
     to_json = {}
     to_json['kecske'] = 'Mr Kecske'
@@ -285,20 +270,8 @@ def predict():
     print('prediction... is in progress ...')
     print('request = ', request.json)
 
-    network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
-    network.set_weights_and_biases(request.json['weights_filename'], request.json['biases_filename'], True)
-    
-    numpy_inputs = convert_data_to_input_data(request.json['inputs'])
-    print('inputs = ', numpy_inputs)
-    resp_data = network.feedforward(numpy_inputs)
-    print('feedforward = ', resp_data)
-
-    to_json = {}
-    to_json['first_percentage'] = (resp_data[1][0] * 100)
-    to_json['second_percentage'] = (resp_data[0][0] * 100)
-	
     return app.response_class(
-        response=json.dumps(to_json),
+        response=json.dumps('resp'),
         status=200,
         mimetype='application/json'
     )
