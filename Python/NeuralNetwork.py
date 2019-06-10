@@ -24,7 +24,6 @@ class Network(object):
         self.data = []
 
     def feedforward(self, a):
-        print('feed = ', a)
         for bias, weight in zip(self.biases, self.weights):
             a = self.sigmoid(numpy.dot(weight, a) + bias)
         return a
@@ -246,6 +245,9 @@ class Network(object):
         if read_weights_and_biases_from_file:
             self.read_biases_from_file(biases_filename)
             self.read_weights_from_file(weights_filename)
+        else:
+            self.biases = [numpy.random.randn(x, 1) for x in self.sizes[1:]]
+            self.weights = [numpy.random.randn(y, x) for x, y in zip(self.sizes[:-1], self.sizes[1:])]
 
 
 def convert_data_to_input_data(data):
@@ -286,7 +288,7 @@ def predict():
     print('request = ', request.json)
 
     network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
-    network.set_weights_and_biases(request.json['weights_filename'], request.json['biases_filename'], True)
+    network.set_weights_and_biases(request.json['weights_filename'], request.json['biases_filename'], False)
     
     numpy_inputs = convert_data_to_input_data(request.json['inputs'])
     print('inputs = ', numpy_inputs)

@@ -130,11 +130,11 @@ function PredictModal(props){
                 console.log('response waze = ', response)
             })
         */
+           
         get_request(`${DEFALULT_SERVER_URL}/prediction/calculate?playerOneSlug=${encodeURIComponent(selectedPlayerOne.playerSlug)}&playerTwoSlug=${encodeURIComponent(selectedPlayerTwo.playerSlug)}&surface=${encodeURIComponent(selectedSurface)}&tourneyName=${encodeURIComponent(selectedTourney)}&nrOfAllCheckedMatches=${encodeURIComponent(state.nrOfAllCheckedMatches)}&nrOfCheckedMatchesOnSelectedSurface=${encodeURIComponent(state.nrOfCheckedMatchesOnSelectedSurface)}&nrOfHeadToHeadMatches=${encodeURIComponent(state.nrOfHeadToHeadMatches)}`)
             .then( response => {
                 setState({...state, firstPlayerProbability: response[0], secondPlayerProbability: response[1]})
             })
-        
     }
 
     return (

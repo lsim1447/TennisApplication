@@ -404,6 +404,7 @@ public class PredicterController {
         String training_url = "http://localhost:5000/training";
         RestTemplate restTemplate = new RestTemplate();
 
+        System.out.println("Starting training ...");
         long startTime = System.nanoTime();
             trainData = getTrainData(allMatches);
         long endTime = System.nanoTime();
@@ -452,6 +453,6 @@ public class PredicterController {
        }
 
 
-       return  Arrays.asList(50, 50);
+       return Arrays.asList(50, 50);
     }
 }
