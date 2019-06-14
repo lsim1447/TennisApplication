@@ -8,10 +8,10 @@ import sys
 import os
 import json
 
-NR_OF_INPUTS = 10
+NR_OF_INPUTS = 14
 NR_OF_OUTPUTS = 2
 NR_OF_LAY = 20
-NR_OF_EPOCH = 200
+NR_OF_EPOCH = 500
 
 app = Flask(__name__)
 
@@ -209,8 +209,9 @@ class Network(object):
 	
     def set_init_settings_before_training(self, training_data_filename):
         self.data = []
+        print('Readed file = ', training_data_filename)
         try:
-            config = json.loads(open('./' + training_data_filename).read())
+            config = json.loads(open(training_data_filename).read())
             tr_data = config['data']
             i = 0
             for line in tr_data:
@@ -241,14 +242,16 @@ class Network(object):
 
         self.data = [(numpy.reshape(x, (NR_OF_INPUTS, 1)), self.vectorized_result(y)) for x, y in self.data]
 		
-    def set_weights_and_biases(self, weights_filename, biases_filename, read_weights_and_biases_from_file):
-        if read_weights_and_biases_from_file:
-            self.read_biases_from_file(biases_filename)
-            self.read_weights_from_file(weights_filename)
-        else:
+    def set_weights_and_biases(self, weights_filename, biases_filename, with_new_settings):
+        if with_new_settings:
             self.biases = [numpy.random.randn(x, 1) for x in self.sizes[1:]]
             self.weights = [numpy.random.randn(y, x) for x, y in zip(self.sizes[:-1], self.sizes[1:])]
+        else:
+            self.read_biases_from_file(biases_filename)
+            self.read_weights_from_file(weights_filename)
 
+def add_relative_path(filename):
+    return './settings/' + filename
 
 def convert_data_to_input_data(data):
     return_value = []
@@ -260,15 +263,24 @@ def convert_data_to_input_data(data):
         return_value.append(temp)
     return return_value
 
+def revert_input_data(data):
+    i = 0
+    while i < len(data):
+        temp = data[i]
+        data[i] = data[i+1]
+        data[i+1] = temp
+        i = i + 2
+    return data
+
 @app.route('/training', methods=['POST'])
 def train():
     print('training... is in progress ...')
     print('request = ', request.json)
 
     network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
-    network.set_init_settings_before_training(request.json['training_data_filename'])
-    network.set_weights_and_biases(request.json['weights_filename'], request.json['biases_filename'], False)
-    network.training(network.data, 1.0, 0.9, request.json['weights_filename'], request.json['biases_filename'])
+    network.set_init_settings_before_training(add_relative_path(request.json['training_data_filename']))
+    network.set_weights_and_biases(add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']), request.json['with_new_settings'])
+    network.training(network.data, 1.0, 0.9, add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']))
 
     to_json = {}
     to_json['kecske'] = 'Mr Kecske'
@@ -288,16 +300,22 @@ def predict():
     print('request = ', request.json)
 
     network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
-    network.set_weights_and_biases(request.json['weights_filename'], request.json['biases_filename'], False)
+    network.set_weights_and_biases(add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']), False)
     
     numpy_inputs = convert_data_to_input_data(request.json['inputs'])
     print('inputs = ', numpy_inputs)
     resp_data = network.feedforward(numpy_inputs)
-    print('feedforward = ', resp_data)
+    resp_data_invert = network.feedforward(revert_input_data(numpy_inputs))
+
+    percentage1 = (resp_data[0][0] + resp_data_invert[1][0]) / 2
+    percentage2 = (resp_data[1][0] + resp_data_invert[0][0]) / 2
+    
+    print('percentage1 = ', percentage1)
+    print('percentage2 = ', percentage2)
 
     to_json = {}
-    to_json['first_percentage'] = (resp_data[1][0] * 100)
-    to_json['second_percentage'] = (resp_data[0][0] * 100)
+    to_json['first_percentage']  = (percentage2 * 100)
+    to_json['second_percentage'] = (percentage1 * 100)
 	
     return app.response_class(
         response=json.dumps(to_json),

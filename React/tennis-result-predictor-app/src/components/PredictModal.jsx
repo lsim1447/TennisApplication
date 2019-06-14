@@ -120,21 +120,22 @@ function PredictModal(props){
         setState({ ...state, selectedTourney: tourney, selectedSurface: selectedSurface})
     }
 
-    function predictResult(e){
-        const selectedSurface = state.selectedTourney.value;
-        const selectedTourney = state.selectedTourney.label;
-        
-        /*
+    function train(e){
         get_request(`${DEFALULT_SERVER_URL}/prediction/training`)
             .then( response => {
                 console.log('response waze = ', response)
             })
-        */
-           
+    }
+
+    function predictResult(e){
+        const selectedSurface = state.selectedTourney.value;
+        const selectedTourney = state.selectedTourney.label;
+          
         get_request(`${DEFALULT_SERVER_URL}/prediction/calculate?playerOneSlug=${encodeURIComponent(selectedPlayerOne.playerSlug)}&playerTwoSlug=${encodeURIComponent(selectedPlayerTwo.playerSlug)}&surface=${encodeURIComponent(selectedSurface)}&tourneyName=${encodeURIComponent(selectedTourney)}&nrOfAllCheckedMatches=${encodeURIComponent(state.nrOfAllCheckedMatches)}&nrOfCheckedMatchesOnSelectedSurface=${encodeURIComponent(state.nrOfCheckedMatchesOnSelectedSurface)}&nrOfHeadToHeadMatches=${encodeURIComponent(state.nrOfHeadToHeadMatches)}`)
             .then( response => {
                 setState({...state, firstPlayerProbability: response[0], secondPlayerProbability: response[1]})
             })
+        
     }
 
     return (
@@ -174,6 +175,7 @@ function PredictModal(props){
                             <div className="row">
                                 <div className="col-lg">
                                     <p>
+                                        <button onClick={(e) => train(e)}> Train </button>
                                         <a style={{marginTop: "24px"}} className="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                                             Settings
                                             <Icon src="./../images/icons/settings.jpg" alt="" />

@@ -2,8 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b0392ac-c066-4eee-a024-48f2ef94d32f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Python/NeuralNetwork.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Python/NeuralNetwork.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Python/biases-extended-test3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Python/training-data-extended-test3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Python/weights-extended-test3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/components/PredictModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../React/tennis-result-predictor-app/src/components/PredictModal.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tennis/model/TrainingRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tennis/model/TrainingRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tennis/utils/python/TrainingDataToJSONConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tennis/utils/python/TrainingDataToJSONConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/tennis/controller/PredicterController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/tennis/controller/PredicterController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/tennis/model/TrainingRequestDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/tennis/model/TrainingRequestDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/tennis/utils/python/TrainingDataToJSONConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/tennis/utils/python/TrainingDataToJSONConverter.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -14,7 +25,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Tennis_application$TennisApplication.ic" NAME="TennisApplication Coverage Results" MODIFIED="1560107606010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/Tennis_application$TennisApplication.ic" NAME="TennisApplication Coverage Results" MODIFIED="1560194849109" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>tennis.*</FILTER>
     </SUITE>
   </component>
@@ -37,15 +48,17 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-200">
-              <caret line="406" column="52" selection-start-line="406" selection-start-column="52" selection-end-line="406" selection-end-column="52" />
+            <state relative-caret-position="583">
+              <caret line="190" column="33" selection-start-line="190" selection-start-column="33" selection-end-line="190" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#convertToPercentage#0;class#PredicterController#0" />
                 <element signature="method#matchFilter#0;class#PredicterController#0" />
                 <element signature="method#getOutputs#0;class#PredicterController#0" />
                 <element signature="method#getTrainData#0;class#PredicterController#0" />
-                <element signature="method#getInputs#0;class#PredicterController#0" />
+                <element signature="method#addHeadToHeadMatchesWinningRateToResults#0;class#PredicterController#0" />
+                <element signature="method#addMatchWinningRateToResults#0;class#PredicterController#0" />
+                <element signature="method#getInputsToPredict#0;class#PredicterController#0" />
               </folding>
             </state>
           </provider>
@@ -54,76 +67,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/PredicterService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="255">
+              <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tennis/model/PredictionRequestDTO.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" selection-start-line="12" selection-end-line="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tennis/model/PredictionResponseDTO.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="32" column="118" selection-start-line="32" selection-start-column="118" selection-end-line="32" selection-end-column="118" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tennis/model/TrainingRequestDTO.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tennis/model/TrainingResponseDTO.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" selection-start-line="8" selection-end-line="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tennis/model/Champion.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="47" selection-start-line="10" selection-start-column="47" selection-end-line="10" selection-end-column="47" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tennis/utils/python/TrainingDataToJSONConverter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="34" column="25" selection-start-line="34" selection-start-column="25" selection-end-line="34" selection-end-column="25" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="53" selection-start-line="1" selection-start-column="45" selection-end-line="1" selection-end-column="53" />
             </state>
           </provider>
         </entry>
@@ -211,10 +159,10 @@
         <option value="$PROJECT_DIR$/src/main/java/tennis/model/TrainingSettings.java" />
         <option value="$PROJECT_DIR$/src/main/java/tennis/model/PredictionData.java" />
         <option value="$PROJECT_DIR$/src/main/java/tennis/model/TrainingRespDTO.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tennis/utils/python/TrainingDataToJSONConverter.java" />
         <option value="$PROJECT_DIR$/src/main/java/tennis/model/PredictionResponseDTO.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tennis/model/TrainingRequestDTO.java" />
         <option value="$PROJECT_DIR$/src/main/java/tennis/model/PredictionRequestDTO.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tennis/model/TrainingRequestDTO.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tennis/utils/python/TrainingDataToJSONConverter.java" />
         <option value="$PROJECT_DIR$/src/main/java/tennis/service/PredicterService.java" />
         <option value="$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java" />
       </list>
@@ -239,8 +187,8 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-390" />
-    <option name="y" value="145" />
+    <option name="x" value="63" />
+    <option name="y" value="3" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
   </component>
@@ -250,8 +198,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -326,6 +274,15 @@
               <item name="Spring" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="tennis" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Tennis-application" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Spring" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -341,7 +298,7 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1560107638230" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1560282609982" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -481,7 +438,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25053304" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2585288" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -491,7 +448,7 @@
       <window_info id="Web" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.26218852" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.20910075" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -924,55 +881,20 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tennis/model/PredictionData.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-200">
-          <caret line="406" column="52" selection-start-line="406" selection-start-column="52" selection-end-line="406" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#convertToPercentage#0;class#PredicterController#0" />
-            <element signature="method#matchFilter#0;class#PredicterController#0" />
-            <element signature="method#getOutputs#0;class#PredicterController#0" />
-            <element signature="method#getTrainData#0;class#PredicterController#0" />
-            <element signature="method#getInputs#0;class#PredicterController#0" />
-          </folding>
+        <state relative-caret-position="17">
+          <caret line="1" column="53" selection-start-line="1" selection-start-column="45" selection-end-line="1" selection-end-column="53" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/PredicterService.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/utils/python/TrainingDataToJSONConverter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="363">
+          <caret line="32" column="43" lean-forward="true" selection-start-line="32" selection-start-column="43" selection-end-line="32" selection-end-column="43" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/model/PredictionRequestDTO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/model/PredictionResponseDTO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="32" column="118" selection-start-line="32" selection-start-column="118" selection-end-line="32" selection-end-column="118" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/model/TrainingRequestDTO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/model/TrainingResponseDTO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
         </state>
       </provider>
     </entry>
@@ -983,20 +905,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/utils/python/TrainingDataToJSONConverter.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/model/TrainingRequestDTO.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="34" column="25" selection-start-line="34" selection-start-column="25" selection-end-line="34" selection-end-column="25" />
+        <state>
+          <caret column="21" lean-forward="true" selection-start-column="21" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/model/PredictionRequestDTO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/model/PredictionResponseDTO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="32" column="118" selection-start-line="32" selection-start-column="118" selection-end-line="32" selection-end-column="118" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/model/TrainingResponseDTO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="583">
+          <caret line="190" column="33" selection-start-line="190" selection-start-column="33" selection-end-line="190" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#convertToPercentage#0;class#PredicterController#0" />
+            <element signature="method#matchFilter#0;class#PredicterController#0" />
+            <element signature="method#getOutputs#0;class#PredicterController#0" />
+            <element signature="method#getTrainData#0;class#PredicterController#0" />
+            <element signature="method#addHeadToHeadMatchesWinningRateToResults#0;class#PredicterController#0" />
+            <element signature="method#addMatchWinningRateToResults#0;class#PredicterController#0" />
+            <element signature="method#getInputsToPredict#0;class#PredicterController#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/PredicterService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="53" selection-start-line="1" selection-start-column="45" selection-end-line="1" selection-end-column="53" />
+        <state relative-caret-position="255">
+          <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
