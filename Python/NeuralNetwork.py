@@ -8,10 +8,10 @@ import sys
 import os
 import json
 
-NR_OF_INPUTS = 18
+NR_OF_INPUTS = 30
 NR_OF_OUTPUTS = 2
 NR_OF_LAY = 20
-NR_OF_EPOCH = 500
+NR_OF_EPOCH = 750
 
 app = Flask(__name__)
 

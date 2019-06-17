@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import tennis.domain.Match;
 import tennis.domain.Player;
+import tennis.domain.Stats;
 import tennis.model.*;
 import tennis.service.*;
 import tennis.utils.python.TrainingDataToJSONConverter;
@@ -25,6 +26,7 @@ public class PredicterController {
     private HashMap<String, List<Match>> matchMapOnSurface = new HashMap<>();
     private HashMap<String, List<Match>> matchMapHeadToHead = new HashMap<>();
     private HashMap<String, List<Match>> matchMapHeadToHeadOnSurface = new HashMap<>();
+    private HashMap<String, List<Match>> matchMapOnTournament = new HashMap<>();
 
     @Autowired
     private PredicterService predicterService;
@@ -51,10 +53,11 @@ public class PredicterController {
         matchComparator.thenComparing(Comparator.comparing(m -> m.getRound_order(), Comparator.reverseOrder()));
     }
 
-    private int numberOfLastMatches = 60;
+    private int numberOfLastMatches = 100;
     private int numberOfLastMatchesOnSpecificSurface = 30;
     private int numberOfLastHeadToHeadMatches = 8;
     private int numberOfLastHeadToHeadMatchesOnSpecificSurface = 4;
+    private int numberOfLastMatchesOnTournament = 100;
 
     private DecimalFormat df = new DecimalFormat("####0.00");
 
@@ -225,9 +228,9 @@ public class PredicterController {
         String slug_combination = "";
 
         if (player1.getPlayerSlug().equals(player2.getPlayerSlug())){
-            slug_combination = player1.getPlayerSlug() + player2.getPlayerSlug();
+            slug_combination = player1.getPlayerSlug() + player2.getPlayerSlug() + surface;
         } else {
-            slug_combination = player2.getPlayerSlug() + player1.getPlayerSlug();
+            slug_combination = player2.getPlayerSlug() + player1.getPlayerSlug() + surface;
         }
 
         if (matchMapHeadToHeadOnSurface.containsKey(slug_combination)){
@@ -266,20 +269,82 @@ public class PredicterController {
         return results;
     }
 
-    private List<Double> addTourneyWinningRate(List<Double> results, Player player1, Player player2, String tourneyName, boolean to_train){
-
-        List<Match> player1Matches = (List<Match>) matchService.findAllMatchesByPlayerNameAndTourneyName(player1.getFirstName(), player1.getLastName(), tourneyName);
-        List<Match> player2Matches = (List<Match>) matchService.findAllMatchesByPlayerNameAndTourneyName(player2.getFirstName(), player2.getLastName(), tourneyName);
-
+    private List<Double> addTourneyWinningRate(List<Double> results, Player player1, List<Match> player1Matches, Player player2, List<Match> player2Matches, boolean to_train){
         return this.addMatchWinningRateToResults(results, player1, player1Matches, player2, player2Matches, to_train);
     }
 
-    private List<Double> addServicePointWinningRate(List<Double> results, Player player1, Player player2, boolean to_train){
+    private List<Double> addServiceAndReturnStatistics(List<Double> results, Player player1, List<Match> player1Matches, Player player2, List<Match> player2Matches, boolean to_train){
+        List<Stats> player1Stats = (List<Stats>) statsService.findAllStatsByMatchIds(player1Matches);
+        List<Stats> player2Stats = (List<Stats>) statsService.findAllStatsByMatchIds(player2Matches);
 
+        // ------------------------------------ PLAYER SERVICE PERCENTAGE ----------------------------------------------//
+        double player1ServicePercentage = predicterService.getServicePointsWonRate(player1Stats, player1);
+
+        double player2ServicePercentage = predicterService.getServicePointsWonRate(player2Stats, player2);
+
+        // ------------------------------------ PLAYER RETRURN PERCENTAGE ---------------------------------------------//
+
+        double player1ReturnPercentage = predicterService.getReturnPointsWonRate(player1Stats, player1);
+
+        double player2ReturnPercentage = predicterService.getReturnPointsWonRate(player2Stats, player2);
+
+        // ------------------------------------ PLAYER FIRST SERVE IN PERCENTAGE ---------------------------------------//
+
+        double player1FirstServeInPercentage = predicterService.getFirstServeInRate(player1Stats, player1);
+
+        double player2FirstServeInPercentage = predicterService.getFirstServeInRate(player2Stats, player2);
+
+        // ------------------------------------ PLAYER FIRST SERVE IN PERCENTAGE ---------------------------------------//
+
+        double player1FirstServeWonRate = predicterService.getFirstServeWonRate(player1Stats, player1);
+
+        double player2FirstServeWonRate = predicterService.getFirstServeWonRate(player2Stats, player2);
+
+        // ------------------------------------ PLAYER BREAK POINTS CONVERTED ------------------------------------------//
+
+        double player1BreakPointsConvertedRate = predicterService.getBreakPointsConvertedRate(player1Stats, player1);
+
+        double player2BreakPointsConvertedRate = predicterService.getBreakPointsConvertedRate(player2Stats, player2);
+
+        // ------------------------------------ PLAYER BREAK POINTS SAVED ----------------------------------------------//
+
+        double player1BreakPointsSavedRate = predicterService.getBreakPointsSavedRate(player1Stats, player1);
+
+        double player2BreakPointsSavedRate = predicterService.getBreakPointsSavedRate(player2Stats, player2);
+
+        // ------------------------------------ ADD TO INPUTS ----------------------------------------------------------//
+        if (player1.getPlayerSlug().compareTo(player2.getPlayerSlug()) <= 0 || to_train == false){
+            results.add(player1ServicePercentage);
+            results.add(player2ServicePercentage);
+            results.add(player1ReturnPercentage);
+            results.add(player2ReturnPercentage);
+            results.add(player1FirstServeInPercentage);
+            results.add(player2FirstServeInPercentage);
+            results.add(player1FirstServeWonRate);
+            results.add(player2FirstServeWonRate);
+            results.add(player1BreakPointsConvertedRate);
+            results.add(player2BreakPointsConvertedRate);
+            results.add(player1BreakPointsSavedRate);
+            results.add(player2BreakPointsSavedRate);
+        } else {
+            results.add(player2ServicePercentage);
+            results.add(player1ServicePercentage);
+            results.add(player2ReturnPercentage);
+            results.add(player1ReturnPercentage);
+            results.add(player2FirstServeInPercentage);
+            results.add(player1FirstServeInPercentage);
+            results.add(player2FirstServeWonRate);
+            results.add(player1FirstServeWonRate);
+            results.add(player2BreakPointsConvertedRate);
+            results.add(player1BreakPointsConvertedRate);
+            results.add(player2BreakPointsSavedRate);
+            results.add(player1BreakPointsSavedRate);
+        }
+
+        return results;
     }
 
     private List<Double> getInputs(Match match){
-        try{
             Player winnerPlayer = match.getWinnerPlayer();
             Player loserPlayer  = match.getLoserPlayer();
             String date = match.getTournament().getDates();
@@ -288,6 +353,8 @@ public class PredicterController {
             List<Match> loserPlayerAllMatches;
             List<Match> winnerPlayerAllMatchesOnSelectedSurface;
             List<Match> loserPlayerAllMatchesOnSelectedSurface;
+            List<Match> winnerPlayerAllMatchesOnTournament;
+            List<Match> loserPlayerAllMatchesOnTournament;
 
             if (matchMap.containsKey(winnerPlayer.getPlayerSlug())){
                 winnerPlayerAllMatches = matchMap.get(winnerPlayer.getPlayerSlug());
@@ -302,24 +369,40 @@ public class PredicterController {
                 matchMap.put(loserPlayer.getPlayerSlug(), loserPlayerAllMatches);
             }
 
-            if (matchMapOnSurface.containsKey(winnerPlayer.getPlayerSlug())){
-                winnerPlayerAllMatchesOnSelectedSurface = matchMapOnSurface.get(winnerPlayer.getPlayerSlug());
+            if (matchMapOnSurface.containsKey(winnerPlayer.getPlayerSlug() + surface)){
+                winnerPlayerAllMatchesOnSelectedSurface = matchMapOnSurface.get(winnerPlayer.getPlayerSlug() + surface);
             } else {
                 winnerPlayerAllMatchesOnSelectedSurface = (List<Match>) matchService.findAllMatchesByPlayerNameAndSurface(winnerPlayer.getFirstName(), winnerPlayer.getLastName(), surface);
-                matchMapOnSurface.put(winnerPlayer.getPlayerSlug(), winnerPlayerAllMatchesOnSelectedSurface);
+                matchMapOnSurface.put(winnerPlayer.getPlayerSlug() + surface, winnerPlayerAllMatchesOnSelectedSurface);
             }
-            if (matchMapOnSurface.containsKey(loserPlayer.getPlayerSlug())){
-                loserPlayerAllMatchesOnSelectedSurface = matchMapOnSurface.get(loserPlayer.getPlayerSlug());
+            if (matchMapOnSurface.containsKey(loserPlayer.getPlayerSlug() + surface)){
+                loserPlayerAllMatchesOnSelectedSurface = matchMapOnSurface.get(loserPlayer.getPlayerSlug() + surface);
             } else {
                 loserPlayerAllMatchesOnSelectedSurface = (List<Match>) matchService.findAllMatchesByPlayerNameAndSurface(loserPlayer.getFirstName(), loserPlayer.getLastName(), surface);
-                matchMapOnSurface.put(loserPlayer.getPlayerSlug(), loserPlayerAllMatchesOnSelectedSurface);
+                matchMapOnSurface.put(loserPlayer.getPlayerSlug() + surface, loserPlayerAllMatchesOnSelectedSurface);
+            }
+
+            if (matchMapOnTournament.containsKey(winnerPlayer.getPlayerSlug() + match.getTournament().getTourney().getSlug())){
+                winnerPlayerAllMatchesOnTournament = matchMapOnTournament.get(winnerPlayer.getPlayerSlug() + match.getTournament().getTourney().getSlug());
+            } else {
+                winnerPlayerAllMatchesOnTournament = (List<Match>) matchService.findAllMatchesByPlayerNameAndTourneyName(winnerPlayer.getFirstName(), winnerPlayer.getLastName(), match.getTournament().getTourney().getName());
+                matchMapOnTournament.put(winnerPlayer.getPlayerSlug() + match.getTournament().getTourney().getSlug(), winnerPlayerAllMatchesOnTournament);
+            }
+            if (matchMapOnTournament.containsKey(loserPlayer.getPlayerSlug() + match.getTournament().getTourney().getSlug())){
+                loserPlayerAllMatchesOnTournament = matchMapOnTournament.get(loserPlayer.getPlayerSlug() + match.getTournament().getTourney().getSlug());
+            } else {
+                loserPlayerAllMatchesOnTournament = (List<Match>) matchService.findAllMatchesByPlayerNameAndTourneyName(loserPlayer.getFirstName(), loserPlayer.getLastName(), match.getTournament().getTourney().getName());
+                matchMapOnTournament.put(loserPlayer.getPlayerSlug() + match.getTournament().getTourney().getSlug(), loserPlayerAllMatchesOnTournament);
             }
 
             List<Match> winnerPlayerMatches = matchFilter(winnerPlayerAllMatches, numberOfLastMatches, date);
             List<Match> loserPlayerMatches = matchFilter(loserPlayerAllMatches, numberOfLastMatches, date);
             List<Match> winnerPlayerMatchesOnSurface = matchFilter(winnerPlayerAllMatchesOnSelectedSurface, numberOfLastMatchesOnSpecificSurface, date);
             List<Match> loserPlayerMatchesOnSurface = matchFilter(loserPlayerAllMatchesOnSelectedSurface, numberOfLastMatchesOnSpecificSurface, date);
-            if (winnerPlayerMatches.size() < numberOfLastMatches || loserPlayerMatches.size() < numberOfLastMatches || winnerPlayerMatchesOnSurface.size() < numberOfLastMatchesOnSpecificSurface || loserPlayerMatchesOnSurface.size() < numberOfLastMatchesOnSpecificSurface) return null;
+            List<Match> winnerPlayerMatchesOnTournament = matchFilter(winnerPlayerAllMatchesOnTournament, numberOfLastMatchesOnTournament, date);
+            List<Match> loserPlayerMatchesOnTournament = matchFilter(loserPlayerAllMatchesOnTournament, numberOfLastMatchesOnTournament, date);
+
+            if (winnerPlayerMatches.size() < 20 || loserPlayerMatches.size() < 20 || winnerPlayerMatchesOnSurface.size() < 10 || loserPlayerMatchesOnSurface.size() < 10) return null;
 
             List<Double> list = new ArrayList<Double>();
 
@@ -329,14 +412,10 @@ public class PredicterController {
             list = addGameAndSetWinningRatesToResults(list, winnerPlayer, winnerPlayerMatchesOnSurface, loserPlayer, loserPlayerMatchesOnSurface, true);  // wip
             list = addHeadToHeadMatchesWinningRateToResults(list, winnerPlayer, loserPlayer, date, true);
             list = addHeadToHeadMatchesOnSurfaceWinningRateToResults(list, winnerPlayer, loserPlayer, date, surface, true);
-            list = addTourneyWinningRate(list, winnerPlayer, loserPlayer, match.getTournament().getTourney().getName(), true);
+            list = addTourneyWinningRate(list, winnerPlayer, winnerPlayerMatchesOnTournament, loserPlayer, loserPlayerMatchesOnTournament, true);
+            list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerMatches, loserPlayer, loserPlayerMatches, true);
 
             return  list;
-
-        } catch (Exception e){
-            return null;
-        }
-
     }
 
     private List<Double> getInputsToPredict(Player playerOne, Player playerTwo, String surface, String tourneyName){
@@ -377,6 +456,8 @@ public class PredicterController {
                     .limit(numberOfLastMatchesOnSpecificSurface)
                     .collect(Collectors.toList());
 
+            List<Match> player1AllMatchesOnTournament = (List<Match>) matchService.findAllMatchesByPlayerNameAndTourneyName(playerOne.getFirstName(), playerOne.getLastName(), tourneyName);
+            List<Match> player2AllMatchesOnTournament = (List<Match>) matchService.findAllMatchesByPlayerNameAndTourneyName(playerTwo.getFirstName(), playerTwo.getLastName(), tourneyName);
 
             List<Double> list = new ArrayList<Double>();
 
@@ -386,7 +467,8 @@ public class PredicterController {
             list = addGameAndSetWinningRatesToResults(list, playerOne, playerOneMatchesOnSurface, playerTwo, playerTwoMatchesOnSurface, false); // wip
             list = addHeadToHeadMatchesWinningRateToResults(list, playerOne, playerTwo, "2099.01.01", false);
             list = addHeadToHeadMatchesOnSurfaceWinningRateToResults(list, playerOne, playerTwo, "2099.01.01", surface, false);
-            list = addTourneyWinningRate(list, playerOne, playerTwo, tourneyName, false);
+            list = addTourneyWinningRate(list, playerOne, player1AllMatchesOnTournament, playerTwo, player2AllMatchesOnTournament, false);
+            list = addServiceAndReturnStatistics(list, playerOne, playerOneMatches, playerTwo, playerOneMatches, false);
 
         return  list;
     }
