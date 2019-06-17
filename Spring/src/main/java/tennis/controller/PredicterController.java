@@ -24,6 +24,7 @@ public class PredicterController {
     private HashMap<String, List<Match>> matchMap = new HashMap<>();
     private HashMap<String, List<Match>> matchMapOnSurface = new HashMap<>();
     private HashMap<String, List<Match>> matchMapHeadToHead = new HashMap<>();
+    private HashMap<String, List<Match>> matchMapHeadToHeadOnSurface = new HashMap<>();
 
     @Autowired
     private PredicterService predicterService;
@@ -50,9 +51,11 @@ public class PredicterController {
         matchComparator.thenComparing(Comparator.comparing(m -> m.getRound_order(), Comparator.reverseOrder()));
     }
 
-    private int numberOfLastMatches = 10;
-    private int numberOfLastMatchesOnSpecificSurface = 10;
-    private int numberOfLastHeadToHeadMatches = 2;
+    private int numberOfLastMatches = 60;
+    private int numberOfLastMatchesOnSpecificSurface = 30;
+    private int numberOfLastHeadToHeadMatches = 8;
+    private int numberOfLastHeadToHeadMatchesOnSpecificSurface = 4;
+
     private DecimalFormat df = new DecimalFormat("####0.00");
 
     private double convertToPercentage(List<Match> matches, Player player){
@@ -67,7 +70,7 @@ public class PredicterController {
     private List<Match> matchFilter(List<Match> matches, int limit, String date){
         return matches
                 .stream()
-                .filter(m -> m.getTournament().getDates().compareTo(date) <= 0)
+                .filter(m -> m.getTournament().getDates().compareTo(date) < 0)
                 .sorted(matchComparator)
                 .limit(limit)
                 .collect(Collectors.toList());
@@ -97,7 +100,7 @@ public class PredicterController {
                 .collect(Collectors.toList());
     }
 
-    public List<Double> addHeadToHeadMatchesWinningRateToResults(List<Double> results, Player player1, Player player2, String date, boolean to_train){
+    private List<Double> addHeadToHeadMatchesWinningRateToResults(List<Double> results, Player player1, Player player2, String date, boolean to_train){
 
         List<Match> allHeadToHeadMatches;
         String slug_combination = "";
@@ -119,6 +122,7 @@ public class PredicterController {
                 allHeadToHeadMatches,
                 numberOfLastHeadToHeadMatches,
                 date);
+
         List<Match> headToHeadMatchesWonByPlayerOne = headToHeadMatches
                 .stream()
                 .filter(m -> m.getWinnerPlayer().getPlayerSlug().equals(player1.getPlayerSlug()))
@@ -128,11 +132,8 @@ public class PredicterController {
                 .filter(m -> m.getWinnerPlayer().getPlayerSlug().equals(player2.getPlayerSlug()))
                 .collect(Collectors.toList());
 
-        double playerOneWonHeadToHeadPercentage = Double.parseDouble(df.format(headToHeadMatchesWonByPlayerOne.size() / headToHeadMatches.size()));
-        double playerTwoWonHeadToHeadPercentage = Double.parseDouble(df.format(headToHeadMatchesWonByPlayerTwo.size() / headToHeadMatches.size()));
-
-        playerOneWonHeadToHeadPercentage = 0.5;  //temporary values because of deficient database
-        playerTwoWonHeadToHeadPercentage = 0.5;
+        double playerOneWonHeadToHeadPercentage = (headToHeadMatches.size() > 3) ? Double.parseDouble(df.format(headToHeadMatchesWonByPlayerOne.size() / (double)headToHeadMatches.size())) : 0.5;
+        double playerTwoWonHeadToHeadPercentage = (headToHeadMatches.size() > 3) ? Double.parseDouble(df.format(headToHeadMatchesWonByPlayerTwo.size() / (double)headToHeadMatches.size())) : 0.5;
 
         if (player1.getPlayerSlug().compareTo(player2.getPlayerSlug()) <= 0 || to_train == false){
             results.add(playerOneWonHeadToHeadPercentage);
@@ -145,23 +146,23 @@ public class PredicterController {
         return results;
     }
 
-    public List<Double> addMatchWinningRateToResults(List<Double> results, Player player1, List<Match> player1Matches, Player player2, List<Match> player2Matches, boolean to_train){
+    private List<Double> addMatchWinningRateToResults(List<Double> results, Player player1, List<Match> player1Matches, Player player2, List<Match> player2Matches, boolean to_train){
 
         double player1Percentage    = convertToPercentage(player1Matches, player1);
-        double player2WonPercentage = convertToPercentage(player2Matches, player2);
+        double player2Percentage = convertToPercentage(player2Matches, player2);
 
         if (player1.getPlayerSlug().compareTo(player2.getPlayerSlug()) <= 0 || to_train == false){
             results.add(player1Percentage);
-            results.add(player2WonPercentage);
+            results.add(player2Percentage);
         } else {
-            results.add(player2WonPercentage);
+            results.add(player2Percentage);
             results.add(player1Percentage);
         }
 
         return results;
     }
 
-    public List<Double> addGameAndSetWinningRatesToResults(List<Double> results, Player player1, List<Match> player1Matches, Player player2, List<Match> player2Matches, boolean to_train){
+    private List<Double> addGameAndSetWinningRatesToResults(List<Double> results, Player player1, List<Match> player1Matches, Player player2, List<Match> player2Matches, boolean to_train){
 
         double sum_player_one_set_percentages = 0;
         double sum_player_two_set_percentages = 0;
@@ -218,6 +219,65 @@ public class PredicterController {
         return results;
     }
 
+    private List<Double> addHeadToHeadMatchesOnSurfaceWinningRateToResults(List<Double> results, Player player1, Player player2, String date, String surface, boolean to_train){
+
+        List<Match> allHeadToHeadMatches;
+        String slug_combination = "";
+
+        if (player1.getPlayerSlug().equals(player2.getPlayerSlug())){
+            slug_combination = player1.getPlayerSlug() + player2.getPlayerSlug();
+        } else {
+            slug_combination = player2.getPlayerSlug() + player1.getPlayerSlug();
+        }
+
+        if (matchMapHeadToHeadOnSurface.containsKey(slug_combination)){
+            allHeadToHeadMatches = matchMapHeadToHeadOnSurface.get(slug_combination);
+        } else {
+            allHeadToHeadMatches = (List<Match>) matchService.findAllMatchesBetweenTwoPlayerAndSurface(player1.getFirstName(), player1.getLastName(), player2.getFirstName(), player2.getLastName(), surface);
+            matchMapHeadToHeadOnSurface.put(slug_combination, allHeadToHeadMatches);
+        }
+
+        List<Match> headToHeadMatches = matchFilter(
+                allHeadToHeadMatches,
+                numberOfLastHeadToHeadMatchesOnSpecificSurface,
+                date);
+
+        List<Match> headToHeadMatchesWonByPlayerOne = headToHeadMatches
+                .stream()
+                .filter(m -> m.getWinnerPlayer().getPlayerSlug().equals(player1.getPlayerSlug()))
+                .collect(Collectors.toList());
+
+        List<Match> headToHeadMatchesWonByPlayerTwo = headToHeadMatches
+                .stream()
+                .filter(m -> m.getWinnerPlayer().getPlayerSlug().equals(player2.getPlayerSlug()))
+                .collect(Collectors.toList());
+
+        double playerOneWonHeadToHeadPercentage = (headToHeadMatches.size() > 2) ? Double.parseDouble(df.format(headToHeadMatchesWonByPlayerOne.size() / (double) headToHeadMatches.size())) : 0.5;
+        double playerTwoWonHeadToHeadPercentage = (headToHeadMatches.size() > 2) ? Double.parseDouble(df.format(headToHeadMatchesWonByPlayerTwo.size() / (double) headToHeadMatches.size())) : 0.5;
+
+        if (player1.getPlayerSlug().compareTo(player2.getPlayerSlug()) <= 0 || to_train == false){
+            results.add(playerOneWonHeadToHeadPercentage);
+            results.add(playerTwoWonHeadToHeadPercentage);
+        } else {
+            results.add(playerTwoWonHeadToHeadPercentage);
+            results.add(playerOneWonHeadToHeadPercentage);
+        }
+
+        return results;
+    }
+
+    private List<Double> addTourneyWinningRate(List<Double> results, Player player1, Player player2, String tourneyName, boolean to_train){
+
+        List<Match> player1Matches = (List<Match>) matchService.findAllMatchesByPlayerNameAndTourneyName(player1.getFirstName(), player1.getLastName(), tourneyName);
+        List<Match> player2Matches = (List<Match>) matchService.findAllMatchesByPlayerNameAndTourneyName(player2.getFirstName(), player2.getLastName(), tourneyName);
+
+        return this.addMatchWinningRateToResults(results, player1, player1Matches, player2, player2Matches, to_train);
+    }
+
+    private List<Double> addServicePointWinningRate(List<Double> results, Player player1, Player player2, boolean to_train){
+
+    }
+
     private List<Double> getInputs(Match match){
         try{
             Player winnerPlayer = match.getWinnerPlayer();
@@ -259,7 +319,6 @@ public class PredicterController {
             List<Match> loserPlayerMatches = matchFilter(loserPlayerAllMatches, numberOfLastMatches, date);
             List<Match> winnerPlayerMatchesOnSurface = matchFilter(winnerPlayerAllMatchesOnSelectedSurface, numberOfLastMatchesOnSpecificSurface, date);
             List<Match> loserPlayerMatchesOnSurface = matchFilter(loserPlayerAllMatchesOnSelectedSurface, numberOfLastMatchesOnSpecificSurface, date);
-
             if (winnerPlayerMatches.size() < numberOfLastMatches || loserPlayerMatches.size() < numberOfLastMatches || winnerPlayerMatchesOnSurface.size() < numberOfLastMatchesOnSpecificSurface || loserPlayerMatchesOnSurface.size() < numberOfLastMatchesOnSpecificSurface) return null;
 
             List<Double> list = new ArrayList<Double>();
@@ -269,6 +328,8 @@ public class PredicterController {
             list = addGameAndSetWinningRatesToResults(list, winnerPlayer, winnerPlayerMatches, loserPlayer, loserPlayerMatches, true);
             list = addGameAndSetWinningRatesToResults(list, winnerPlayer, winnerPlayerMatchesOnSurface, loserPlayer, loserPlayerMatchesOnSurface, true);  // wip
             list = addHeadToHeadMatchesWinningRateToResults(list, winnerPlayer, loserPlayer, date, true);
+            list = addHeadToHeadMatchesOnSurfaceWinningRateToResults(list, winnerPlayer, loserPlayer, date, surface, true);
+            list = addTourneyWinningRate(list, winnerPlayer, loserPlayer, match.getTournament().getTourney().getName(), true);
 
             return  list;
 
@@ -278,7 +339,7 @@ public class PredicterController {
 
     }
 
-    private List<Double> getInputsToPredict(Player playerOne, Player playerTwo, String surface){
+    private List<Double> getInputsToPredict(Player playerOne, Player playerTwo, String surface, String tourneyName){
             List<Match> playerOneAllMatches;
             List<Match> playerTwoAllMatches;
 
@@ -324,9 +385,10 @@ public class PredicterController {
             list = addGameAndSetWinningRatesToResults(list, playerOne, playerOneMatches, playerTwo, playerTwoMatches, false);
             list = addGameAndSetWinningRatesToResults(list, playerOne, playerOneMatchesOnSurface, playerTwo, playerTwoMatchesOnSurface, false); // wip
             list = addHeadToHeadMatchesWinningRateToResults(list, playerOne, playerTwo, "2099.01.01", false);
+            list = addHeadToHeadMatchesOnSurfaceWinningRateToResults(list, playerOne, playerTwo, "2099.01.01", surface, false);
+            list = addTourneyWinningRate(list, playerOne, playerTwo, tourneyName, false);
 
         return  list;
-
     }
 
     @GetMapping("/training")
@@ -347,9 +409,9 @@ public class PredicterController {
         System.out.println("Duration of the training  = " + duration);
         System.out.println("Training data length = " + trainData.size());
 
-        String training_data_filename = "training-data-extended-test3.txt";
-        String weight_filename = "weights-extended-test3.txt";
-        String biases_filename = "biases-extended-test3.txt";
+        String training_data_filename = "training-data-extended-test7-tourney.txt";
+        String weight_filename = "weights-extended-test7-tourney.txt";
+        String biases_filename = "biases-extended-test7-tourney.txt";
 
             TrainingDataToJSONConverter.writeToJSONFile(trainData, training_data_filename);
 
@@ -362,21 +424,21 @@ public class PredicterController {
     @GetMapping("/calculate")
     @ResponseBody
     public List<Integer> calculateProbability(@RequestParam String playerOneSlug, @RequestParam String playerTwoSlug, @RequestParam String surface, @RequestParam String tourneyName, @RequestParam String nrOfAllCheckedMatches, @RequestParam String nrOfCheckedMatchesOnSelectedSurface, @RequestParam String nrOfHeadToHeadMatches){
-        System.out.println("I've got the request to PREDICT...");
-       RestTemplate restTemplate = new RestTemplate();
-       String URL = "http://localhost:5000/prediction";
+        System.out.println("I've got the request to PREDICT... " + playerOneSlug + " vs " + playerTwoSlug + " on: " + tourneyName + ", " + surface);
+        RestTemplate restTemplate = new RestTemplate();
+        String URL = "http://localhost:5000/prediction";
 
-       Player playerOne = playerService.findBySlug(playerOneSlug);
-       Player playerTwo = playerService.findBySlug(playerTwoSlug);
+        Player playerOne = playerService.findBySlug(playerOneSlug);
+        Player playerTwo = playerService.findBySlug(playerTwoSlug);
 
-       // Later we can receive these file names from the user => new webpage
-       List<Double> inputs = getInputsToPredict(playerOne, playerTwo, surface);
-       String weight_filename = "weights-extended-test3.txt";
-       String biases_filename = "biases-extended-test3.txt";
+        // Later we can receive these file names from the user => new webpage
+        List<Double> inputs = getInputsToPredict(playerOne, playerTwo, surface, tourneyName);
+        String weight_filename = "weights-extended-test7-tourney.txt";
+        String biases_filename = "biases-extended-test7-tourney.txt";
 
-       PredictionRequestDTO requestDTO = new PredictionRequestDTO(playerOne.getPlayerSlug(), playerTwo.getPlayerSlug(), weight_filename, biases_filename, getInputsToPredict(playerOne, playerTwo, surface));
-       HttpEntity<PredictionRequestDTO> request = new HttpEntity<>(requestDTO);
-       ResponseEntity<PredictionResponseDTO> response;
+        PredictionRequestDTO requestDTO = new PredictionRequestDTO(playerOne.getPlayerSlug(), playerTwo.getPlayerSlug(), weight_filename, biases_filename, getInputsToPredict(playerOne, playerTwo, surface, tourneyName));
+        HttpEntity<PredictionRequestDTO> request = new HttpEntity<>(requestDTO);
+        ResponseEntity<PredictionResponseDTO> response;
 
        try{
            response = restTemplate.postForEntity(URL, request, PredictionResponseDTO.class);
@@ -385,7 +447,6 @@ public class PredicterController {
        } catch (Exception e){
            System.out.println(e);
        }
-
 
        return Arrays.asList(50, 50);
     }

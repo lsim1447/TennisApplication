@@ -8,7 +8,7 @@ import sys
 import os
 import json
 
-NR_OF_INPUTS = 14
+NR_OF_INPUTS = 18
 NR_OF_OUTPUTS = 2
 NR_OF_LAY = 20
 NR_OF_EPOCH = 500
@@ -274,7 +274,7 @@ def revert_input_data(data):
 
 @app.route('/training', methods=['POST'])
 def train():
-    print('training... is in progress ...')
+    print('training...');
     print('request = ', request.json)
 
     network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
@@ -296,26 +296,24 @@ def train():
 
 @app.route('/prediction', methods=['POST'])
 def predict():
-    print('prediction... is in progress ...')
     print('request = ', request.json)
 
     network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
     network.set_weights_and_biases(add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']), False)
     
     numpy_inputs = convert_data_to_input_data(request.json['inputs'])
-    print('inputs = ', numpy_inputs)
     resp_data = network.feedforward(numpy_inputs)
     resp_data_invert = network.feedforward(revert_input_data(numpy_inputs))
 
-    percentage1 = (resp_data[0][0] + resp_data_invert[1][0]) / 2
-    percentage2 = (resp_data[1][0] + resp_data_invert[0][0]) / 2
+    percentage1 = ((resp_data[0][0] + resp_data_invert[1][0]) / 2) * 100
+    percentage2 = ((resp_data[1][0] + resp_data_invert[0][0]) / 2) * 100
     
-    print('percentage1 = ', percentage1)
-    print('percentage2 = ', percentage2)
+    print('Percentage of ', request.json['secondPlayerSlug'], ': ', percentage1)
+    print('Percentage of ', request.json['firstPlayerSlug'], ': ', percentage2)
 
     to_json = {}
-    to_json['first_percentage']  = (percentage2 * 100)
-    to_json['second_percentage'] = (percentage1 * 100)
+    to_json['first_percentage']  = percentage2
+    to_json['second_percentage'] = percentage1
 	
     return app.response_class(
         response=json.dumps(to_json),

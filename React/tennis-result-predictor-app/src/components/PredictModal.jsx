@@ -68,9 +68,9 @@ function PredictModal(props){
         firstPlayerProbability: 50,
         secondPlayerProbability: 50,
 
-        nrOfAllCheckedMatches: 20,
-        nrOfCheckedMatchesOnSelectedSurface: 5,
-        nrOfHeadToHeadMatches: 2,
+        nrOfAllCheckedMatches: 100,
+        nrOfCheckedMatchesOnSelectedSurface: 50,
+        nrOfHeadToHeadMatches: 10,
 
         isLoading: true,
         surfaceOptions: [
@@ -205,21 +205,21 @@ function PredictModal(props){
                                             <SliderContainer className="row">
                                                 <div className="col col-lg">
                                                     <SelectLabel>ALL (latest):</SelectLabel>
-                                                    <Slider min={0} max={100} defaultValue={state.nrOfAllCheckedMatches} marks={all_matches_marks} step={null} onChange={(e) => sliderAllValueChanged(e)}/>
+                                                    <Slider min={20} max={200} defaultValue={state.nrOfAllCheckedMatches} marks={all_matches_marks} step={null} onChange={(e) => sliderAllValueChanged(e)}/>
                                                 </div>
                                             </SliderContainer>
 
                                             <SliderContainer className="row">
                                                 <div className="col col-lg">
                                                     <SelectLabel>On the selected surface (latest):</SelectLabel>
-                                                    <Slider min={0} max={30} defaultValue={state.nrOfCheckedMatchesOnSelectedSurface} marks={matches_on_seleceted_surface_marks} step={null} onChange={(e) => sliderSurfaceValueChanged(e)}/>
+                                                    <Slider min={10} max={100} defaultValue={state.nrOfCheckedMatchesOnSelectedSurface} marks={matches_on_seleceted_surface_marks} step={null} onChange={(e) => sliderSurfaceValueChanged(e)}/>
                                                 </div>
                                             </SliderContainer>
 
                                             <SliderContainer className="row">
                                                 <div className="col col-lg">
                                                     <SelectLabel>Head to Head (latest):</SelectLabel>
-                                                    <Slider min={0} max={10} defaultValue={state.nrOfHeadToHeadMatches} marks={head_to_head_matches_marks} step={null} onChange={(e) => sliderHeadToHeadValueChanged(e)}/>
+                                                    <Slider min={2} max={20} defaultValue={state.nrOfHeadToHeadMatches} marks={head_to_head_matches_marks} step={null} onChange={(e) => sliderHeadToHeadValueChanged(e)}/>
                                                 </div>
                                             </SliderContainer>
                                         </SlidersContainer>

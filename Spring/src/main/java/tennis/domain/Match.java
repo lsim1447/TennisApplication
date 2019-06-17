@@ -25,8 +25,6 @@ public class Match implements Comparable<Match>{
     @JoinColumn(name="loser_player_id")
     private Player loserPlayer;
 
-    private String winner_seed;
-    private String loser_seed;
     private String match_score_tiebreaks;
     private int winner_sets_won;
     private int loser_sets_won;
@@ -34,13 +32,12 @@ public class Match implements Comparable<Match>{
     private int loser_games_won;
     private int winner_tiebreaks_won;
     private int loser_tiebreaks_won;
-    private String match_stats_url_suffix;
 
     public Match(){
 
     }
 
-    public Match(String match_id, String round_name, int round_order, int match_order, Tournament tournament, Player winner_player, Player loser_player, String winner_seed, String loser_seed, String match_score_tiebreaks, int winner_sets_won, int loser_sets_won, int winner_games_won, int loser_games_won, int winner_tiebreaks_won, int loser_tiebreaks_won, String match_stats_url_suffix) {
+    public Match(String match_id, String round_name, int round_order, int match_order, Tournament tournament, Player winner_player, Player loser_player, String match_score_tiebreaks, int winner_sets_won, int loser_sets_won, int winner_games_won, int loser_games_won, int winner_tiebreaks_won, int loser_tiebreaks_won) {
         this.match_id = match_id;
         this.round_name = round_name;
         this.round_order = round_order;
@@ -48,8 +45,6 @@ public class Match implements Comparable<Match>{
         this.tournament = tournament;
         this.winnerPlayer = winner_player;
         this.loserPlayer = loser_player;
-        this.winner_seed = winner_seed;
-        this.loser_seed = loser_seed;
         this.match_score_tiebreaks = match_score_tiebreaks;
         this.winner_sets_won = winner_sets_won;
         this.loser_sets_won = loser_sets_won;
@@ -57,7 +52,6 @@ public class Match implements Comparable<Match>{
         this.loser_games_won = loser_games_won;
         this.winner_tiebreaks_won = winner_tiebreaks_won;
         this.loser_tiebreaks_won = loser_tiebreaks_won;
-        this.match_stats_url_suffix = match_stats_url_suffix;
     }
 
     public String getMatch_id() {
@@ -116,22 +110,6 @@ public class Match implements Comparable<Match>{
         this.loserPlayer = loserPlayer;
     }
 
-    public String getWinner_seed() {
-        return winner_seed;
-    }
-
-    public void setWinner_seed(String winner_seed) {
-        this.winner_seed = winner_seed;
-    }
-
-    public String getLoser_seed() {
-        return loser_seed;
-    }
-
-    public void setLoser_seed(String loser_seed) {
-        this.loser_seed = loser_seed;
-    }
-
     public String getMatch_score_tiebreaks() {
         return match_score_tiebreaks;
     }
@@ -186,14 +164,6 @@ public class Match implements Comparable<Match>{
 
     public void setLoser_tiebreaks_won(int loser_tiebreaks_won) {
         this.loser_tiebreaks_won = loser_tiebreaks_won;
-    }
-
-    public String getMatch_stats_url_suffix() {
-        return match_stats_url_suffix;
-    }
-
-    public void setMatch_stats_url_suffix(String match_stats_url_suffix) {
-        this.match_stats_url_suffix = match_stats_url_suffix;
     }
 
     @Override

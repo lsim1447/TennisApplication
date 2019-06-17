@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import tennis.domain.*;
 import tennis.service.*;
 import tennis.utils.CSVReader;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -146,9 +148,25 @@ public class UploadDatabaseController {
                 .map(line -> new Tourney(line.get(2), line.get(1), line.get(3), line.get(4), line.get(7), line.get(8)))
                 .collect(Collectors.toList());
 
-        for (Tourney tourney : tourneys) {
-            tourneyService.save(tourney);
+        HashMap<String, Tourney> map = new HashMap<>();
+        int i = tourneys.size();
+        String key = "";
+        Tourney value;
+
+        while (i > 0) {
+            i--;
+            key = tourneys.get(i).getName();
+            value = tourneys.get(i);
+            if (!map.containsKey(key)){
+                map.put(key, value);
+            }
         }
+
+        map.forEach((k, v) -> {
+            System.out.println("Saving the following tourney to the database: " + v.getName());
+            tourneyService.save(v);
+        });
+
         return tourneys;
     }
 
@@ -165,8 +183,7 @@ public class UploadDatabaseController {
                     tournament.setSinglesDraw(Integer.parseInt(line.get(6)));
                     tournament.setUrlSuffix(line.get(9));
 
-                    Tourney tourney = new Tourney();
-                    tourney.setTourney_id(line.get(2));
+                    Tourney tourney = tourneyService.findTourneyById(line.get(2));
                     tournament.setTourney(tourney);
 
                     Player player = playerService.findPlayerById(line.get(13));
@@ -177,9 +194,10 @@ public class UploadDatabaseController {
 
         tournaments.forEach(tournament -> {
             try{
+                System.out.println("Saving the following tournament to the database: " + tournament.getTournament_year_id());
                 tournamentService.save(tournament);
             } catch (Exception e){
-                System.out.println("Player not found!");
+                System.out.println("Sorry! We are not able to save this tournament to the database.");
             }
         });
 
@@ -188,13 +206,13 @@ public class UploadDatabaseController {
 
     @GetMapping("/matches")
     public List<Match> uploadDatabaseWithMatches(){
-        List<List<String>> data = CSVReader.getData("match_scores_2017-2020").stream().collect(Collectors.toList());
+        List<List<String>> data = CSVReader.getData("match_scores_1991-2016").stream().collect(Collectors.toList());
         List<Match> matches = data.stream()
                 .map((line) -> {
                     Match match = new Match();
                     System.out.println("LINE = " + line);
 
-                    match.setMatch_id(line.get(19));
+                    match.setMatch_id(line.get(17));
                     match.setRound_name(line.get(1));
                     match.setRound_order(Integer.parseInt(line.get(2)));
                     match.setMatch_order(Integer.parseInt(line.get(3)));
@@ -208,20 +226,13 @@ public class UploadDatabaseController {
                     Player loserPlayer = playerService.findPlayerById(line.get(8));
                     match.setLoserPlayer(loserPlayer);
 
-                    match.setWinner_seed(line.get(10));
-                    match.setLoser_seed(line.get(11));
-                    match.setMatch_score_tiebreaks(line.get(12));
-                    match.setWinner_sets_won(Integer.parseInt(line.get(13)));
-                    match.setLoser_sets_won(Integer.parseInt(line.get(14)));
-                    match.setWinner_games_won(Integer.parseInt(line.get(15)));
-                    match.setLoser_games_won(Integer.parseInt(line.get(16)));
-                    match.setWinner_tiebreaks_won(Integer.parseInt(line.get(17)));
-                    match.setLoser_tiebreaks_won(Integer.parseInt(line.get(18)));
-                    try{
-                        match.setMatch_stats_url_suffix(line.get(20));
-                    } catch (Exception e){
-
-                    }
+                    match.setMatch_score_tiebreaks(line.get(10));
+                    match.setWinner_sets_won(Integer.parseInt(line.get(11)));
+                    match.setLoser_sets_won(Integer.parseInt(line.get(12)));
+                    match.setWinner_games_won(Integer.parseInt(line.get(13)));
+                    match.setLoser_games_won(Integer.parseInt(line.get(14)));
+                    match.setWinner_tiebreaks_won(Integer.parseInt(line.get(15)));
+                    match.setLoser_tiebreaks_won(Integer.parseInt(line.get(16)));
                     return  match;
                 })
                 .collect(Collectors.toList());
@@ -241,7 +252,7 @@ public class UploadDatabaseController {
 
     @GetMapping("/stats")
     public List<Stats> uploadDatabaseWithStats(){
-        List<List<String>> data = CSVReader.getData("match_stats_2018_0").stream().collect(Collectors.toList());
+        List<List<String>> data = CSVReader.getData("match_stats_1991-2016").stream().collect(Collectors.toList());
         List<Stats> stats = data.stream()
                 .map((line) -> {
                     Stats stat = new Stats();
@@ -312,7 +323,7 @@ public class UploadDatabaseController {
         for (int i = 0; i < stats.size(); i++) {
             try{
                 statsService.save(stats.get(i));
-                System.out.println("STATS nr = " + i + "  ===> id = " + stats.get(i).getMatch().getMatch_id());
+                System.out.println("STATS nr = " + i);
             } catch (Exception e){
                 System.out.println(e.getMessage());
             }
