@@ -206,7 +206,7 @@ public class UploadDatabaseController {
 
     @GetMapping("/matches")
     public List<Match> uploadDatabaseWithMatches(){
-        List<List<String>> data = CSVReader.getData("match_scores_1991-2016").stream().collect(Collectors.toList());
+        List<List<String>> data = CSVReader.getData("match_scores_2013-2016").stream().collect(Collectors.toList());
         List<Match> matches = data.stream()
                 .map((line) -> {
                     Match match = new Match();
@@ -252,7 +252,7 @@ public class UploadDatabaseController {
 
     @GetMapping("/stats")
     public List<Stats> uploadDatabaseWithStats(){
-        List<List<String>> data = CSVReader.getData("match_stats_1991-2016").stream().collect(Collectors.toList());
+        List<List<String>> data = CSVReader.getData("match_stats_2013-2016").stream().collect(Collectors.toList());
         List<Stats> stats = data.stream()
                 .map((line) -> {
                     Stats stat = new Stats();

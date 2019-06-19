@@ -2,25 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b0392ac-c066-4eee-a024-48f2ef94d32f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Python/NeuralNetwork.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Python/NeuralNetwork.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Python/settings/biases-extended-test3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Python/settings/biases-extended-test4.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Python/settings/biases-extended-test5.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Python/settings/biases-extended-test6-tourney.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Python/settings/training-data-extended-test3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Python/settings/training-data-extended-test4.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Python/settings/training-data-extended-test5.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Python/settings/training-data-extended-test6-tourney.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Python/settings/weights-extended-test3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Python/settings/weights-extended-test4.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Python/settings/weights-extended-test5.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Python/settings/weights-extended-test6-tourney.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Python/settings/biases-extended-test7-tourney.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Python/settings/biases-extended-test7-tourney.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Python/settings/training-data-extended-test7-tourney.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Python/settings/training-data-extended-test7-tourney.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Python/settings/weights-extended-test7-tourney.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Python/settings/weights-extended-test7-tourney.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tennis/controller/UploadDatabaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tennis/controller/UploadDatabaseController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tennis/service/PredicterService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tennis/service/PredicterService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/tennis/controller/PredicterController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/tennis/controller/PredicterController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/tennis/service/PredicterService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/tennis/service/PredicterService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tennis/service/StatsService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/tennis/service/StatsService.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -51,11 +43,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="79">
-              <caret line="417" column="25" selection-start-line="417" selection-start-column="25" selection-end-line="417" selection-end-column="25" />
+            <state relative-caret-position="449">
+              <caret line="509" column="59" lean-forward="true" selection-start-line="509" selection-start-column="59" selection-end-line="509" selection-end-column="59" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#convertToPercentage#0;class#PredicterController#0" />
@@ -64,20 +56,32 @@
                 <element signature="method#addHeadToHeadMatchesWinningRateToResults#0;class#PredicterController#0" />
                 <element signature="method#addMatchWinningRateToResults#0;class#PredicterController#0" />
                 <element signature="method#addGameAndSetWinningRatesToResults#0;class#PredicterController#0" />
-                <element signature="method#addHeadToHeadMatchesOnSurfaceWinningRateToResults#0;class#PredicterController#0" />
-                <element signature="method#addTourneyWinningRate#0;class#PredicterController#0" />
                 <element signature="method#addServiceAndReturnStatistics#0;class#PredicterController#0" />
+                <element signature="method#getInputs#0;class#PredicterController#0" />
                 <element signature="method#getInputsToPredict#0;class#PredicterController#0" />
+                <element signature="method#calculateProbability#0;class#PredicterController#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/PredicterService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="691">
-              <caret line="107" column="22" selection-start-line="107" selection-start-column="22" selection-end-line="107" selection-end-column="22" />
+            <state relative-caret-position="873">
+              <caret line="160" column="73" lean-forward="true" selection-start-line="160" selection-start-column="73" selection-end-line="160" selection-end-column="73" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/StatsService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="601">
+              <caret line="41" column="16" selection-start-line="41" selection-start-column="16" selection-end-line="41" selection-end-column="46" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -177,12 +181,12 @@
         <option value="$PROJECT_DIR$/src/main/java/tennis/model/PredictionRequestDTO.java" />
         <option value="$PROJECT_DIR$/src/main/java/tennis/model/TrainingRequestDTO.java" />
         <option value="$PROJECT_DIR$/src/main/java/tennis/utils/python/TrainingDataToJSONConverter.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/src/main/java/tennis/domain/Match.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tennis/controller/UploadDatabaseController.java" />
         <option value="$PROJECT_DIR$/src/main/java/tennis/service/StatsService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tennis/controller/UploadDatabaseController.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/src/main/java/tennis/service/PredicterService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java" />
       </list>
     </option>
   </component>
@@ -205,7 +209,8 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-7" />
+    <option name="x" value="417" />
+    <option name="y" value="17" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
   </component>
@@ -216,7 +221,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -306,6 +310,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -453,8 +458,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26652452" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.271855" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -464,7 +470,7 @@
       <window_info id="Web" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.49404117" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.22535211" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -784,13 +790,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="49" selection-start-line="1" selection-start-column="49" selection-end-line="1" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tennis/domain/Tournament.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -831,21 +830,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/UploadDatabaseController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="816">
-          <caret line="253" column="48" selection-start-line="253" selection-start-column="48" selection-end-line="253" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#uploadDatabaseWithMenPlayers#0;class#UploadDatabaseController#0" />
-            <element signature="method#uploadDatabaseWithTourneys#0;class#UploadDatabaseController#0" />
-            <element signature="method#uploadDatabaseWithTournaments#0;class#UploadDatabaseController#0" />
-            <element signature="method#uploadDatabaseWithMatches#0;class#UploadDatabaseController#0" />
-            <element signature="method#uploadDatabaseWithStats#0;class#UploadDatabaseController#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tennis/model/TrainData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -880,16 +864,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/StatsService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="314">
-          <caret line="26" selection-start-line="26" selection-end-line="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tennis/domain/Stats.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
@@ -897,10 +871,51 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/StatsService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="601">
+          <caret line="41" column="16" selection-start-line="41" selection-start-column="16" selection-end-line="41" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/UploadDatabaseController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="506">
+          <caret line="200" column="13" lean-forward="true" selection-start-line="200" selection-start-column="13" selection-end-line="200" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#uploadDatabaseWithMenPlayers#0;class#UploadDatabaseController#0" />
+            <element signature="method#uploadDatabaseWithTourneys#0;class#UploadDatabaseController#0" />
+            <element signature="method#uploadDatabaseWithMatches#0;class#UploadDatabaseController#0" />
+            <element signature="method#uploadDatabaseWithStats#0;class#UploadDatabaseController#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/PredicterService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="873">
+          <caret line="160" column="73" lean-forward="true" selection-start-line="160" selection-start-column="73" selection-end-line="160" selection-end-column="73" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="79">
-          <caret line="417" column="25" selection-start-line="417" selection-start-column="25" selection-end-line="417" selection-end-column="25" />
+        <state relative-caret-position="449">
+          <caret line="509" column="59" lean-forward="true" selection-start-line="509" selection-start-column="59" selection-end-line="509" selection-end-column="59" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#convertToPercentage#0;class#PredicterController#0" />
@@ -909,20 +924,10 @@
             <element signature="method#addHeadToHeadMatchesWinningRateToResults#0;class#PredicterController#0" />
             <element signature="method#addMatchWinningRateToResults#0;class#PredicterController#0" />
             <element signature="method#addGameAndSetWinningRatesToResults#0;class#PredicterController#0" />
-            <element signature="method#addHeadToHeadMatchesOnSurfaceWinningRateToResults#0;class#PredicterController#0" />
-            <element signature="method#addTourneyWinningRate#0;class#PredicterController#0" />
             <element signature="method#addServiceAndReturnStatistics#0;class#PredicterController#0" />
+            <element signature="method#getInputs#0;class#PredicterController#0" />
             <element signature="method#getInputsToPredict#0;class#PredicterController#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/PredicterService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="691">
-          <caret line="107" column="22" selection-start-line="107" selection-start-column="22" selection-end-line="107" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="method#calculateProbability#0;class#PredicterController#0" />
           </folding>
         </state>
       </provider>

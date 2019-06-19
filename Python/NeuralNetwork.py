@@ -11,7 +11,7 @@ import json
 NR_OF_INPUTS = 30
 NR_OF_OUTPUTS = 2
 NR_OF_LAY = 20
-NR_OF_EPOCH = 750
+NR_OF_EPOCH = 2000
 
 app = Flask(__name__)
 
