@@ -410,8 +410,7 @@ public class PredicterController {
             List<Match> winnerPlayerMatchesOnTournament = matchFilter(winnerPlayerAllMatchesOnTournament, numberOfLastMatchesOnTournament, date);
             List<Match> loserPlayerMatchesOnTournament = matchFilter(loserPlayerAllMatchesOnTournament, numberOfLastMatchesOnTournament, date);
 
-            if (winnerPlayerMatches.size() < 20 || loserPlayerMatches.size() < 20 || winnerPlayerMatchesOnSurface.size() < 10 || loserPlayerMatchesOnSurface.size() < 10)
-                return null;
+            if (winnerPlayerMatches.size() < 20 || loserPlayerMatches.size() < 20 || winnerPlayerMatchesOnSurface.size() < 10 || loserPlayerMatchesOnSurface.size() < 10) return null;
 
             List<Double> list = new ArrayList<Double>();
 
@@ -423,6 +422,7 @@ public class PredicterController {
             list = addHeadToHeadMatchesOnSurfaceWinningRateToResults(list, winnerPlayer, loserPlayer, date, surface, true);
             list = addTourneyWinningRate(list, winnerPlayer, winnerPlayerMatchesOnTournament, loserPlayer, loserPlayerMatchesOnTournament, true);
             list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerMatches, loserPlayer, loserPlayerMatches, true);
+            list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerMatchesOnSurface, loserPlayer, loserPlayerMatchesOnSurface, true);
 
             return  list;
 
@@ -484,6 +484,7 @@ public class PredicterController {
             list = addHeadToHeadMatchesOnSurfaceWinningRateToResults(list, playerOne, playerTwo, "2099.01.01", surface, false);
             list = addTourneyWinningRate(list, playerOne, player1AllMatchesOnTournament, playerTwo, player2AllMatchesOnTournament, false);
             list = addServiceAndReturnStatistics(list, playerOne, playerOneMatches, playerTwo, playerOneMatches, false);
+            list = addServiceAndReturnStatistics(list, playerOne, playerOneMatchesOnSurface, playerTwo, playerTwoMatchesOnSurface, false);
 
         return  list;
     }
@@ -506,9 +507,9 @@ public class PredicterController {
         System.out.println("Duration of the training  = " + duration);
         System.out.println("Training data length = " + trainData.size());
 
-        String training_data_filename = "training-data-extended-test10.txt";
-        String weight_filename = "weights-extended-test10.txt";
-        String biases_filename = "biases-extended-test10.txt";
+        String training_data_filename = "training-data-1991-2016-stats-all-matches-and-surface-matches.txt";
+        String weight_filename = "weights-1991-2016-stats-all-matches-and-surface-matches.txt";
+        String biases_filename = "biases-1991-2016-stats-all-matches-and-surface-matches.txt";
 
             TrainingDataToJSONConverter.writeToJSONFile(trainData, training_data_filename);
 
@@ -530,8 +531,8 @@ public class PredicterController {
 
         // Later we can receive these file names from the user => new webpage
         List<Double> inputs = getInputsToPredict(playerOne, playerTwo, surface, tourneyName);
-        String weight_filename = "weights-extended-test10.txt";
-        String biases_filename = "biases-extended-test10.txt";
+        String weight_filename = "weights-1991-2016-stats-all-matches-and-surface-matches.txt";
+        String biases_filename = "biases-1991-2016-stats-all-matches-and-surface-matches.txt";
 
         PredictionRequestDTO requestDTO = new PredictionRequestDTO(playerOne.getPlayerSlug(), playerTwo.getPlayerSlug(), weight_filename, biases_filename, getInputsToPredict(playerOne, playerTwo, surface, tourneyName));
         HttpEntity<PredictionRequestDTO> request = new HttpEntity<>(requestDTO);
