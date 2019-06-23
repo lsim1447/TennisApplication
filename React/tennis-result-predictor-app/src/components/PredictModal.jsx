@@ -68,9 +68,9 @@ function PredictModal(props){
         firstPlayerProbability: 50,
         secondPlayerProbability: 50,
 
-        nrOfAllCheckedMatches: 100,
-        nrOfCheckedMatchesOnSelectedSurface: 50,
-        nrOfHeadToHeadMatches: 10,
+        nrOfAllCheckedMatches: 160,
+        nrOfCheckedMatchesOnSelectedSurface: 100,
+        nrOfHeadToHeadMatches: 12,
 
         isLoading: true,
         surfaceOptions: [
@@ -120,13 +120,6 @@ function PredictModal(props){
         setState({ ...state, selectedTourney: tourney, selectedSurface: selectedSurface})
     }
 
-    function train(e){
-        get_request(`${DEFALULT_SERVER_URL}/prediction/training`)
-            .then( response => {
-                console.log('response waze = ', response)
-            })
-    }
-
     function predictResult(e){
         const selectedSurface = state.selectedTourney.value;
         const selectedTourney = state.selectedTourney.label;
@@ -174,55 +167,15 @@ function PredictModal(props){
                             
                             <div className="row">
                                 <div className="col-lg">
-                                    <p>
-                                        <button onClick={(e) => train(e)}> Train </button>
-                                        <a style={{marginTop: "24px"}} className="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                            Settings
-                                            <Icon src="./../images/icons/settings.jpg" alt="" />
-                                        </a>
-                                        
-                                    </p>
-                                    <div className="collapse" id="collapseExample">
-                                        <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                                            <strong>Be careful!</strong> These settings affect the outcome of the prediction!
-                                            <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                                    <div className="row">
+                                        <div className="col col-lg">
+                                            <SelectLabel>Surface:</SelectLabel>
+                                            <Select value={state.selectedSurface} options={state.surfaceOptions} onChange={(e) => surfaceOnChanged(e)}></Select>
                                         </div>
-
-                                        <div className="row">
-                                            <div className="col col-lg">
-                                                <SelectLabel>Surface:</SelectLabel>
-                                                <Select value={state.selectedSurface} options={state.surfaceOptions} onChange={(e) => surfaceOnChanged(e)}></Select>
-                                            </div>
-                                            <div className="col col-lg">
-                                                <SelectLabel>Tournament:</SelectLabel>
-                                                <Select value={state.selectedTourney} options={state.tournamentOptions} onChange={(e) => tourneyOnChanged(e)}></Select>
-                                            </div>
+                                        <div className="col col-lg">
+                                            <SelectLabel>Tournament:</SelectLabel>
+                                            <Select value={state.selectedTourney} options={state.tournamentOptions} onChange={(e) => tourneyOnChanged(e)}></Select>
                                         </div>
-                                        <SlidersContainer>
-                                            <h1>Advanced settings</h1>
-                                            <SliderContainer className="row">
-                                                <div className="col col-lg">
-                                                    <SelectLabel>ALL (latest):</SelectLabel>
-                                                    <Slider min={20} max={200} defaultValue={state.nrOfAllCheckedMatches} marks={all_matches_marks} step={null} onChange={(e) => sliderAllValueChanged(e)}/>
-                                                </div>
-                                            </SliderContainer>
-
-                                            <SliderContainer className="row">
-                                                <div className="col col-lg">
-                                                    <SelectLabel>On the selected surface (latest):</SelectLabel>
-                                                    <Slider min={10} max={100} defaultValue={state.nrOfCheckedMatchesOnSelectedSurface} marks={matches_on_seleceted_surface_marks} step={null} onChange={(e) => sliderSurfaceValueChanged(e)}/>
-                                                </div>
-                                            </SliderContainer>
-
-                                            <SliderContainer className="row">
-                                                <div className="col col-lg">
-                                                    <SelectLabel>Head to Head (latest):</SelectLabel>
-                                                    <Slider min={2} max={20} defaultValue={state.nrOfHeadToHeadMatches} marks={head_to_head_matches_marks} step={null} onChange={(e) => sliderHeadToHeadValueChanged(e)}/>
-                                                </div>
-                                            </SliderContainer>
-                                        </SlidersContainer>
                                     </div>
                                 </div>
                             </div>

@@ -4,13 +4,11 @@ import { AppContext } from '../AppContextProvider';
 import styled from 'styled-components';
 
 const FooterContainer = styled.div `
-    margin-top: 100px;
     bottom:0;
     min-height: 80px;
     background-color: #343a40;
     color: white;
     text-align: center;
-
     clear: both;
     position: relative;
 `;

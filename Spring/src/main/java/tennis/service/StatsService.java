@@ -22,9 +22,14 @@ public class StatsService {
     public Stats findStatsByMatchId(String match_id){
         Match match = matchRepository.findById(match_id).orElse(null);
         if (match != null){
-            return statsRepository.findByMatch(match);
+            try{
+                return statsRepository.findByMatch(match);
+            } catch (Exception e){
+                System.out.println("More then on STAT with the same  MATCH_ID or MATCH_ID doesn't exists.");
+                return null;
+            }
         } else {
-            return new Stats();
+            return null;
         }
     }
 

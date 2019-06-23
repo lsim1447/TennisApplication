@@ -8,9 +8,10 @@ import sys
 import os
 import json
 
-NR_OF_INPUTS = 42
+NR_OF_INPUTS = 54
 NR_OF_OUTPUTS = 2
 NR_OF_LAY = 20
+NR_OF_INNER_LAY = 8
 NR_OF_EPOCH = 2000
 
 app = Flask(__name__)
@@ -22,6 +23,9 @@ class Network(object):
         self.biases = [numpy.random.randn(x, 1) for x in sizes[1:]]
         self.weights = [numpy.random.randn(y, x) for x, y in zip(sizes[:-1], sizes[1:])]
         self.data = []
+        self.max_biases = []
+        self.max_weights = []
+        self.max_percentage = 0
 
     def feedforward(self, a):
         for bias, weight in zip(self.biases, self.weights):
@@ -36,9 +40,15 @@ class Network(object):
             right = self.evaluate(data)
             whole = len(data)
             cur = right / whole
-            print("Epoch", j, ":", cur)
-        self.write_weights_to_file(self.weights, weight_filename)    
-        self.write_biases_to_file(self.biases, biases_filename)
+            print("Epoch", j, ":", cur*100, "%")
+            if cur > self.max_percentage:
+                self.max_percentage = cur
+                self.max_biases = self.biases
+                self.max_weights = self.weights
+
+        self.write_weights_to_file(self.max_weights, weight_filename)    
+        self.write_biases_to_file(self.max_biases, biases_filename)
+        print("Max percentage = ", self.max_percentage * 100, "%")
 
     def update(self, data, eta):
         dif_bias = [numpy.zeros(b.shape) for b in self.biases]
@@ -277,7 +287,8 @@ def train():
     print('training...');
     print('request = ', request.json)
 
-    network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
+    NR_OF_INPUTS = request.json['nr_of_input_data']
+    network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_INNER_LAY, NR_OF_OUTPUTS])
     network.set_init_settings_before_training(add_relative_path(request.json['training_data_filename']))
     network.set_weights_and_biases(add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']), request.json['with_new_settings'])
     network.training(network.data, 1.0, 0.9, add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']))
@@ -298,7 +309,7 @@ def train():
 def predict():
     print('request = ', request.json)
 
-    network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
+    network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_INNER_LAY, NR_OF_OUTPUTS])
     network.set_weights_and_biases(add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']), False)
     
     numpy_inputs = convert_data_to_input_data(request.json['inputs'])

@@ -4,8 +4,11 @@ import org.springframework.stereotype.Service;
 import tennis.domain.Player;
 import tennis.domain.Stats;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +25,11 @@ public class PredicterService {
         new_percentages.add((int) Math.round(a));
         new_percentages.add((int) Math.round(b));
         return new_percentages;
+    }
+
+    public void printDateToConsole(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        System.out.println(dateFormat.format(date));
     }
 
     public double getServicePointsWonRate(List<Stats> playerStats, Player player){
@@ -77,9 +85,9 @@ public class PredicterService {
         double playerFirstServeInRate = (playerStats.stream()
                 .map(stat -> {
                     if (stat.getMatch().getWinnerPlayer().getPlayerSlug().equals(player.getPlayerSlug())){
-                        return stat.getWinner_first_serves_in() / (double) stat.getWinner_first_serve_points_total();
+                        return stat.getWinner_first_serves_in() / (double) stat.getWinner_first_serves_total();
                     } else {
-                        return stat.getLoser_first_serves_in() / (double) stat.getLoser_first_serve_points_total();
+                        return stat.getLoser_first_serves_in() / (double) stat.getLoser_first_serves_total();
                     }
                 })
                 .reduce(0.00, (a, b) -> a + b));
