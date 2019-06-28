@@ -8,11 +8,11 @@ import sys
 import os
 import json
 
-NR_OF_INPUTS = 54
+NR_OF_INPUTS = 60
 NR_OF_OUTPUTS = 2
 NR_OF_LAY = 20
 NR_OF_INNER_LAY = 8
-NR_OF_EPOCH = 2000
+NR_OF_EPOCH = 10000
 
 app = Flask(__name__)
 
@@ -25,7 +25,8 @@ class Network(object):
         self.data = []
         self.max_biases = []
         self.max_weights = []
-        self.max_percentage = 0
+        self.max_percentage = 0.0
+        self.history = []
 
     def feedforward(self, a):
         for bias, weight in zip(self.biases, self.weights):
@@ -34,6 +35,7 @@ class Network(object):
 
     def training(self, data, eta, epsilon, weight_filename, biases_filename):
         j = 0
+        self.history = []
         while j < NR_OF_EPOCH:
             j += 1
             self.update(data, eta)
@@ -41,6 +43,7 @@ class Network(object):
             whole = len(data)
             cur = right / whole
             print("Epoch", j, ":", cur*100, "%")
+            self.history.append(cur*100)
             if cur > self.max_percentage:
                 self.max_percentage = cur
                 self.max_biases = self.biases
@@ -294,10 +297,10 @@ def train():
     network.training(network.data, 1.0, 0.9, add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']))
 
     to_json = {}
-    to_json['kecske'] = 'Mr Kecske'
-    to_json['beka'] = 'Mr Beka'
-    to_json['malac'] = 142
-    
+    to_json['training_data_filename'] = request.json['training_data_filename']
+    to_json['highest_percentage'] = network.max_percentage
+    to_json['history'] = network.history
+
     return app.response_class(
         response=json.dumps(to_json),
         status=200,

@@ -1,0 +1,22 @@
+Mental: (+ input data: 2x(all, surface, tournament, 1v1) = 😎
+	- winning rate of the specific tournament stage
+		- winning rate of finals, semifinals, quaterfinals, allTheOther ? (probably not enough  - we should work with the RoundOrder).
+		- All matches:
+		      - minimum 2 appearances in the specific stage
+		- surface
+		      - minimum 2 appearances in the specific stage
+		- tournament:
+		      - NONE - I guess there is no enough data to calculate this(to be util)
+		- 1vs1 ? ...
+
+
+Steps:
+	adding the following method to MatchService:
+	
+	private boolean filterBySelectedYear(Match match, int roundOrder){
+		return (roundOrder == match.round_order);		
+    	}
+	playerOnAllMatchesOnSelected
+	
+	
+	weights-2013-2016-stats-all-surface-tournament-mental-matches -------------------- 2787

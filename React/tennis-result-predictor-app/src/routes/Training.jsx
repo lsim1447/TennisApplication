@@ -4,6 +4,7 @@ import { get_request, post_request } from './../util/Request';
 import { DEFALULT_SERVER_URL } from '../constants';
 import styled from 'styled-components';
 import TrainingProcessChart from './../components/TrainingProcessChart';
+import swal from 'sweetalert2';
 
 const FormContainer = styled.div `
     width: 100%;
@@ -35,50 +36,32 @@ const Title = styled.h1 `
 function Training(props) {
     const context =  useContext(AppContext);
     
+    const [ version, setVersion ] = useState('');
+    const [ description, setDescription ] = useState('');
+
     const [ state, setState ] = useState({
-        filename: '',
-        description: '',
-        tableData: [
-            {
-                date: "6/22/2019",
-                percentage: "68",
-                filename: "1991-2016-stats-all-surface-tournament-matches"
-            },
-            {
-                date: "6/21/2019",
-                percentage: "66",
-                filename: "2013-2016-stats-all-surface-tournament-matches"
-            },
-            {
-                date: "6/19/2019",
-                percentage: "63",
-                filename: "1991-2016-stats-all-surface-tournament-matches"
-            },
-            {
-                date: "6/22/2019",
-                percentage: "68",
-                filename: "1991-2016-stats-all-surface-tournament-matches"
-            },
-            {
-                date: "6/21/2019",
-                percentage: "66",
-                filename: "2013-2016-stats-all-surface-tournament-matches"
-            },
-            {
-                date: "6/19/2019",
-                percentage: "63",
-                filename: "1991-2016-stats-all-surface-tournament-matches"
-            },
-        ],
-        selectedRow: {}
+        trainingDescriptions: [],
+        selectedRow: {
+            trainingDescription: {},
+            list: []
+        },
+        valuesToChart: []
     });
 
     useEffect(() => {
-        console.log('training...');
-    });
+        get_request(`${DEFALULT_SERVER_URL}/training/description/all`)
+            .then( response => {
+                setState({...state, trainingDescriptions: response});
+            })
+
+    }, []);
 
     function rowOnClick(row){
-        setState({...state, selectedRow: row})
+        get_request(`${DEFALULT_SERVER_URL}/training/results/data/training_id?training_id=${encodeURIComponent(row.training_id)}`)
+            .then( response => {
+                const values = response.list.map(element => element.percentage);
+                setState({...state, selectedRow: response, valuesToChart: values});
+            })
     }
 
     function renderTableRows(data){
@@ -86,18 +69,28 @@ function Training(props) {
             return (
                 <tr key={index} data-toggle="modal" data-target=".bd-example-modal-lg" onClick={() => rowOnClick(row)}>
                     <th scope="row">{index+1}</th>
+                    <td>{row.training_id}</td>
                     <td>{row.date}</td>
-                    <td>{row.percentage}%</td>
-                    <td>{row.filename}</td>
+                    <td>{row.highestRate}%</td>
+                    <td>{row.description}</td>
                 </tr>
             )
         })
     }
 
     function train(e){
-        get_request(`${DEFALULT_SERVER_URL}/prediction/training`)
+        console.log('Version = ', version);
+        console.log('Description = ', description);
+        get_request(`${DEFALULT_SERVER_URL}/prediction/training?version=${encodeURIComponent(version)}&description=${encodeURIComponent(description)}`)
             .then( response => {
-                console.log('response waze = ', response)
+                console.log('response waze = ', response);
+                swal.fire({
+                    position: 'center',
+                    type: 'success',
+                    title: 'The training has been finished!',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
             })
     }
 
@@ -105,21 +98,21 @@ function Training(props) {
         <div className="row">
             <LateralDiv className="col-sm-2"></LateralDiv>
             <div className="col-sm-8">
-                <Title className="display-4 text-center">Setup training </Title>
+                <Title className="display-4 text-center"><strong>Setup training</strong></Title>
                 <FormContainer>
                     <form>
                         <div className="form-group row">
                             <div className="col-sm-3">
-                                <label htmlFor="inputEmail3" className="col-form-label"><h3>File name:</h3></label>
+                                <label htmlFor="inputVersion" className="col-form-label"><h3>Training Version:</h3></label>
                             </div>
                             <div className="col-sm-9">
                                 <input 
                                     type="text" 
                                     className="form-control" 
-                                    id="inputEmail3" 
-                                    placeholder="ex. 1991-2019-all-surface-tournament-stats" 
-                                    value={state.filename} 
-                                    onChange={(e) => setState({...state, filename: e.value})}/>
+                                    id="inputVersion" 
+                                    placeholder="This version number will be the part of the training files"
+                                    value={version} 
+                                    onChange={(e) => setVersion(e.target.value)}/>
                             </div>
                         </div>
                         <div className="form-group row">
@@ -131,9 +124,9 @@ function Training(props) {
                                     type="text" 
                                     className="form-control" 
                                     id="inputDescription" 
-                                    placeholder="write something about the training"
-                                    value={state.filename} 
-                                    onChange={(e) => setState({...state, filename: e.value})}/>
+                                    placeholder="Write something about this training which will help you identify this training in the feature"
+                                    value={description} 
+                                    onChange={(e) => setDescription(e.target.value)}/>
                             </div>
                         </div>
                         <fieldset className="form-group">
@@ -280,13 +273,14 @@ function Training(props) {
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Version</th>
                                 <th scope="col">Date</th>
                                 <th scope="col">Highest percentage</th>
-                                <th scope="col">Filename</th>
+                                <th scope="col">Description</th>
                             </tr>
                         </thead>
                         <tbody>
-                            { renderTableRows(state.tableData)}
+                            { renderTableRows(state.trainingDescriptions)}
                         </tbody>
                     </table>
                 </TableContainer>
@@ -297,16 +291,18 @@ function Training(props) {
                 <div className="modal-dialog modal-lg">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalCenterTitle">Training details</h5>
+                            <h2 className="modal-title" id="exampleModalCenterTitle">Training details</h2>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div className="modal-body">
-                            <div> Date =  {state.selectedRow.date} </div>
-                            <div> Percentage =  {state.selectedRow.percentage}% </div>
-                            <div> Filename =  {state.selectedRow.filename} </div>
-                            <TrainingProcessChart />
+                            <div className="text-center"> <h4>{state.selectedRow.trainingDescription.description}</h4></div>
+                            <div className="text-center">
+                                (<label>Date: {state.selectedRow.trainingDescription.date}</label> 
+                                <label style={{paddingLeft: "12px"}}>Final percentage: {state.selectedRow.trainingDescription.highestRate}%</label>)
+                            </div>
+                            <TrainingProcessChart data={state.valuesToChart} labels={Array.from(Array(state.valuesToChart.length).keys())}/>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>

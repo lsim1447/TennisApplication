@@ -27,9 +27,9 @@ public class PredicterService {
         return new_percentages;
     }
 
-    public void printDateToConsole(Date date){
+    public String getCurrentDate(Date date){
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        System.out.println(dateFormat.format(date));
+        return dateFormat.format(date);
     }
 
     public double getServicePointsWonRate(List<Stats> playerStats, Player player){

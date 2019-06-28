@@ -5,9 +5,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import tennis.domain.Match;
-import tennis.domain.Player;
-import tennis.domain.Stats;
+import tennis.domain.*;
 import tennis.model.*;
 import tennis.service.*;
 import tennis.utils.python.TrainingDataToJSONConverter;
@@ -32,24 +30,21 @@ public class PredicterController {
     private HashMap<String, List<Match>> matchMapHeadToHeadOnSurface = new HashMap<>();
     private HashMap<String, List<Match>> matchMapOnTournament = new HashMap<>();
 
-    @Autowired
-    private PredicterService predicterService;
+    @Autowired private PredicterService predicterService;
 
-    @Autowired
-    private MatchService matchService;
+    @Autowired private MatchService matchService;
 
-    @Autowired
-    private StatsService statsService;
+    @Autowired private StatsService statsService;
 
-    @Autowired
-    private PlayerService playerService;
+    @Autowired private PlayerService playerService;
 
-    @Autowired
-    private TournamentService tournamentService;
+    @Autowired private TournamentService tournamentService;
 
-    @Autowired
-    private TourneyService tourneyService;
+    @Autowired private TourneyService tourneyService;
 
+    @Autowired private TrainingDescriptionService trainingDescriptionService;
+
+    @Autowired private TrainingResultsDataService trainingResultsDataService;
 
     @Autowired
     public PredicterController(){
@@ -354,6 +349,35 @@ public class PredicterController {
         return results;
     }
 
+    private List<Double> addRoundExperienceAndWinningRate(List<Double> results, Player player1, List<Match> player1Matches, Player player2, List<Match> player2Matches, int round_order, boolean to_train){
+        player1Matches = player1Matches.stream()
+                .filter(m -> m.getRound_order() == round_order)
+                .collect(Collectors.toList());
+        player2Matches = player2Matches.stream()
+                .filter(m -> m.getRound_order() == round_order)
+                .collect(Collectors.toList());
+
+        double player1WinningRate = 0.0;
+        double player2WinningRate = 0.0;
+
+        if (player1Matches.size() > 0){
+            player1WinningRate = convertToPercentage(player1Matches, player1);
+        }
+
+        if (player2Matches.size() > 0){
+            player2WinningRate = convertToPercentage(player2Matches, player2);
+        }
+
+        if (player1.getPlayerSlug().compareTo(player2.getPlayerSlug()) <= 0 || to_train == false) {
+            results.add(player1WinningRate);
+            results.add(player2WinningRate);
+        } else {
+            results.add(player2WinningRate);
+            results.add(player1WinningRate);
+        }
+        return results;
+    }
+
     private List<Double> getInputs(Match match){
         try {
             Player winnerPlayer = match.getWinnerPlayer();
@@ -434,6 +458,10 @@ public class PredicterController {
             list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerMatchesOnSurface, loserPlayer, loserPlayerMatchesOnSurface, true);
             list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerAllMatchesOnTournament, loserPlayer, loserPlayerAllMatchesOnTournament, true);
 
+            list = addRoundExperienceAndWinningRate(list, winnerPlayer, winnerPlayerAllMatches, loserPlayer, loserPlayerAllMatches, match.getRound_order(), true);
+            list = addRoundExperienceAndWinningRate(list, winnerPlayer, winnerPlayerAllMatchesOnSelectedSurface, loserPlayer, loserPlayerAllMatchesOnSelectedSurface, match.getRound_order(), true);
+            list = addRoundExperienceAndWinningRate(list, winnerPlayer,winnerPlayerAllMatchesOnTournament, loserPlayer, loserPlayerAllMatchesOnTournament, match.getRound_order(), true);
+
             return  list;
 
         } catch (Exception e){
@@ -444,6 +472,8 @@ public class PredicterController {
     }
 
     private List<Double> getInputsToPredict(Player playerOne, Player playerTwo, String surface, String tourneyName){
+            int round_order = 1;
+
             List<Match> playerOneAllMatches;
             List<Match> playerTwoAllMatches;
 
@@ -497,36 +527,52 @@ public class PredicterController {
             list = addServiceAndReturnStatistics(list, playerOne, playerOneMatchesOnSurface, playerTwo, playerTwoMatchesOnSurface, false);
             list = addServiceAndReturnStatistics(list, playerOne, player1AllMatchesOnTournament, playerTwo, player2AllMatchesOnTournament, false);
 
+            list = addRoundExperienceAndWinningRate(list, playerOne, playerOneAllMatches, playerTwo, playerTwoAllMatches, round_order, true);
+            list = addRoundExperienceAndWinningRate(list, playerOne, playerOneAllMatchesOnSelectedSurface, playerTwo, playerTwoAllMatchesOnSelectedSurface, round_order, true);
+            list = addRoundExperienceAndWinningRate(list, playerOne, player1AllMatchesOnTournament, playerTwo, player2AllMatchesOnTournament, round_order, true);
+
         return  list;
     }
 
     @GetMapping("/training")
     @ResponseBody
-    public void training(){
+    public void training(@RequestParam String version, @RequestParam String description){
         List<Match> allMatches = (List<Match>) matchService.findAll();
         List<TrainData> trainData;
         String training_url = "http://localhost:5000/training";
         RestTemplate restTemplate = new RestTemplate();
 
         System.out.print("Starting training ...");
-        predicterService.printDateToConsole(new Date());
+        System.out.println(predicterService.getCurrentDate(new Date()));
             trainData = getTrainData(allMatches);
         System.out.print("The training ended = ");
-        predicterService.printDateToConsole(new Date());
+        System.out.println(predicterService.getCurrentDate(new Date()));
 
         System.out.println("Number of training data = " + trainData.size());
 
-        String training_data_filename = "training-data-1991-2016-plus-lay-stats-all-surface-tournament-matches.txt";
-        String weight_filename = "weights-1991-2016-plus-lay-stats-all-surface-tournament-matches.txt";
-        String biases_filename = "biases-1991-2016-plus-lay-stats-all-surface-tournament-matches.txt";
+        String training_data_filename = "training-data-" + version.replaceAll("/\\s\\s+/g", "-") + ".txt";
+        String weight_filename = "weights-" + version + ".txt";
+        String biases_filename = "biases-" + version + ".txt";
 
             TrainingDataToJSONConverter.writeToJSONFile(trainData, training_data_filename);
 
-        TrainingRequestDTO requestDTO = new TrainingRequestDTO(training_data_filename, weight_filename, biases_filename, true, trainData.get(0).getInputs().size());
+        int nrOfInputs = trainData.get(0).getInputs().size();
+        System.out.println("Nr of inputs = " + nrOfInputs);
+        TrainingRequestDTO requestDTO = new TrainingRequestDTO(training_data_filename, weight_filename, biases_filename, true, nrOfInputs);
         HttpEntity<TrainingRequestDTO> request = new HttpEntity<>(requestDTO);
         ResponseEntity<TrainingResponseDTO> response = restTemplate.postForEntity(training_url, request, TrainingResponseDTO.class);
-        System.out.println(response.getBody().toString());
+        TrainingResponseDTO responseDTO  = (TrainingResponseDTO) response.getBody();
+        TrainingDescription trainingDescription = new TrainingDescription(version, description, predicterService.getCurrentDate(new Date()), responseDTO.getHighest_percentage());
+        trainingDescriptionService.save(trainingDescription);
+
+        for (double percentage: responseDTO.getHistory()) {
+            TrainingResultsData resultsData = new TrainingResultsData();
+            resultsData.setPercentage(percentage);
+            resultsData.setTrainingDescription(trainingDescription);
+            trainingResultsDataService.save(resultsData);
+        }
     }
+
 
     @GetMapping("/calculate")
     @ResponseBody
@@ -540,8 +586,8 @@ public class PredicterController {
 
         // Later we can receive these file names from the user => new webpage
         List<Double> inputs = getInputsToPredict(playerOne, playerTwo, surface, tourneyName);
-        String weight_filename = "weights-1991-2016-plus-lay-stats-all-surface-tournament-matches.txt";
-        String biases_filename = "biases-1991-2016-plus-lay-stats-all-surface-tournament-matches.txt";
+        String weight_filename = "weights-1991-2016-stats-all-surface-tournament-mental-matches-2.txt";
+        String biases_filename = "biases-1991-2016-stats-all-surface-tournament-mental-matches-2.txt";
 
         PredictionRequestDTO requestDTO = new PredictionRequestDTO(playerOne.getPlayerSlug(), playerTwo.getPlayerSlug(), weight_filename, biases_filename, getInputsToPredict(playerOne, playerTwo, surface, tourneyName));
         HttpEntity<PredictionRequestDTO> request = new HttpEntity<>(requestDTO);
