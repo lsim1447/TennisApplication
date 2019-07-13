@@ -8,11 +8,11 @@ import sys
 import os
 import json
 
-NR_OF_INPUTS = 60
+NR_OF_INPUTS = 30
 NR_OF_OUTPUTS = 2
 NR_OF_LAY = 20
 NR_OF_INNER_LAY = 8
-NR_OF_EPOCH = 10000
+NR_OF_EPOCH = 2000
 
 app = Flask(__name__)
 
@@ -51,7 +51,8 @@ class Network(object):
 
         self.write_weights_to_file(self.max_weights, weight_filename)    
         self.write_biases_to_file(self.max_biases, biases_filename)
-        print("Max percentage = ", self.max_percentage * 100, "%")
+        self.max_percentage = self.max_percentage*100
+        print("Max percentage = ", self.max_percentage, "%")
 
     def update(self, data, eta):
         dif_bias = [numpy.zeros(b.shape) for b in self.biases]
@@ -285,13 +286,37 @@ def revert_input_data(data):
         i = i + 2
     return data
 
+@app.route('/test', methods=['POST'])
+def test():
+    print('request = ', request.json)
+    NR_OF_INPUTS = request.json['nr_of_test_input_data']
+
+    network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
+    network.set_init_settings_before_training(add_relative_path(request.json['test_data_filename']))
+    network.set_weights_and_biases(add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']), False)
+
+    right = network.evaluate(network.data)
+    whole = len(network.data)
+    percentage = right / whole
+    print(right, '/', whole, ' ===> percentage: ', percentage * 100, '%')
+
+    to_json = {}
+    to_json['message'] = 'Completed!'
+    to_json['percentage'] = percentage
+
+    return app.response_class(
+        response=json.dumps(to_json),
+        status=200,
+        mimetype='application/json'
+    )
+
 @app.route('/training', methods=['POST'])
 def train():
     print('training...');
     print('request = ', request.json)
 
     NR_OF_INPUTS = request.json['nr_of_input_data']
-    network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_INNER_LAY, NR_OF_OUTPUTS])
+    network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
     network.set_init_settings_before_training(add_relative_path(request.json['training_data_filename']))
     network.set_weights_and_biases(add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']), request.json['with_new_settings'])
     network.training(network.data, 1.0, 0.9, add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']))
@@ -312,22 +337,26 @@ def train():
 def predict():
     print('request = ', request.json)
 
-    network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_INNER_LAY, NR_OF_OUTPUTS])
+    network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
     network.set_weights_and_biases(add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']), False)
     
     numpy_inputs = convert_data_to_input_data(request.json['inputs'])
     resp_data = network.feedforward(numpy_inputs)
-    resp_data_invert = network.feedforward(revert_input_data(numpy_inputs))
+    print('firstResult = ', resp_data)
 
-    percentage1 = ((resp_data[0][0] + resp_data_invert[1][0]) / 2) * 100
-    percentage2 = ((resp_data[1][0] + resp_data_invert[0][0]) / 2) * 100
+    numpy_inputs_revert = convert_data_to_input_data(revert_input_data(request.json['inputs']))
+    resp_data_invert = network.feedforward(numpy_inputs_rvert))
+
+    print('secondResult = ', resp_data_invert)
+    percentage2 = ((resp_data[0][0] + resp_data_invert[1][0]) / 2) * 100
+    percentage1 = ((resp_data[1][0] + resp_data_invert[0][0]) / 2) * 100
     
-    print('Percentage of ', request.json['secondPlayerSlug'], ': ', percentage1)
-    print('Percentage of ', request.json['firstPlayerSlug'], ': ', percentage2)
+    print('Percentage of ', request.json['secondPlayerSlug'], ': ', percentage2)	
+    print('Percentage of ', request.json['firstPlayerSlug'], ': ', percentage1)
 
     to_json = {}
-    to_json['first_percentage']  = percentage2
-    to_json['second_percentage'] = percentage1
+    to_json['first_percentage']  = percentage1
+    to_json['second_percentage'] = percentage2
 	
     return app.response_class(
         response=json.dumps(to_json),

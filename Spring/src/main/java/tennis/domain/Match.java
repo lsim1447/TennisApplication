@@ -9,8 +9,8 @@ public class Match implements Comparable<Match>{
     private String match_id;
 
     private String round_name;
-    private static int round_order;
-    private static int match_order;
+    private int round_order;
+    private int match_order;
 
     @ManyToOne
     @JoinColumn(name="tournament_year_id")

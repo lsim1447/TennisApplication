@@ -1,12 +1,22 @@
 import React , { useContext } from 'react';
 import { AppContext } from '../AppContextProvider';
+import { get_request } from './../util/Request';
+import { DEFALULT_SERVER_URL } from '../constants';
 
 function Home(props) {
     
     const context =  useContext(AppContext);
 
+    function tryTest(e){
+        get_request(`${DEFALULT_SERVER_URL}/prediction/test`)
+            .then( response => {
+                console.log('DIKK resp = ' + response);
+            })
+    }
+
     return (
         <div class="container"> 
+            <button onClick={(e) => tryTest(e)}>Test</button>
             <div className="row">
                 <div className="col col-lg-3">
                     <img src="./images/gifs/rafael-nadal-1.gif" alt="..." />

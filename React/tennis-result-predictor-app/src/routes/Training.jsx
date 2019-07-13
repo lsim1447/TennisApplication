@@ -48,12 +48,15 @@ function Training(props) {
         valuesToChart: []
     });
 
-    useEffect(() => {
+    function getTrainings(){
         get_request(`${DEFALULT_SERVER_URL}/training/description/all`)
             .then( response => {
                 setState({...state, trainingDescriptions: response});
             })
+    }
 
+    useEffect(() => {
+        getTrainings();
     }, []);
 
     function rowOnClick(row){
@@ -79,18 +82,15 @@ function Training(props) {
     }
 
     function train(e){
-        console.log('Version = ', version);
-        console.log('Description = ', description);
         get_request(`${DEFALULT_SERVER_URL}/prediction/training?version=${encodeURIComponent(version)}&description=${encodeURIComponent(description)}`)
             .then( response => {
-                console.log('response waze = ', response);
+                getTrainings();
                 swal.fire({
                     position: 'center',
                     type: 'success',
                     title: 'The training has been finished!',
                     showConfirmButton: false,
-                    timer: 1500
-                })
+                });
             })
     }
 
@@ -299,8 +299,8 @@ function Training(props) {
                         <div className="modal-body">
                             <div className="text-center"> <h4>{state.selectedRow.trainingDescription.description}</h4></div>
                             <div className="text-center">
-                                (<label>Date: {state.selectedRow.trainingDescription.date}</label> 
-                                <label style={{paddingLeft: "12px"}}>Final percentage: {state.selectedRow.trainingDescription.highestRate}%</label>)
+                                (<label><strong> Date: </strong> {state.selectedRow.trainingDescription.date} </label> 
+                                <label style={{paddingLeft: "12px"}}><strong> Final percentage: </strong> {state.selectedRow.trainingDescription.highestRate}% </label>)
                             </div>
                             <TrainingProcessChart data={state.valuesToChart} labels={Array.from(Array(state.valuesToChart.length).keys())}/>
                         </div>

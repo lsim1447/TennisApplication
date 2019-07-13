@@ -205,131 +205,116 @@ public class UploadDatabaseController {
     }
 
     @GetMapping("/matches")
-    public List<Match> uploadDatabaseWithMatches(){
-        List<List<String>> data = CSVReader.getData("match_scores_2013-2016").stream().collect(Collectors.toList());
-        List<Match> matches = data.stream()
-                .map((line) -> {
-                    Match match = new Match();
-                    System.out.println("LINE = " + line);
+    public String uploadDatabaseWithMatches(){
+        List<List<String>> data = CSVReader.getData("match_scores_1991-2016").stream().collect(Collectors.toList());
+        int counter = 0;
+        for (List<String> line: data) {
+            counter ++;
+            System.out.println("nr = " + counter);
+            System.out.println("LINE = " + line);
 
-                    match.setMatch_id(line.get(17));
-                    match.setRound_name(line.get(1));
-                    match.setRound_order(Integer.parseInt(line.get(2)));
-                    match.setMatch_order(Integer.parseInt(line.get(3)));
+            Match match = new Match();
+            match.setMatch_id(line.get(17));
+            match.setRound_name(line.get(1));
+            match.setRound_order(Integer.parseInt(line.get(2)));
+            match.setMatch_order(Integer.parseInt(line.get(3)));
 
-                    Tournament tournament = tournamentService.findTournamentById(line.get(0));
-                    match.setTournament(tournament);
+            Tournament tournament = tournamentService.findTournamentById(line.get(0));
+            match.setTournament(tournament);
 
-                    Player winnerPlayer = playerService.findPlayerById(line.get(5));
-                    match.setWinnerPlayer(winnerPlayer);
+            Player winnerPlayer = playerService.findPlayerById(line.get(5));
+            match.setWinnerPlayer(winnerPlayer);
 
-                    Player loserPlayer = playerService.findPlayerById(line.get(8));
-                    match.setLoserPlayer(loserPlayer);
+            Player loserPlayer = playerService.findPlayerById(line.get(8));
+            match.setLoserPlayer(loserPlayer);
 
-                    match.setMatch_score_tiebreaks(line.get(10));
-                    match.setWinner_sets_won(Integer.parseInt(line.get(11)));
-                    match.setLoser_sets_won(Integer.parseInt(line.get(12)));
-                    match.setWinner_games_won(Integer.parseInt(line.get(13)));
-                    match.setLoser_games_won(Integer.parseInt(line.get(14)));
-                    match.setWinner_tiebreaks_won(Integer.parseInt(line.get(15)));
-                    match.setLoser_tiebreaks_won(Integer.parseInt(line.get(16)));
-                    return  match;
-                })
-                .collect(Collectors.toList());
+            match.setMatch_score_tiebreaks(line.get(10));
+            match.setWinner_sets_won(Integer.parseInt(line.get(11)));
+            match.setLoser_sets_won(Integer.parseInt(line.get(12)));
+            match.setWinner_games_won(Integer.parseInt(line.get(13)));
+            match.setLoser_games_won(Integer.parseInt(line.get(14)));
+            match.setWinner_tiebreaks_won(Integer.parseInt(line.get(15)));
+            match.setLoser_tiebreaks_won(Integer.parseInt(line.get(16)));
 
-        System.out.println("matches length = " + matches.size());
-        for (int i = 0; i < matches.size(); i++) {
-            try{
-                matchService.save(matches.get(i));
-                System.out.println("MATCH nr = " + i + "  ===> id = " + matches.get(i).getMatch_id());
-            } catch (Exception e){
-                System.out.println(e.getMessage());
-            }
+            matchService.save(match);
         }
-        System.out.println("FINISHED");
-        return matches;
+
+        return "DONE!!!";
     }
 
     @GetMapping("/stats")
-    public List<Stats> uploadDatabaseWithStats(){
-        List<List<String>> data = CSVReader.getData("match_stats_2013-2016").stream().collect(Collectors.toList());
-        List<Stats> stats = data.stream()
-                .map((line) -> {
-                    Stats stat = new Stats();
-                    System.out.println("LINE = " + line);
+    public String uploadDatabaseWithStats(){
+        List<List<String>> data = CSVReader.getData("match_stats_2007-2016").stream().collect(Collectors.toList());
+        int counter = 0;
 
-                    try {
-                        Match match = matchService.findMatchById(line.get(0));
-                        stat.setMatch(match);
+        for (List<String> line: data) {
+            counter++;
+            Stats stat = new Stats();
+            //System.out.println("LINE = " + line);
+            //System.out.println("NR = " + counter);
 
-                        stat.setMatch_time(line.get(1));
-                        stat.setMatch_duration(line.get(2));
-                        stat.setWinner_aces(Integer.parseInt(line.get(3)));
-                        stat.setWinner_double_faults(Integer.parseInt(line.get(4)));
-                        stat.setWinner_first_serves_in(Integer.parseInt(line.get(5)));
-                        stat.setWinner_first_serves_total(Integer.parseInt(line.get(6)));
-                        stat.setWinner_first_serve_points_won(Integer.parseInt(line.get(7)));
-                        stat.setWinner_first_serve_points_total(Integer.parseInt(line.get(8)));
-                        stat.setWinner_second_serve_points_won(Integer.parseInt(line.get(9)));
-                        stat.setWinner_second_serve_points_total(Integer.parseInt(line.get(10)));
-                        stat.setWinner_break_points_saved(Integer.parseInt(line.get(11)));
-                        stat.setWinner_break_points_serve_total(Integer.parseInt(line.get(12)));
-                        stat.setWinner_service_points_won(Integer.parseInt(line.get(13)));
-                        stat.setWinner_service_points_total(Integer.parseInt(line.get(14)));
-                        stat.setWinner_first_serve_return_won(Integer.parseInt(line.get(15)));
-                        stat.setWinner_first_serve_return_total(Integer.parseInt(line.get(16)));
-                        stat.setWinner_second_serve_return_won(Integer.parseInt(line.get(17)));
-                        stat.setWinner_second_serve_return_total(Integer.parseInt(line.get(18)));
-                        stat.setWinner_break_points_converted(Integer.parseInt(line.get(19)));
-                        stat.setWinner_break_points_return_total(Integer.parseInt(line.get(20)));
-                        stat.setWinner_service_games_played(Integer.parseInt(line.get(21)));
-                        stat.setWinner_return_games_played(Integer.parseInt(line.get(22)));
-                        stat.setWinner_return_points_won(Integer.parseInt(line.get(23)));
-                        stat.setWinner_return_points_total(Integer.parseInt(line.get(24)));
-                        stat.setWinner_total_points_won(Integer.parseInt(line.get(25)));
-                        stat.setWinner_total_points_total(Integer.parseInt(line.get(26)));
-                        //loser
-                        stat.setLoser_aces(Integer.parseInt(line.get(27)));
-                        stat.setLoser_double_faults(Integer.parseInt(line.get(28)));
-                        stat.setLoser_first_serves_in(Integer.parseInt(line.get(29)));
-                        stat.setLoser_first_serves_total(Integer.parseInt(line.get(30)));
-                        stat.setLoser_first_serve_points_won(Integer.parseInt(line.get(31)));
-                        stat.setLoser_first_serve_points_total(Integer.parseInt(line.get(32)));
-                        stat.setLoser_second_serve_points_won(Integer.parseInt(line.get(33)));
-                        stat.setLoser_second_serve_points_total(Integer.parseInt(line.get(34)));
-                        stat.setLoser_break_points_saved(Integer.parseInt(line.get(35)));
-                        stat.setLoser_break_points_serve_total(Integer.parseInt(line.get(36)));
-                        stat.setLoser_service_points_won(Integer.parseInt(line.get(37)));
-                        stat.setLoser_service_points_total(Integer.parseInt(line.get(38)));
-                        stat.setLoser_first_serve_return_won(Integer.parseInt(line.get(39)));
-                        stat.setLoser_first_serve_return_total(Integer.parseInt(line.get(40)));
-                        stat.setLoser_second_serve_return_won(Integer.parseInt(line.get(41)));
-                        stat.setLoser_second_serve_return_total(Integer.parseInt(line.get(42)));
-                        stat.setLoser_break_points_converted(Integer.parseInt(line.get(43)));
-                        stat.setLoser_break_points_return_total(Integer.parseInt(line.get(44)));
-                        stat.setLoser_service_games_played(Integer.parseInt(line.get(45)));
-                        stat.setLoser_return_games_played(Integer.parseInt(line.get(46)));
-                        stat.setLoser_return_points_won(Integer.parseInt(line.get(47)));
-                        stat.setLoser_return_points_total(Integer.parseInt(line.get(48)));
-                        stat.setLoser_total_points_won(Integer.parseInt(line.get(49)));
-                        stat.setLoser_total_points_total(Integer.parseInt(line.get(50)));
-                    } finally {
-                        return stat;
-                    }
-                })
-                .collect(Collectors.toList());
+            try {
+                Match match = matchService.findMatchById(line.get(0));
+                stat.setMatch(match);
+                stat.setMatch_time(line.get(1));
+                stat.setMatch_duration(line.get(2));
+                stat.setWinner_aces(Integer.parseInt(line.get(3)));
+                stat.setWinner_double_faults(Integer.parseInt(line.get(4)));
+                stat.setWinner_first_serves_in(Integer.parseInt(line.get(5)));
+                stat.setWinner_first_serves_total(Integer.parseInt(line.get(6)));
+                stat.setWinner_first_serve_points_won(Integer.parseInt(line.get(7)));
+                stat.setWinner_first_serve_points_total(Integer.parseInt(line.get(8)));
+                stat.setWinner_second_serve_points_won(Integer.parseInt(line.get(9)));
+                stat.setWinner_second_serve_points_total(Integer.parseInt(line.get(10)));
+                stat.setWinner_break_points_saved(Integer.parseInt(line.get(11)));
+                stat.setWinner_break_points_serve_total(Integer.parseInt(line.get(12)));
+                stat.setWinner_service_points_won(Integer.parseInt(line.get(13)));
+                stat.setWinner_service_points_total(Integer.parseInt(line.get(14)));
+                stat.setWinner_first_serve_return_won(Integer.parseInt(line.get(15)));
+                stat.setWinner_first_serve_return_total(Integer.parseInt(line.get(16)));
+                stat.setWinner_second_serve_return_won(Integer.parseInt(line.get(17)));
+                stat.setWinner_second_serve_return_total(Integer.parseInt(line.get(18)));
+                stat.setWinner_break_points_converted(Integer.parseInt(line.get(19)));
+                stat.setWinner_break_points_return_total(Integer.parseInt(line.get(20)));
+                stat.setWinner_service_games_played(Integer.parseInt(line.get(21)));
+                stat.setWinner_return_games_played(Integer.parseInt(line.get(22)));
+                stat.setWinner_return_points_won(Integer.parseInt(line.get(23)));
+                stat.setWinner_return_points_total(Integer.parseInt(line.get(24)));
+                stat.setWinner_total_points_won(Integer.parseInt(line.get(25)));
+                stat.setWinner_total_points_total(Integer.parseInt(line.get(26)));
+                //loser
+                stat.setLoser_aces(Integer.parseInt(line.get(27)));
+                stat.setLoser_double_faults(Integer.parseInt(line.get(28)));
+                stat.setLoser_first_serves_in(Integer.parseInt(line.get(29)));
+                stat.setLoser_first_serves_total(Integer.parseInt(line.get(30)));
+                stat.setLoser_first_serve_points_won(Integer.parseInt(line.get(31)));
+                stat.setLoser_first_serve_points_total(Integer.parseInt(line.get(32)));
+                stat.setLoser_second_serve_points_won(Integer.parseInt(line.get(33)));
+                stat.setLoser_second_serve_points_total(Integer.parseInt(line.get(34)));
+                stat.setLoser_break_points_saved(Integer.parseInt(line.get(35)));
+                stat.setLoser_break_points_serve_total(Integer.parseInt(line.get(36)));
+                stat.setLoser_service_points_won(Integer.parseInt(line.get(37)));
+                stat.setLoser_service_points_total(Integer.parseInt(line.get(38)));
+                stat.setLoser_first_serve_return_won(Integer.parseInt(line.get(39)));
+                stat.setLoser_first_serve_return_total(Integer.parseInt(line.get(40)));
+                stat.setLoser_second_serve_return_won(Integer.parseInt(line.get(41)));
+                stat.setLoser_second_serve_return_total(Integer.parseInt(line.get(42)));
+                stat.setLoser_break_points_converted(Integer.parseInt(line.get(43)));
+                stat.setLoser_break_points_return_total(Integer.parseInt(line.get(44)));
+                stat.setLoser_service_games_played(Integer.parseInt(line.get(45)));
+                stat.setLoser_return_games_played(Integer.parseInt(line.get(46)));
+                stat.setLoser_return_points_won(Integer.parseInt(line.get(47)));
+                stat.setLoser_return_points_total(Integer.parseInt(line.get(48)));
+                stat.setLoser_total_points_won(Integer.parseInt(line.get(49)));
+                stat.setLoser_total_points_total(Integer.parseInt(line.get(50)));
 
-        System.out.println("STATS length = " + stats.size());
-        for (int i = 0; i < stats.size(); i++) {
-            try{
-                statsService.save(stats.get(i));
-                System.out.println("STATS nr = " + i);
+                statsService.save(stat);
             } catch (Exception e){
-                System.out.println(e.getMessage());
+                System.out.println("ERRROR = " + e.getMessage());
             }
         }
-        System.out.println("FINISH");
-        return stats;
+
+        return "DONE!!!";
     }
 
 }

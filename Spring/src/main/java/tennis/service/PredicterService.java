@@ -168,4 +168,50 @@ public class PredicterService {
         playerBreakPointsSavedRate = playerBreakPointsSavedRate / (double) playerStats.size();
         return Double.parseDouble(df.format(playerBreakPointsSavedRate));
     }
+
+    public double getSecondServePointsWonRate(List<Stats> playerStats, Player player){
+        playerStats = playerStats.stream()
+                .filter(st -> !((double)st.getWinner_second_serve_points_total() < 0.0001 || (double) st.getLoser_second_serve_points_total() < 0.0001))
+                .collect(Collectors.toList());
+
+        double playerSecondServePointsWonRate = (playerStats.stream()
+                .map(stat -> {
+                    if (stat.getMatch().getWinnerPlayer().getPlayerSlug().equals(player.getPlayerSlug())){
+                        return stat.getWinner_second_serve_points_won() / (double) stat.getWinner_second_serve_points_total();
+                    } else {
+                        return stat.getLoser_second_serve_points_won() / (double) stat.getLoser_second_serve_points_total();
+                    }
+                })
+                .reduce(0.00, (a, b) -> a + b));
+
+        if (playerStats.size() == 0) {
+            throw new NumberFormatException();
+        }
+
+        playerSecondServePointsWonRate = playerSecondServePointsWonRate / (double) playerStats.size();
+        return Double.parseDouble(df.format(playerSecondServePointsWonRate));
+    }
+
+    public double getSecondServeReturnWonRate(List<Stats> playerStats, Player player){
+        playerStats = playerStats.stream()
+                .filter(st -> !((double)st.getWinner_second_serve_return_total() < 0.0001 || (double) st.getLoser_second_serve_return_total() < 0.0001))
+                .collect(Collectors.toList());
+
+        double playerSecondServeReturnWonRate = (playerStats.stream()
+                .map(stat -> {
+                    if (stat.getMatch().getWinnerPlayer().getPlayerSlug().equals(player.getPlayerSlug())){
+                        return stat.getWinner_second_serve_return_won() / (double) stat.getWinner_second_serve_return_total();
+                    } else {
+                        return stat.getLoser_second_serve_return_won() / (double) stat.getLoser_second_serve_return_total();
+                    }
+                })
+                .reduce(0.00, (a, b) -> a + b));
+
+        if (playerStats.size() == 0) {
+            throw new NumberFormatException();
+        }
+
+        playerSecondServeReturnWonRate = playerSecondServeReturnWonRate / (double) playerStats.size();
+        return Double.parseDouble(df.format(playerSecondServeReturnWonRate));
+    }
 }
