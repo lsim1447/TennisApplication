@@ -2,6 +2,56 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Az alkalmazás felépítése}\label{ch:felepites}
 
+\begin{osszefoglal}
+	Mint ahogyan az előző fejezetekből is megtudhattuk, az alkalmazás lényege, hogy egy, az általunk kiválasztott mérkőzésről, a kiválasztott játékosok formájától és addigi statisztikáiktól függően egy jóslatot tárjon elénk, amelyben a játékosok százalékos győzelmi esélyeit jeleníti meg. 
+	\paragraph{}
+	Ez az alkalmazás két fő részből áll, amelyek közül az egyik szintén tovább bontható:
+	\begin{enumerate}
+		\item[•] Kliens oldali rész
+		\item[•] Szerver oldali rész
+		\begin{enumerate}
+			\item[•] Spring: adatbázis műveletek
+			\item[•] Python: neurális háló
+		\end{enumerate}
+	\end{enumerate}
+\end{osszefoglal}
 
-\section{Suck my dick}
+\section{A kliens oldal}
+\paragraph{}
+A kliens oldal a  React keretrendszer által lett megvalósítva. Az alkalmazás lehetőséget nyújt a felhasználók számára, hogy a tennis 4 nagy tornájának(Grand slams) a nyerteseit, mérkőzéseit megtekintjük táblázatos formában. Ugyanakkor lehetőségünk van tetszés szerint a tornák neve alapján is rákeresni bizonyos eseményekre, tornákra. 
+\paragraph{}
+Ugyanúgy mint a tornák esetén, a játékosok esetében is lehetőségünk van a név szerinti keresésre, ahol a kiválasztott játékos karrierjének összes fontosabb mozzanatáról találhatunk néhány érdekesebb statisztikai adatot.
+\paragraph{}
+Az alkalmazás legérdekesebb és egyik legfontosabb része, a játékosok párba/szembeállítása, amikor az egymással szembeni, egymáshoz viszonyított statisztikai adatokat tárja elénk az alkamazás. Ennél a résznél van lehetőségünk a párharc kimenetelének a "megjósoltatására" is.
 
+\subsection{CSS keretrendszer - Bootstrap}
+\paragraph{}
+Az alkalmazás reszponzív, azaz egy olyan alkalmazás, amely törekszik arra, hogy optimális megjelenítést biztosítson a könnyű olvashatóság és egyszerű navigációval egyidőben. Ezt különböző eszközökön egyaránt próbálja fenntartani az asztali számítógépek képernyőjétől a mobiltelefonok kijelzőjéig egyaránt. Azaz a webalkalmazás alkalmazkodik az őt használó eszköz méreteihez:
+\begin{enumerate}
+\item[•] A rugalmas felosztású koncepció alapján a honlap minden elemének mérete százalékosan, relatívan van meghatározva.
+\item[•] A flexibilis képek úgyszintén a befoglaló elemhez képest, százalékosan határozódnak meg.
+\item[•] A media query alkalmazásával megvalósíthatjuk, hogy a weboldalon mindig olyan CSS szabályok lépjenek érvénybe, amelyek a megjelenítő eszközön optimálisak.
+\end{enumerate}
+
+\paragraph{}
+A Bootstrap egy olyan eszközkészletet kínál, amely előre megírt, multifunkcionálisan alkalmazható, aminek a segítségével átláthatóbban, gyorsabban és hatékonyabban dolgozhatunk. A CSS tulajdonságok és a HTML struktúra mellett számos JavaScript bővítménnyel is rendelkezik, melyek igen rugalmasak!
+
+\begin{lstlisting}[caption=Responsive webtervezés - Bootstrap keretrendszer]
+<ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
+  <li className="nav-item">
+    <a className="nav-link active font-weight-bold" id="pills-latest-tab" data-toggle="pill" href="#pills-latest" role="tab" aria-controls="pills-latest" aria-selected="true"> 
+      Latest 
+    </a>
+  </li>
+  <li className="nav-item">
+    <a className="nav-link font-weight-bold" id="pills-grand-slam-tab" data-toggle="pill" href="#pills-grand-slam" role="tab" aria-controls="pills-grand-slam" aria-selected="false"> 
+      Grand Slams 
+    </a>
+  </li>
+</ul>
+\end{lstlisting}
+
+\paragraph{} A kliensoldal felépítése során fontos szempontnak számított az újrafelhasználható komponensek használata, ezért az alkamazásunkban több helyen is ugyanazokat a komponenseket használtuk, ezáltal is törekedve a kód méretének minimalizálására.
+
+\section{Szerver oldal}
+\subsection{Java - Spring}
