@@ -1,0 +1,52 @@
+%!TEX root = dolgozat.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Diszkrimináns-módszerek}\label{ch:diszkr}
+
+\begin{osszefoglal}
+	Példafejezet. Nem releváns a szöveg.
+	
+	A fejezetben a matematikai elemeket illusztráltuk.
+\end{osszefoglal}
+
+
+
+\section{Lineáris diszkrimináns}
+
+Legyen ismert az $x_1, \ldots , x_n$ gyakorló minták sorozata és a minták 
+osztályozása. A minták száma $N$, az $\Omega_x$ mintatér $d$ dimenziója 
+sokkal kisebb, mint $N$.
+
+Célunk egy olyan függvény meghatározása, mely \emph{diszkriminál} az adatok terében, azaz a pozitív példákra pozitív értékkel, a negatívakra pedig negatív értékkel tér vissza:
+\begin{equation}
+	f: \Omega_x \rightarrow {\mathbb{R}}
+	\quad\text{ úgy, hogy }
+	\quad f(x)
+	\begin{cases}
+		<0 & \forall x\in Neg \\
+		\geq 0 & \forall x\in Poz
+	\end{cases}
+	\label{eq:diszkr:fugg}
+\end{equation}
+ahol a negatív doméniumot $Neg$-gel, a pozitívet meg $Poz$-zal jelöltük.%
+
+{\footnotesize
+	Figyeljük meg a \LaTeX kódban a \verb!\label! használatát: a szövegben kijelentünk egy \emph{címkét}, melyet az \protect{\verb+\eqref{eq:diszkr:fugg}+} vagy a \protect{\verb+\ref{eq:diszkr:fugg}+} parancsokkal tudunk késõbb beszúrni a szövegbe.
+  A kompilálás során a \LaTeX mindig aktualizálja a mutató értékét, nem kell tehát újraszámozni kézzel az objektumokat. Ez természetesen érvényes más számozott egységre is, mint fejezetek, alfejezetek, bekezdések, ábrák, stb. -- lásd a jelen fejezet TEX kódját.
+}
+
+{\bf Lineáris diszkrimináns függvény} 
+
+A diszkrimináns függvények 
+legegyszerûbb változata a lineáris. A lineáris diszkrimináns függvényeket a 
+következõképp definiáljuk: 
+
+$$D_k(x)=x_1\alpha{1k}+\ldots 
++x_N\alpha_{Nk}+\alpha_{N+1,k}\;\;\;k=1,2,\ldots ,K,$$ ahol $K$ az osztályok száma, $x_1, \ldots, x_N$ az $x$ 
+mintavektor $N$ komponense, az $\alpha$ számok a súlyozó együtthatók. Vektoros 
+formában felírva:
+
+$$D_k(x)=\tilde{x}^T\alpha_k=\alpha_k^T\tilde{x},$$
+
+ahol $\tilde{x}^T=[x^T,1]$ a transzponáltja $\tilde{x}$-nak, a 
+megnövelt mintavektornak, és $\alpha_k$ a $k$-adik súlyozó vektor, amely 
+tartalmazza az $N+1$ súlyozó együtthatót.

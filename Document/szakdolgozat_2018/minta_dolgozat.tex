@@ -1,0 +1,145 @@
+% BEÁLLÍTÁSOK - JOBB NEM VÁLTOZTATNI
+\documentclass[final]{ubb_dolgozat}
+\usepackage{definitions}
+
+
+% milyen nyelveken akarunk forráskódot megjeleníteni
+\lstloadlanguages{Java,C++}
+% más lehetőségek:
+% C, Matlab, Mathematica, Octave, Pascal, Perl, Python
+% SCilab, SQL, Haskell, Lisp, Lua, make, ML, PHP, Prolog
+%
+% a teljes lista a LISTINGS csomagban.
+
+
+% ezt be lehet tenni MINDEGYIK megjelenítendő kód elé opcióként
+\lstset{language=Java}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%!!          EZT KELL VÁLTOZTATNI       !!%%%%
+%%     A DOLGOZAT CÍMOLDALÁNAK ELEMEI        %%
+
+%% MELYIK ÉVBEN ADJUK LE
+\submityear{%
+2019
+}
+
+\titleHU{%
+Alkalmazás tenisz fogadáshoz
+}
+
+% Az alábbi sorokat ki kell tölteni!!
+
+\titleEN{%
+Tennis Bet Application
+}
+
+\titleRO{%
+Aplicatie de pariuri de tenis
+}
+
+\author{%
+Lázár Szilárd
+}
+
+%%
+\tutorHU{%
+dr. Szöllősi István,\newline egyetemi adjunktus\\
+% a hozzátartozás akkor szükség, ha NEM BBTE-s a tanár
+%{\large Babe\c{s}--Bolyai Tudományegyetem,\\
+% Matematika és Informatika Kar}% ha különbözik, akkor fel kell tûntetni
+}
+%%
+\tutorRO{%
+Lector dr. Szöllősi István\\
+% az egyetem akkor szükség, ha nem BBTE-s a tanás, a minta a BBTE-t
+% tartalmazza
+% {\large Universitatea Babe\c{s}--Bolyai,\\ % dacã diferã!!!
+% Facultatea de Matematic\u{a} \c{s}i Informatic\u{a} }%
+}
+%%
+\tutorEN{%
+Assist prof. dr. Szöllősi István
+% {\large Babe\c{s}--Bolyai University,\\
+% Faculty of Mathematics and Informatics}
+}
+
+
+% 
+%\includeonly{bevezet}
+
+
+\begin{document}
+
+%% ABSTRAKT
+\begin{abstractEN} % ANGOL VÁLTOZAT
+
+% a lenti részt értelemszerûen ki kell tölteni a dolgozat angol kivonatával.
+% A BEGIN ... END között CSAK A SAJÁT SZÖVEG kell, hogy legyen.
+% Az utolsó mondatot benne kell hagyni, mely által kijelentitek, hogy a munkátok SAJÁT.
+
+The thesis presents a project for helping people to make easier tennis betting decisions. This application facilitates to choose the winner player between two players(men),  considering both player's previous matches and their statistics on the related matches. To achieve this, the application uses neural networks. 
+\paragraph{}
+During the training session the application process more then 100.000 match results and the related statistics (between 1991-2016). One input date contains more then 90 values(stat-rates), which are responsible for returning the wanted/expected results.
+
+\paragraph{}
+The test phase uses the match results and the related statistics from 2017. The application is working with matches just between 1991 and 2017, because I have not managed to find proper data after 2017. So this is an opportunity for improvement.
+
+\paragraph{}
+In the second chapter we are presented the web technologies used on the client side, in which we mainly examine the React programming language. 
+
+\paragraph{}
+Chapter 3 deals with the presentation of server-side technologies used in the project, including more details about the Spring Framework. 
+
+\paragraph{}
+Chapter 4 provides a more detailed description of the implementation of the project, which will cover the use of the technologies presented in the previous sections.
+
+\paragraph{}
+The next chapter is a user-made documentation, in which will be discussed the operation of the application. The last chapter contains a brief summary and some development plans.
+
+\paragraph{}
+This work is the result of my own activity. I have neither given nor received unauthorized assistance on this work.
+
+\end{abstractEN}
+
+% ez a címoldal része
+\maketitle
+
+%% 
+
+% a dolgozat tartalomjegyzéke -- ez automatikusan generálódik a STRUKTÚRA alapján.
+{ \baselineskip 1ex
+  \parskip 1ex
+  \tableofcontents
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%         a dolgozat tartalma         %%%%%%%%%%%%
+
+% ajánlott külön file-okba írni az egyes fejezeteket,
+% ugyanis úgy jobban át lehet látni.
+
+
+% a bevezetõ fejezet FILE-ja.
+
+\include{alapok}
+
+\include{gepitanulas}
+
+\include{keretrendszerek}
+
+\include{felepites}
+
+\appendix
+
+{ \renewcommand{\baselinestretch}{0.8}
+  \normalsize 
+  \setlength{\itemsep}{-2.4mm}
+  \setlength{\bibspacing}{0.67\baselineskip}
+  \bibliographystyle{abbrvnat_hu}
+  \bibliography{dolgozat}
+}
+
+\end{document}

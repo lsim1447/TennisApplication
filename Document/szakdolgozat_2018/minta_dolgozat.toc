@@ -1,0 +1,65 @@
+\select@language {magyar} \contentsline {paragraph}{}{1}{section*.1}
+\select@language {magyar} \contentsline {paragraph}{}{1}{section*.2}
+\select@language {magyar} \contentsline {paragraph}{}{1}{section*.3}
+\select@language {magyar} \contentsline {paragraph}{}{1}{section*.4}
+\select@language {magyar} \contentsline {paragraph}{}{1}{section*.5}
+\select@language {magyar} \contentsline {paragraph}{}{1}{section*.6}
+\select@language {magyar} \contentsline {paragraph}{}{1}{section*.7}
+\select@language {magyar} \contentsline {chapter}{\numberline {1}Bevezet\IeC {\'e}s}{3}{chapter.1}
+\select@language {magyar} \contentsline {section}{\numberline {1.1}C\IeC {\'e}l}{3}{section.1.1}
+\select@language {magyar} \contentsline {paragraph}{}{3}{section*.9}
+\select@language {magyar} \contentsline {paragraph}{}{3}{section*.10}
+\select@language {magyar} \contentsline {paragraph}{}{3}{section*.11}
+\select@language {magyar} \contentsline {paragraph}{}{3}{section*.12}
+\select@language {magyar} \contentsline {section}{\numberline {1.2}A dolgozat szerkezete}{3}{section.1.2}
+\select@language {magyar} \contentsline {paragraph}{}{3}{section*.13}
+\select@language {magyar} \contentsline {paragraph}{}{4}{section*.14}
+\select@language {magyar} \contentsline {paragraph}{}{4}{section*.15}
+\select@language {magyar} \contentsline {paragraph}{}{4}{section*.16}
+\select@language {magyar} \contentsline {paragraph}{}{4}{section*.17}
+\select@language {magyar} \contentsline {chapter}{\numberline {2}G\IeC {\'e}pi tanul\IeC {\'a}s - Machine learning}{5}{chapter.2}
+\select@language {magyar} \contentsline {section}{\numberline {2.1}R\IeC {\"o}vid ismertet\IeC {\~o}}{5}{section.2.1}
+\select@language {magyar} \contentsline {paragraph}{}{5}{section*.18}
+\select@language {magyar} \contentsline {paragraph}{}{5}{section*.19}
+\select@language {magyar} \contentsline {section}{\numberline {2.2}Neur\IeC {\'a}lis h\IeC {\'a}l\IeC {\'o}k}{5}{section.2.2}
+\select@language {magyar} \contentsline {paragraph}{}{5}{section*.20}
+\select@language {magyar} \contentsline {paragraph}{}{5}{section*.21}
+\select@language {magyar} \contentsline {paragraph}{}{5}{section*.22}
+\select@language {magyar} \contentsline {paragraph}{}{6}{section*.23}
+\select@language {magyar} \contentsline {subsection}{\numberline {2.2.1}A neuron}{6}{subsection.2.2.1}
+\select@language {magyar} \contentsline {paragraph}{}{6}{section*.24}
+\select@language {magyar} \contentsline {subsection}{\numberline {2.2.2}Egy egyszer\IeC {\H u} neuron implement\IeC {\'a}ci\IeC {\'o}ja}{6}{subsection.2.2.2}
+\select@language {magyar} \contentsline {paragraph}{}{8}{section*.25}
+\select@language {magyar} \contentsline {chapter}{\numberline {3}React keretrendszer}{10}{chapter.3}
+\select@language {magyar} \contentsline {paragraph}{}{10}{section*.26}
+\select@language {magyar} \contentsline {section}{\numberline {3.1}Haszn\IeC {\'a}lata}{10}{section.3.1}
+\select@language {magyar} \contentsline {paragraph}{}{10}{section*.27}
+\select@language {magyar} \contentsline {paragraph}{}{10}{section*.28}
+\select@language {magyar} \contentsline {paragraph}{}{11}{section*.29}
+\select@language {magyar} \contentsline {section}{\numberline {3.2}React Context}{11}{section.3.2}
+\select@language {magyar} \contentsline {paragraph}{}{11}{section*.30}
+\select@language {magyar} \contentsline {subsection}{\numberline {3.2.1}Haszn\IeC {\'a}lata}{11}{subsection.3.2.1}
+\select@language {magyar} \contentsline {paragraph}{}{11}{section*.31}
+\select@language {magyar} \contentsline {paragraph}{}{11}{section*.32}
+\select@language {magyar} \contentsline {subsection}{\numberline {3.2.2}Context API}{11}{subsection.3.2.2}
+\select@language {magyar} \contentsline {paragraph}{}{12}{section*.33}
+\select@language {magyar} \contentsline {section}{\numberline {3.3}React Hooks}{13}{section.3.3}
+\select@language {magyar} \contentsline {paragraph}{}{13}{section*.34}
+\select@language {magyar} \contentsline {paragraph}{}{13}{section*.35}
+\select@language {magyar} \contentsline {subsection}{\numberline {3.3.1}Effect Hook}{13}{subsection.3.3.1}
+\select@language {magyar} \contentsline {paragraph}{}{13}{section*.36}
+\select@language {magyar} \contentsline {paragraph}{}{14}{section*.37}
+\select@language {magyar} \contentsline {paragraph}{}{14}{section*.38}
+\select@language {magyar} \contentsline {chapter}{\numberline {4}Spring keretrendszer}{15}{chapter.4}
+\select@language {magyar} \contentsline {paragraph}{}{15}{section*.39}
+\select@language {magyar} \contentsline {section}{\numberline {4.1}\IeC {\'A}ltal\IeC {\'a}nos tudnival\IeC {\'o}k}{15}{section.4.1}
+\select@language {magyar} \contentsline {paragraph}{}{15}{section*.40}
+\select@language {magyar} \contentsline {section}{\numberline {4.2}Inversion of control}{15}{section.4.2}
+\select@language {magyar} \contentsline {paragraph}{}{15}{section*.41}
+\select@language {magyar} \contentsline {paragraph}{}{16}{section*.42}
+\select@language {magyar} \contentsline {paragraph}{}{16}{section*.43}
+\select@language {magyar} \contentsline {section}{\numberline {4.3}Spring Web MVC framework}{16}{section.4.3}
+\select@language {magyar} \contentsline {paragraph}{}{16}{section*.44}
+\select@language {magyar} \contentsline {paragraph}{}{16}{section*.45}
+\select@language {magyar} \contentsline {chapter}{\numberline {5}Az alkalmaz\IeC {\'a}s fel\IeC {\'e}p\IeC {\'\i }t\IeC {\'e}se}{18}{chapter.5}
+\select@language {magyar} \contentsline {section}{\numberline {5.1}Suck my dick}{18}{section.5.1}

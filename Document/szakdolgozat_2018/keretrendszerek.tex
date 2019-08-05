@@ -1,0 +1,174 @@
+%!TEX root = dolgozat.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{React keretrendszer}\label{ch:progik}
+
+\paragraph{}
+A React \footnote{A React hivatalos oldala: https://reactjs.org/} nem más, mint egy JavaScript könyvtár, ezért feltételez egy alapvető JavaScript ismeretet,viszont használata megkönnyíti a felhasználói felületek létrehozását és karbantartását. Segítségével a kész felhasználói felület lebontható kisebb, újrahasznosítható komponensekre (react komponensekre). Megalkotója Jordan Walke, aki Facebook egyik szoftverfejlesztője(2011). Egy konferencián, amelyet 2013-ban nyílt forráskódúvá nyilvánították. Megalkotásának fő motivációja a Facebook gyors növekedése volt, amelynek hatására a régi rendszerek nem tudták tartani a lépést a fejlődéssel, mivel egyre körülményesebbé vált a fejlesztés. A keretrendszer gyors fejlődése következtében a React Native megjelenése által már Android és iOS készülékekre való fejlesztésekre is alkalmassá vált. 
+
+A keretrendszer legnagyobb erénye, hogy virtuális DOM(Document Object Model)-ot használ. A Virtual DOM nem mást csinál, mint új rétegként beékelődik a kódunk és a DOM közé (vagy egy natív vezérlő hierarchia mögé), csokrokba gyűjti a DOM-on végzett műveleteket, és optimálisabban hajtja végre azokat, figyelve a változásokra.
+
+Tehát amikor módosítás történik az alkalmazás állapotában, akkor mindössze ennek a DOM-nak a legkisebb részfája lesz frissítve.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Használata}
+\paragraph{}
+Ahhoz, hogy el tudjuk készíteni első alkalmazásunkat, először telepítenünk kell a NodeJs. Ha ezzel megvagyunk, a node package manager (npm) segítségével létrehozhatjuk és futtathatjuk az alkalmazásunkat a következő parancsok által:
+\begin{center}
+npm install -g create-react-app \\
+create-react-app my-app  \\
+cd my-app/  \\ 
+npm start \\
+\end{center}
+
+\paragraph{}
+Ha végrehajtottuk a fenti utasítássorozatot, akkor összes olyan csomag letöltődik, amelyek szükségesek a kezdetleges alkalmazásunk futtatásához, illetve létrejönnek a szükséges konfigurációs állományok is.
+Természetesen ha úgy szeretnénk, akkor saját magunk is letölthetjük a szükséges csomagokat, illetve létrehozhatjuk a megfelelő állományokat, viszont ez az út sokkal hosszadalmasabb, bár esetenként akár hasznosabb is lehet, főleg ha már jártasak vagyunk a témában, és pontosan tudjuk, hogy mely csomagokra lesz szükségünk a továbbiakban.
+
+\paragraph{}
+A fejlesztés megkezdése előtt érdemes jól megválasztani a fejlesztői környezetünket. Természetesen nincs egy olyan környezet sem, amely mindenki számára teljesen megfelelő lenne, hiszen a fejlesztők más-más tulajdonságokat helyeznek előtérbe, ebből kifolyólag eltérő környezeteket is használnak, viszont nagyon jó alternatívák mindezek közül a JetBrains által közzétett IntelliJ, vagy a Microsoft által fejlesztett Visual Studio Code. Fontos megemlíteni, hogy az IntelliJ használata nem ingyenes, tehát ha használni szeretnénk, akkor fizetnünk kell, viszont létezik egy olyan próbaverziója, amely diákok számára ingyenesen elérhető.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{React Context}
+\paragraph{}
+Egy tipikus React alkalmazás esetén az adatok fentről-lefele(a szülőtől a gyerek fele) vannak átadva props-okon keresztül, viszont ez sok esetben nem optimális, például ha olyan információkat szeretnénk átadni, amelyeket nagyon sok különböző komponensben szeretnénk egyaránt használni, mivel akkor ezen paraméterátadások száma nagyon megnövekedne(például: UI theme, locale preference). A Context épp ehhez nyújt egy egyszerűbb alternativát, vagyis lehetőséget ad értékek/adatok megosztásához a különböző komponensek között anélkül, hogy át kellene adnunk őket a props-okon keresztül az összes szinten.
+
+\subsection{Használata}
+\paragraph{}
+Mint ahogy a fentiekben is elhangzott, a Context arra volt kitalálva, hogy könnyebben tudjunk bizonyos adatokat globálisan is megosztani a különböző komponensek között, mint például a pillanatnyilag bejelentkezett felhasználó, témák, használt nyelv, stb.
+
+\paragraph{}
+Viszont gondoljuk át többször is a Context használatát, mielőtt mindent általa próbálnánk megvalósítani, mivel nem minden esetben célszerű a használata. Használata célravezető,  amikor különböző mélységi szinteken(data needs to be accessible by many components at different nesting levels) is szükségünk van ugyanazokra az információkra, viszont használata nagyban veszélyezteti az adott komponens újrafelhasználhatóságát.
+
+\subsection{Context API}
+
+\begin{lstlisting}[caption=React Create Context]
+const PlayerContext = React.createContext(defaultValue);
+\end{lstlisting}
+
+\paragraph{}
+A fenti kódrészletben létrehoztunk egy Context objektumot. Amikor a React kirendereli a komponenst, feliratkozik(subscribes) ehhez a Context objektumhoz, és az aktuális kontext értékét a hozzá legközelebb álló egyező Providerből fogja kiolvasni.
+
+\begin{lstlisting}[caption=React Context Provider]
+<PlayerContext.Provider value={{ 
+	...this.state, 
+	changeSelectedPlayer: this.changeSelectedPlayer, 
+	changeTournaments: this.changeTournaments, 
+	changeGrandSlams: this.changeGrandSlams,  
+	changeLastMatches: this.changeLastMatches}}>
+    	{ this.props.children }
+</PlayerContext.Provider>
+\end{lstlisting}
+
+A Contex alapértelmezett értéke (defaultValue) csupán abban az esetben lesz használva, ha a komponensnek nincs egyező Providere a fenti fában. Ez hasznos lehet olyan esetekben, amikor tesztelni szeretnénk a komponenseinket anélkül önmagukban, anélkül hogy "becsomagolnánk" őket.
+
+Figyelem: ha UNDEFINED értéket adunk át a Providernek, akkor az nem fogja használni az alapértelmezett értékként megadott adatokat. 
+
+Mindegyik Context objektum egy Provider react komponenssel együtt jár, amelyek megengedik az őt fogyasztó (használó) komponenseknek, hogy feliratkozzanak az adott context változásaira. Egy Provider több, őt használó komponenssel is kapcsolatban állhat, illetve a Providerek egymásba is ágyazhatóak.
+
+\begin{lstlisting}[caption=A Providerek egymásba ágyazása]
+class App extends Component {
+
+  render() {
+    return (
+      <AppContextProvider>
+          <PlayerContextProvider>
+            <TournamentContextProvider>
+              <PredicterContextProvider>
+                <NavigationBar>
+                  <Router />
+                  <Footer />
+                </NavigationBar>
+              </PredicterContextProvider>
+            </TournamentContextProvider>
+          </PlayerContextProvider>
+      </AppContextProvider>
+    );
+  }
+}
+\end{lstlisting}
+
+A Context használata egy belső komponensben a következő egyszerű módon történik:
+\begin{lstlisting}[caption=A Context értékének a felhasználása]
+const playerContext = useContext(PlayerContext);
+...
+const selectedPlayer = playerContext.selectedPlayer;
+\end{lstlisting}
+
+\section{React Hooks}
+\paragraph{}
+A Hook-ok a React 16.8-as verziójától számolva elérhetőek, amelyeknek egyik fő előnye, hogy megengedi a state használatát anélkül, hogy osztályokat kellene írnunk.
+
+Az egyik legegyszerűbb, viszont leggyakrabban használt Hook a "useState". Egy függvényen belül kell hívnunk, amely visszatérít egy kételemú tömböt, amelynek elemei egy state változó, és a hozzá tartozó setter függvény.
+
+\begin{lstlisting}[caption= useState hook-nak a használata]
+ const [player, setPlayer] = useState({});
+ const [age, setAge] = useState(42);
+\end{lstlisting}
+
+Ahogyan azt a 3.5-ös kódrészletből is láthatjuk, megadhatunk alapértelmezett értékeket is az újonnal létrehozott változóknak a useState használtával.
+
+De hogy micsodák is a Hook-ok? A Hook-ok föggvények, amelyek megengedik a react state-k és életciklus metódusok(lifecycle features) használatát függvényekből anélkül, hogy osztályokon belül dolgoznánk. 
+
+\paragraph{}
+Fontos megjegyezni, hogy a Hookok használata nem követeli meg, hogy az alkalmazásunkban minden egyes komponenst átírjunk úgy, hogy a Hook-okat  használja, hanem tetszőlegesen használhatjuk őket, mivel visszafele is teljesen kompatibilisak.
+
+Mindezek mellett használjuk őket a felső szinten, illetve kerüljük a ciklusokon, feltételeken, vagy beágyazott függvények belsejében történő használatukat. Csak React függvény komponensekből hívjuk őket és ne reguláris JavaScript függvényekből.
+
+\subsection{Effect Hook}
+\paragraph{}
+Ezeknek a segítségével/felhasználásával küldhetünk és fogadhatunk kéréseket(fetching), vagy manipulálhatjuk a DOM szerkezetét. Tulajdonképpen ugyanazt a célt szolgálja, mint a componentDidMount, componentDidUpdate, componentWillUnmount  a React osztályok esetén, viszont itt ezek egyesítve vannak egyetlen API-ba.
+
+\begin{lstlisting}[caption= useEffect hook-nak a használata]
+  useEffect(() => {
+      get_request(`${DEFALULT_SERVER_URL}/player/all`)
+          .then(players => {
+              setState({...state, players: players})
+          })
+  }, []);
+\end{lstlisting}
+  
+Amikor meghívjuk a useEffect effektust, tulajdonképpen azt mondjuk a React-nek, hogy futtasd le a funkciót, miután feldolgoztad a DOM-ot. Ezeket az effekteket a komponens belsejében deklaráljuk, tehát hozzáférésük van a state-hez és a props-hoz egyaránt. 
+ 
+\paragraph{}
+Alapértelmezetten a React a render metódus minden lefutása után végrehajtja ezeket az effekteket, beleértve az elsőt is, viszont ez szabályozható is. Például a fenti, 3.6-os kódrészletben szereplő effect mindössze az első render lefutása után lesz lefuttatva annak köszönhetően, hogy a kódrészlet utolsó sorában egy üres tömböt adtunk meg paraméterként.
+
+\paragraph{}
+Lehetőségünk van úgy is személyreszabni ezeket az effekteket, hogy csak bizonyos adatok megváltozása következtében hivódjanak meg a különböző effektek, amelyet az már fent emlitett üres tömbnek, az adott változóval való kicserélésével érhetünk el.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Spring keretrendszer}\label{ch:progik}
+\paragraph{}
+Az elmúlt években figyelemmel kísérhettünk egy sikertörténetet, a Spring keretrendszer fejlődésének és elterjedésének történetét. 
+
+Ez a keretrendszer évekig nem terjedt el, mert helyette ott volt a J2EE majd Java EE technológia és biztonság szempontból kritikus alkalmazások fejlesztésére szinte kizárólag ezeket használták. 
+
+Kezdetben az volt a cél, hogy az egyéb keretrendszerek hiányosságait kiküszöbölje, napjainkban azonban szinte minden olyan funkcionalitást és szolgáltatást tartalmaz, amelyekre egy webalkalmazásnak vagy bonyolultabb üzleti alkalmazásnak szüksége lehet. Ez a fejezet ennek a keretrendszernek egy rövidebb bemutatását tartalmazza, kicsit nagyobb hangsúlyt fektetve annak webes részére.
+
+\section{Általános tudnivalók}
+\paragraph{}
+A Spring egy inversion of controlt megvalósító, nyílt forráskódú Java alkalmazás keretrendszer. Ezen keretrendszer szolgáltatásait főként Java alkalmazás fejlesztésére használják. Nincs specifikált fejlesztési modellje, napjainkban az EJB(EnterpriseJavaBean) modell egyre népszerűbb alternatívájává(helyettesítőjévé) vált. A Spring moduláris jellegéből adódóan, csak azokat a részeit kell használnunk, amelyekre valóban szükségünk van, és nem kell belevonnunk a projektünkbe a nem használt részeket. Támogatja a deklaratív tranzakciókezelést és teljes értékű MVC keretrendszert biztosít.
+
+\section{Inversion of control}
+\paragraph{}
+Mivel egy Java alkalmazás tipikusan objektumokból áll össze, és ezen objektumoknak az együttműködése alakítja ki magát az alkalmazást, ezért a benne található objektumok függenek egymástól. Annak érdekében, hogy alkalmazásunkat egy összefüggő egésszé szervezzük használhatunk különböző tervezési mintákat, mint például Factory (gyár), Abstract Factory (absztrakt gyár), Service Locator (szolgáltatás lokátor), és így tovább, amelyekkel különböző objektumpéldányokat hozhatunk létre az alkalmazás felépítése érdekében, viszont ezek csupán minták, legjobb megoldások, amelyeknek van egy elnevezésük, leírásuk, hogy melyik milyen problémát orvosolhat. Tehát elmondhatjuk, hogy a minták tulajdonképpen formalizált megoldások, amelyeket kénytelenek vagyunk magunk implementálni. 
+
+\paragraph{}
+A Spring keretrendszer Inversion of Control(Vezérlés invertálása) komponense ezt a problémát oldja meg úgy, hogy ezeket az eltérő komponenseket formalizált módszerekkel egy használatra kész alkalmazássá állítja össze. A Spring első osztályú objektumokká kódolja át a formalizált tervezési mintákat, amelyeket így már integrálhatunk a saját alkalmazásainkba. 
+
+\paragraph{}
+A Springben az alkalmazások gerincét alkotó objektumokat, amelyeket a Spring IoC konténer kezel, bean-nek nevezik. A bean egy olyan objektum, amelyet egy Spring IoC konténer példányosít, állít össze és kezel. Egyébként a bean egyszerűen az alkalmazás egyik objektuma. Az org.springframework.beans és az org.springframework.context csomagok képezik a Spring Framework IoC konténerének alapját. A Bean Factory interfész fejlett konfigurációs mechanizmust biztosít, amely képes bármilyen típusú objektum kezelésére. Az ApplicationContext a BeanFactory alinterfésze, amely könnyebben integrálható a Spring AOP funkcióival.
+
+\section{Spring Web MVC framework}
+\paragraph{}
+A Spring Web MVC4 lehetővé teszi számunkra, hogy rugalmas alkalmazásokat készítsünk. A Spring Web MVC tulajdonképpen egy, a Dispatcher Servlet köré tervezett keretrendszer, amely kéréseket küld a kezelőknek kofigurációs kezelői leképzésekkel, nézetfelbontással, helyi időzónákkal és témafelbontással, valamit támogatja az MVC (model-view-controller) tervezési mintát, amelynek lényege a modell és a nézet szétválasztása, annak érdekében, hogy a felhasználói felület ne tudja befolyásolni az adatkezelést. Az alapértelmezett kezelő a @Controller és @RequestMapping annotációkonalapul, amelyek rugalmas kezelési módszerek széles skáláját kínálják. 
+
+\paragraph{}
+A Spring nézetfelbontása nagyon flexibilis. Az esetek nagy részében a Controller felelős a Map modell adatainak elkészítéséért és a View nevének kiválasztásáért, de közvetlenül írhat a válaszfolyamra és kiegészítheti a kérést is. A modell (amely M az "MVC"-ben) egy Map interfész, amely lehetővé teszi a nézettechnológia teljes absztrakcióját. A Spring Web MVC keretrendszere, mint sok más webes MVC keretrendszer, kérésvezérelt. Egy közpönti Servlet köré van tervezve, amely kéréseket küld a Controllernek és ezek mellett olyan funkciókat tartalmaz, amelyek megkönnyítik a webes alkalmazások fejlesztését. A Spring DispatcherServlet azonban nem csak ennyiből áll, hanem teljesen integrálva van a Spring IoC konténer által, ezentúl minden más Spring jellemzőt használni tud.
+
+\begin{figure}[t]
+  \centering
+  \pgfimage[width=1.1\linewidth]{images/dispatcher-servlet}
+  \caption[A neuron]%
+  { A Spring Web MVC Dispatcher Servlet kérelem feldolgozási munkafolyamata }
+  \label{fig:ALAP:sm1}
+\end{figure}

@@ -1,0 +1,244 @@
+﻿\usepackage[magyar]{babel}
+\selectlanguage{magyar}
+\usepackage{t1enc}
+\usepackage[utf8]{inputenc}% FONTS
+\usepackage{times}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{mathtools}% http://ctan.org/pkg/mathtools
+
+% FONTS for typewriter
+%\usepackage[scaled=0.7]{luximono}
+%\renewcommand\ttdefault{ul9}
+
+\usepackage[titles]{tocloft}
+% aesthetic spacing redefines that look nicer
+\setlength{\cftbeforechapskip}{0.3ex}
+\setlength{\cftbeforesecskip}{0.0ex}
+% Helvetica-Narrow Bold for Chapter entries
+\renewcommand{\cftchapfont}{%
+  \fontsize{11}{13}\usefont{OT1}{phv}{bc}{n}\selectfont
+}
+\addtolength{\belowcaptionskip}{1pt}
+\addtolength{\abovecaptionskip}{-12pt}
+
+\usepackage{pgf,tikz}
+\usetikzlibrary{shapes,arrows,calc}
+\usepackage[final]{listings}
+
+\usepackage{amsmath,amssymb}
+\usepackage{array}
+\usepackage{latexsym}
+\usepackage{multicol}
+\usepackage{setspace}
+
+%%% bibliography
+% \usepackage[square]{natbib}
+% \usepackage[numbers,sort]{natbib}
+\usepackage[square,sort]{natbib}
+\usepackage{natbibspacing}
+%%
+
+\renewcommand{\cite}{\protect\citep}
+\newcommand{\citeN}{\protect\citet}
+
+%% CODE
+\definecolor{codeCol}{rgb}{0,0.15,0.15}
+\definecolor{codeBGCol}{rgb}{0.8,0.9,0.99}
+\newcommand{\code}[1]{%
+  \texttt{\textbf{\color{codeCol}{#1}}}%
+}
+
+\definecolor{linkCol}{rgb}{0.2, 0.0, 0.1}
+\definecolor{citeCol}{rgb}{0.1, 0.2, 0.3}
+\definecolor{urlCol} {rgb}{0.2, 0.2, 0.5}
+%%
+\usepackage[%
+    raiselinks=true,  %
+    colorlinks=true,  %
+    plainpages=true,  %
+    pdfpagelabels,    %
+    citecolor=citeCol,urlcolor=urlCol,linkcolor=linkCol,
+    unicode
+]{hyperref} % MUST be the LAST package included
+%%
+\definecolor{algBgCol}{rgb}{0.95,0.95,1.00}
+% define the wanted font for all highlightings here
+\def\lstbasicfont{\fontfamily{ul9}\selectfont}
+\lstset{%
+    language=Matlab,
+    frame=ltrb,
+    framesep=2pt,
+    basicstyle={\lstbasicfont\fontsize{10}{9}\selectfont},
+    keywordstyle=\bfseries\color{blue},
+    identifierstyle=\color{red}\bfseries,
+    commentstyle=\color{brown},
+    stringstyle=\slshape\color{green!30!red},
+    showstringspaces=true,
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=5,
+    numbersep=5pt,
+    backgroundcolor=\color{algBgCol},
+    lineskip=-0.3ex,
+    breaklines=true,
+    nolol,
+    extendedchars=true,
+    inputencoding=utf8,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ü}{{\"u}}1  {ö}{{\"o}}1  {í}{{\'\i}}1 {ű}{{\H{u}}}1 {ő}{{\H{o}}}1 
+}
+
+% Taken from Lena Herrmann at 
+% http://lenaherrmann.net/2010/05/20/javascript-syntax-highlighting-in-the-latex-listings-package
+
+\usepackage{listings}
+\usepackage{color}
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstset{
+   language=JavaScript,
+   backgroundcolor=\color{lightgray},
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+
+%%%%%%%%%%%% Theorem, Proof, etc. environments %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+\theoremstyle{plain}
+\newtheorem{tet}{Tétel}[chapter]
+\newtheorem{lem}[tet]{Lemma}
+\newtheorem{kov}[tet]{Következmény}
+\newtheorem*{tetel}{Tétel} %számozás nélküli tétel! ne használd, csak ha nagyon muszáj!
+\theoremstyle{definition}
+\newtheorem{ert}[tet]{Értelmezés}
+\newtheorem{pld}[tet]{Példa}
+\theoremstyle{remark}
+\newtheorem{meg}[tet]{Megjegyzés}
+\renewcommand{\qedsymbol}{$\blacksquare$} %bizonyítás végén fekete négyzet.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% italic abbreviations
+\newcommand{\stb}{{\it stb.}}
+\newcommand{\un}{{\it{\'un.}}}
+
+% first line is used where there are NO bold fonts to use in MATH
+%\newcommand{\vc}[1]{{\ensuremath{\pmb { #1 } }}}
+\newcommand{\vc}[1]{{\ensuremath{\boldsymbol { #1 } }}}
+
+%%%%%%%%% COLOR STUFF %%%%%%%%%%%%
+\definecolor{brown}   {rgb}{0.6,0.3,0.1}
+\definecolor{cyan}    {rgb}{0,0.9,0.9}
+\definecolor{magenta} {rgb}{0.9,0.2,0.9}
+\definecolor{red}     {rgb}{0.75, 0.15, 0.15}
+\definecolor{green}   {rgb}{0.15, 0.75, 0.15}
+\definecolor{blue}    {rgb}{0.1, 0.1, 0.6}
+\definecolor{yellow}  {rgb}{1, 1, 0.35}
+\definecolor{al_white} {rgb}{0.45, 0.45, 0.75}
+\newcommand{\red}[1]{\color{red}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\green}[1]{\textcolor{green}{#1}}
+\newcommand{\black}[1]{\textcolor{black}{#1}}
+\newcommand{\brown}[1]{\textcolor{brown}{#1}}
+\newcommand{\cyan}[1]{\textcolor{cyan}{#1}}
+\newcommand{\magenta}[1]{\textcolor{magenta}{#1}}
+\newcommand{\yellow}[1]{\textcolor{yellow}{#1}}
+\newcommand{\white}[1]{\textcolor{white}{#1}}
+
+
+% hyphenation
+\begingroup
+% Make `=' to be seen as an explicit hyphen inside \hyphenation:
+\lccode`\==`\-
+
+%      % Example: Declare hyphenation points of `government-founded':
+%      \hyphenation{gov-ern-ment=-foun-ded}
+
+\hyphenation{
+  a-xo-no-kon
+  bal-ol-da-li
+  be-csült
+  be-csúsz-nak
+  bi-zony-ta-lan-ság
+  di-men-zió-csök-ken-tõ
+  el-osz-lás
+  el-osz-lá-sa
+  e-red-mé-nye-ként
+  ér-té-kek-hez
+  fel-ír-ha-tó
+  fel-é-pí-ti
+  fo-lya-ma-tok-kal
+  függ-vény
+  függ-vé-nyek
+  függ-vé-nyét
+  függ-vény-rõl
+  függ-vény-tér-nek
+  függ-vény-cso-port-nak
+  gon-dol-ko-dó
+  Gaussz=-fo-lya-ma-tok-kal
+  ge-ne-rál-ja
+  hogy
+  i-deg-rend-sze-rünk-nek
+  il-lesz-ke-dõ
+  kap-csol-juk
+  kép-let
+  kép-le-tét
+  ki-szá-mí-ta-ni
+  kom-plex-itá-sa
+  ma-gya-ráz-ni
+  ma-xi-mi-zá-lá-sán
+  meg-ha-tá-ro-zá-sa
+  meg-ha-tá-roz-ni
+  meg-ta-lá-lá-sa
+  met-szés-pont-já-nál
+  mi-nõ-sé-ge
+  mi-ni-mi-zál-ja
+  mo-del-lek
+  mo-del-le-zés-ben
+  mû-ve-let
+  négy-ze-tek
+  négy-ze-tes
+  osz-tály
+  osz-tá-lyoz
+  osz-tá-lyo-zó
+  össze-a-dás
+  pa-ran-csok
+  sú-lyok-hoz
+  szak-i-ro-da-lom-ban
+  szá-mí-tó-gép=-tech-no-ló-gia
+  sze-mi-de-fi-nit-nek
+  sze-mi-de-fi-nit
+  sze-rin-ti
+  szük-ség-sze-rû
+  ter-mé-sze-te-sen
+  tu-laj-don-ság-nál
+  va-la-mi-lyen
+  }
+
+\endgroup

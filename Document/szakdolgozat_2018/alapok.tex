@@ -1,0 +1,31 @@
+%!TEX root = minta_dolgozat.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Bevezetés}\label{ch:Bevezetés}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Cél}\label{sec:ALAP:adatelem}
+\paragraph{}Az alkamazás az egyéni sportágak közül a férfi tenniszmérkőzések eredményeivel foglalkozik, egy jövőbeli mérkőzésről próbál bizonyos adatok felhasználásával egy előrejelzést megfogalmazni, amelyet a mesterséges intelligencia felhasználása által próbál kivitelezni. Az alkalmazás a mesterséges intelligencián belül a neurális hálok felhasználásával egy valószinűségben kifejezett értéket szolgáltat a felhasználók számára, amely a két játékos párbajának kimenetelét próbálja megtippelni, megjósolni. 
+
+\paragraph{}Az dolgozat és egyben az alkalmazás célja, hogy a sablonos és evidens statisztikák mellett  olyan új/más szempontokat is figyelembe vegyen, amelyek felhasználása által a program egy jobb előrejelzést, egy jobb tippet legyen képes nyújtani, mint egy olyan ember, aki megfelelően jártas a témában. 
+
+\paragraph{}Ennek elérése érdekében, a megszokott és "száraz" statisztikák mellett több olyan érdekesnek tűnhető statisztikai adatot is próbál figyelembe venni, amely hosszútávon egy jobb megközelítéshez vezethet.
+
+\paragraph{}Ezt egy webalkamazás formájában próbálja kivitelezni, amely nem csak az adott játékosok kiválasztására és a program lefutása utáni eredmény megjelenítésére alkalmas, hanem segítségével a felhasználó maga is megtekintheti az általa kiválaszott játékosok, tornák, évek mérkőzéseit illetve győzteseit, és azoknak statisztikáit, ezáltal lehetőséget teremt számára, hogy ő maga is értékelje a program által visszatérített eredményt.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{A dolgozat szerkezete}\label{sec:ALAP:adatelem}
+\paragraph{} A projekt, lévén hogy webalkalmazásról van szó, két nagy részből tevődik össze: szerver oldali részből és kliens oldali részből. Értelemszerűen mindkét rész részletesen tárgyalva lesz a dolgozatban, viszont a szerver oldali rész, további két részre tagolódik. Ennek a szerver oldali résznek az egyik részét az a szerver fogja alkotni, amely az adatbázissal kommunikálva a statisztikai adatokat szolgáltatja(hozza létre), a másik meg a gépi tanulásért(ezen statisztikai adatok feldolgozásáért) felelős. Mindkét "alrész" külön-külön működő alegység, amelyek egymással kommunikálva szolgáltatnak megfelelő és megjeleníthető információkat a kliens oldal számára.
+
+\paragraph{} A dolgozat elején a gépi tanulás alapjairól lesz szó, bemutatva annak lényegét, működését és felhasználási körét. A második fejezetben bemutatásra kerülnek a kliensoldalon használt webtechnológiák, amely keretein belül főképp a React rejtelmeibe nyerhetünk betekintést.  
+
+A React egy viszonylag új JavaScript keretrendszer, segíti skálázható és könnyen karbantartható alkalmazások létrehozását. Ez a keretrendszer nem használ sablonrendszert az alkalmazás felépítéséhez, hanem egy deklarativ programozási stílust használva definiálja annak aktuális állapotát.
+
+A React keretein belül szó lesz a viszonylag újonnal megjelent React Context API-ról és a React Hook-ról is. Mindezek mellett tárgyalva lesz majd, hogy hogyan létesítünk kapcsolatot a szerver oldali résszel, hogy ott hogyan kommunikálnak egymással a különböző szerverek, és hogy hogyan dolgozzuk fel a tőlük kapott információkat. 
+
+\paragraph{} Ezt követően a szerver oldali rész részletesebb bemutatása következik. Szó lesz a működéséről, az ott felhasznált technológiákról is egyaránt. Részletesebben tárgyalva lesz a Spring keretrendszer, amely egy nyílt forráskódú, önálló modulokból felépülő keretrendszer. Itt lesznek részletesebben bemutatva a mérkőzések statisztikáinak az előállításai, azoknak kiszámitásai(Java nyelvben) és megfelelő alakba történő átalakításai, a neurális háló és annak megfelelő beállításai(amelyek Python nyelvben iródtak) is egyaránt.
+
+\paragraph{} Az ezt következő fejezetekben a projekt megvalósításának részletesebb bemutatására kerül sor, amelyben az előzőleg bemutatott technológiáknak a projektben való felhasználásáról lesz szó.
+
+\paragraph{} Az utolsó fejezetben a továbbfejlesztési lehetőségek lesznek tárgyalva, amelyek még jobban hozzásegíthetik a projektet a céljainak az eléréséhez, illetve tovább növelhetik a felhasználói élményt.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

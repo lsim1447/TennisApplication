@@ -8,11 +8,11 @@ import sys
 import os
 import json
 
-NR_OF_INPUTS = 30
+NR_OF_INPUTS = 90
 NR_OF_OUTPUTS = 2
 NR_OF_LAY = 20
 NR_OF_INNER_LAY = 8
-NR_OF_EPOCH = 2000
+NR_OF_EPOCH = 5000
 
 app = Flask(__name__)
 
@@ -345,14 +345,14 @@ def predict():
     print('firstResult = ', resp_data)
 
     numpy_inputs_revert = convert_data_to_input_data(revert_input_data(request.json['inputs']))
-    resp_data_invert = network.feedforward(numpy_inputs_rvert))
-
+    resp_data_invert = network.feedforward(numpy_inputs_revert)
     print('secondResult = ', resp_data_invert)
-    percentage2 = ((resp_data[0][0] + resp_data_invert[1][0]) / 2) * 100
-    percentage1 = ((resp_data[1][0] + resp_data_invert[0][0]) / 2) * 100
-    
-    print('Percentage of ', request.json['secondPlayerSlug'], ': ', percentage2)	
+
+    percentage1 = ((resp_data[0][0] + resp_data_invert[1][0]) / 2) * 100
+    percentage2 = ((resp_data[1][0] + resp_data_invert[0][0]) / 2) * 100
+
     print('Percentage of ', request.json['firstPlayerSlug'], ': ', percentage1)
+    print('Percentage of ', request.json['secondPlayerSlug'], ': ', percentage2)	
 
     to_json = {}
     to_json['first_percentage']  = percentage1
