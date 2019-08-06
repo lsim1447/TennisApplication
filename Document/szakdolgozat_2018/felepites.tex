@@ -55,3 +55,121 @@ A Bootstrap egy olyan eszközkészletet kínál, amely előre megírt, multifunk
 
 \section{Szerver oldal}
 \subsection{Java - Spring}
+\paragraph{}
+Az alkalmazásunkban a szerver oldal Java-Spring része felelős az adatbázissal való kommunikációért. Itt hajtódnak végre az adatbázisból nyert adatok feldolgozásai annak érdekében, hogy olyan adatokat kapjunk, amelyeket a neurális háló számára tréning adatként bocsáthatunk.
+
+\paragraph{}
+A projekt megvalósítása során az adatbázis és az adatbázis séma közti függetlenség kialakítása érdekében ORM keretrendszert használtunk, pontosabban RedHat által fejlesztett Hibernate-t. A Hibernate egy objektum-relációs leképezést megvalósító programkönyvtár Java platformra, amelynek segítségével relációs adatbázisok tábláit és osztályokat tudunk egymásba leképezni, általa az adatbázisban lévő rekordokat úgy kezelhetjük mint objektumok. A leképzések az osztályok és az adattáblák között annotációk (mint ahogyan a projektben is használtuk) és XML állományok által is megvalósítható. 
+
+\paragraph{}
+\begin{figure}[t]
+  \centering
+  \pgfimage[width=1.1\linewidth]{images/database}
+  \caption[Az adatbázis]%
+  { Az adatbázis szerkezete }
+  \label{fig:ALAP:sm1}
+\end{figure}
+\paragraph{}
+Az adatbázisból lekért adatokat olyan értékekké(input adatokká) kell alakítanunk, hogy a neurális háló számára felhasználhatóak legyenek. Ez a [0,1] intervallumot jelenti a mi esetünkben. Ezeket az átalakítások a következőképpen történnek: a kiválasztott játékosoknak lekérjük az utolsó, már előre meghatározott számú mérkőzéseiket, majd különböző valószinűségeket, statisztikákat számolunk mindkét játékos számára (5.2-es kódrészlet).
+
+\begin{lstlisting}[caption= Egy játékos utolsó mérkőzéseinek győzelmi rátája]
+private double convertToPercentage(List<Match> matches, Player player){
+  if (matches.size() == 0) return 0.00;
+  long counter = matches.stream()
+    .filter(match -> match.getWinnerPlayer().getPlayer_id() == player.getPlayer_id())
+    .count();
+
+  return (matches.size() > 0) ? 
+    Double.parseDouble(df.format((double) counter / (double) matches.size())) : 
+    0.0;
+}
+\end{lstlisting}
+
+\begin{tabular}{ |p{2cm}||p{6cm}|p{6cm}|  }
+ \hline
+ \multicolumn{3}{|c|}{Az input adatok listája} \\
+ \hline
+  Number & Name & Level \\
+ \hline
+ 1   & Winning Rate                  & ALL + Tournament + Surface \\
+ 2   & 1 vs 1 Winning Rate           & ALL + Tournament + Surface \\
+ 3   & Round experience              & ALL + Tournament + Surface \\
+ 4   & Match Duration Avg            & Tournament  \\
+ 5   & Service Points Won Rate       & ALL + Tournament + Surface \\
+ 6   & First Serve In Rate           & ALL + Tournament + Surface \\
+ 7   & First Serve Won Rate          & ALL + Tournament + Surface \\
+ 8   & Break Points Converted Rate   & ALL + Tournament + Surface \\
+ 9   & Break Points Saved Rate       & ALL + Tournament + Surface \\
+ 10  & Second Serve Points Won Rate  & ALL + Tournament + Surface \\
+ 11  & Second Serve Return Won Rate  & ALL + Tournament + Surface \\
+ 12  & Games Won Rate                & ALL + Tournament + Surface \\
+ 13  & Sets Won Rate                 & ALL + Tournament + Surface \\
+ \hline
+\end{tabular}
+
+\paragraph{}
+A fenti táblázatban azok a szempontok vannak  felsorolva, amelyeket a mérkőzések kimenetelének megjósolása alkalmával figyelembe vettünk. A táblázat harmadik oszlopa azt mutatja, hogy az adott "statisztikai mutatót" a játékos összes meccsére(ALL), az adott tornán lejátszott meccseire(Tournament) vagy az adott talajon lejátszott meccseire(Surface) számítottuk ki és alkalmaztunk.
+
+\begin{lstlisting}[caption= A második szervák győzelmi rátája fogadóként]
+public double getSecondServeReturnWonRate(List<Stats> playerStats, Player player){
+  playerStats = playerStats.stream()
+    .filter(st -> !((double)st.getWinner_second_serve_return_total() < 0.0001 || (double) st.getLoser_second_serve_return_total() < 0.0001))
+    .collect(Collectors.toList());
+
+  double playerSecondServeReturnWonRate = (playerStats.stream()
+    .map(s -> {
+      if(s.getMatch().getWinnerPlayer().getPlayerSlug().equals(player.getPlayerSlug())){
+        return s.getWinner_second_serve_return_won() / (double)s.getWinner_second_serve_return_total();
+      } else {
+        return stat.getLoser_second_serve_return_won() / (double)s.getLoser_second_serve_return_total();
+      }
+    })
+    .reduce(0.00, (a, b) -> a + b));
+
+  if (playerStats.size() == 0) {
+    throw new NumberFormatException();
+  }
+
+  playerSecondServeReturnWonRate = playerSecondServeReturnWonRate / (double) playerStats.size();
+  return Double.parseDouble(df.format(playerSecondServeReturnWonRate));
+}
+\end{lstlisting}
+
+\newpage
+
+\begin{lstlisting}[caption= Az adatbázisban talált mérkőzések training adatokká való átalakítása]
+    private List<TrainData> getTrainData(List<Match> matches){
+        return matches.stream()
+                .filter(match -> getInputs(match) != null)
+                .map(match -> new TrainData(getInputs(match), getOutputs(match)))
+                .collect(Collectors.toList());
+    }
+\end{lstlisting}
+
+\paragraph{}
+Minden mérkőzés esetén, amikor a neki megfelelő input adatok kiszámításán dolgozunk, csak az előtte lévő X mérkőzés adatait vesszük figyelembe. A mérkőzések közül csak azon meccsek maradnak a trainghez felhasznált mérkőzések között, amelyek teljesítenek bizonyos feltételeket, például egy minimum mérkőzésszám az adott játékos karrierjében, az adott talajon, tornán stb. Ez azért fontos, mivel a beválogatás során a legmegfelelőbb adatokat érdemes megtartanunk, hogy minél jobb eredményeket érhessünk el.
+
+\paragraph{}
+Abban az esetben, ha az adott mérkőzés nem felel meg az elvárásoknak, a "getInputs" metódus null értéket fog visszatéríteni, és mint ahogyan az 5.4-as kódrészletben is láthatjuk, az ilyen mérkőzések nem fognak bekerülni a training adatjaink közé.
+
+\paragraph{}
+Annak érdekében, hogy a training adatok létrehozásának folyamatát felgyorsítsuk, a játékosok mérkőzéseit változókba(5.5-ös kódrészlet) mentettük, amely azért lehet hasznos, mert a mérkőzések egyenként való feldolgozása alkalmával minden játékos mérkőzéseit egyetlen alkalommal kell lekérnünk az adatbázisból, amely lényegesen hozzájárul a futásidő minimalizálásához (5.6-os kódrészlet).
+
+\begin{lstlisting}[caption=A futásidő minimalizálásához használt HashMap-ek listája]
+    private HashMap<String, List<Match>> matchMap = new HashMap<>();
+    private HashMap<String, List<Match>> matchMapOnSurface = new HashMap<>();
+    private HashMap<String, List<Match>> matchMapHeadToHead = new HashMap<>();
+    private HashMap<String, List<Match>> matchMapHeadToHeadOnSurface = new HashMap<>();
+    private HashMap<String, List<Match>> matchMapOnTournament = new HashMap<>();
+\end{lstlisting}
+
+\begin{lstlisting}[caption=A győztes játékos meccseinek inicializálása]
+List<Match> winnerPlayerAllMatches;
+
+if (matchMap.containsKey(winnerPlayer.getPlayerSlug())) {
+  winnerPlayerAllMatches = matchMap.get(winnerPlayer.getPlayerSlug());
+} else {
+  winnerPlayerAllMatches = (List<Match>) matchService.findAllMatchesByPlayerName(winnerPlayer.getFirstName(), winnerPlayer.getLastName());
+  matchMap.put(winnerPlayer.getPlayerSlug(), winnerPlayerAllMatches);
+}
+\end{lstlisting}

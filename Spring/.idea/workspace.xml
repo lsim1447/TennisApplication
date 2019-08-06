@@ -2,12 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b0392ac-c066-4eee-a024-48f2ef94d32f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Python/NeuralNetwork.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Python/NeuralNetwork.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Document/szakdolgozat_2018/felepites.aux" beforeDir="false" afterPath="$PROJECT_DIR$/../Document/szakdolgozat_2018/felepites.aux" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Document/szakdolgozat_2018/felepites.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Document/szakdolgozat_2018/felepites.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Document/szakdolgozat_2018/felepites.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../Document/szakdolgozat_2018/felepites.tex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Document/szakdolgozat_2018/minta_dolgozat.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Document/szakdolgozat_2018/minta_dolgozat.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Document/szakdolgozat_2018/minta_dolgozat.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../Document/szakdolgozat_2018/minta_dolgozat.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Document/szakdolgozat_2018/minta_dolgozat.toc" beforeDir="false" afterPath="$PROJECT_DIR$/../Document/szakdolgozat_2018/minta_dolgozat.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tennis/controller/PredicterController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/tennis/controller/PredicterController.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -44,11 +46,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="834" lean-forward="true" selection-start-line="834" selection-end-line="834" />
+            <state relative-caret-position="74">
+              <caret line="480" column="47" selection-start-line="480" selection-start-column="47" selection-end-line="480" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2350#2757#0" />
+                <element signature="e#2763#3443#0" />
                 <element signature="e#3449#3778#0" />
                 <element signature="e#3784#4245#0" />
                 <element signature="e#4251#4652#0" />
@@ -63,6 +66,25 @@
                 <element signature="e#19163#20280#0" />
                 <element signature="e#20286#22859#0" />
                 <element signature="e#22865#24131#0" />
+                <element signature="e#24137#32226#0" />
+                <element signature="e#32232#37254#0" />
+                <element signature="e#46543#48732#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/UploadDatabaseController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="451">
+              <caret line="246" column="73" selection-start-line="246" selection-start-column="73" selection-end-line="246" selection-end-column="73" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#uploadDatabaseWithMenPlayers#0;class#UploadDatabaseController#0" />
+                <element signature="method#uploadDatabaseWithTourneys#0;class#UploadDatabaseController#0" />
+                <element signature="method#uploadDatabaseWithTournaments#0;class#UploadDatabaseController#0" />
+                <element signature="method#uploadDatabaseWithMatches#0;class#UploadDatabaseController#0" />
               </folding>
             </state>
           </provider>
@@ -71,8 +93,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/PredicterService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2941">
-              <caret line="183" column="18" selection-start-line="183" selection-start-column="18" selection-end-line="183" selection-end-column="18" />
+            <state relative-caret-position="382">
+              <caret line="194" column="28" lean-forward="true" selection-start-line="194" selection-start-column="28" selection-end-line="194" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -84,7 +106,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="187">
-              <caret line="11" column="33" lean-forward="true" selection-start-line="11" selection-start-column="33" selection-end-line="11" selection-end-column="33" />
+              <caret line="11" column="33" selection-start-line="11" selection-start-column="33" selection-end-line="11" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -212,7 +234,8 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1913" />
+    <option name="x" value="2488" />
+    <option name="y" value="160" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
   </component>
@@ -222,7 +245,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -304,6 +326,7 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -452,7 +475,7 @@
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.34168443" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.34541577" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -940,20 +963,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/UploadDatabaseController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="655">
-          <caret line="246" column="73" selection-start-line="246" selection-start-column="73" selection-end-line="246" selection-end-column="73" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#uploadDatabaseWithMenPlayers#0;class#UploadDatabaseController#0" />
-            <element signature="method#uploadDatabaseWithTourneys#0;class#UploadDatabaseController#0" />
-            <element signature="method#uploadDatabaseWithTournaments#0;class#UploadDatabaseController#0" />
-            <element signature="method#uploadDatabaseWithMatches#0;class#UploadDatabaseController#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tennis/model/TrainingRequestDTO.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -995,30 +1004,45 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="33" selection-start-line="11" selection-start-column="33" selection-end-line="11" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/PredicterService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2941">
-          <caret line="183" column="18" selection-start-line="183" selection-start-column="18" selection-end-line="183" selection-end-column="18" />
+        <state relative-caret-position="382">
+          <caret line="194" column="28" lean-forward="true" selection-start-line="194" selection-start-column="28" selection-end-line="194" selection-end-column="28" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/UploadDatabaseController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="33" lean-forward="true" selection-start-line="11" selection-start-column="33" selection-end-line="11" selection-end-column="33" />
+        <state relative-caret-position="451">
+          <caret line="246" column="73" selection-start-line="246" selection-start-column="73" selection-end-line="246" selection-end-column="73" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#uploadDatabaseWithMenPlayers#0;class#UploadDatabaseController#0" />
+            <element signature="method#uploadDatabaseWithTourneys#0;class#UploadDatabaseController#0" />
+            <element signature="method#uploadDatabaseWithTournaments#0;class#UploadDatabaseController#0" />
+            <element signature="method#uploadDatabaseWithMatches#0;class#UploadDatabaseController#0" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="834" lean-forward="true" selection-start-line="834" selection-end-line="834" />
+        <state relative-caret-position="74">
+          <caret line="480" column="47" selection-start-line="480" selection-start-column="47" selection-end-line="480" selection-end-column="47" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2350#2757#0" />
+            <element signature="e#2763#3443#0" />
             <element signature="e#3449#3778#0" />
             <element signature="e#3784#4245#0" />
             <element signature="e#4251#4652#0" />
@@ -1033,6 +1057,9 @@
             <element signature="e#19163#20280#0" />
             <element signature="e#20286#22859#0" />
             <element signature="e#22865#24131#0" />
+            <element signature="e#24137#32226#0" />
+            <element signature="e#32232#37254#0" />
+            <element signature="e#46543#48732#0" />
           </folding>
         </state>
       </provider>

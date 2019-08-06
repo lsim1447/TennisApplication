@@ -73,3 +73,20 @@
 \select@language {magyar} \contentsline {paragraph}{}{19}{section*.52}
 \select@language {magyar} \contentsline {section}{\numberline {5.2}Szerver oldal}{19}{section.5.2}
 \select@language {magyar} \contentsline {subsection}{\numberline {5.2.1}Java - Spring}{19}{subsection.5.2.1}
+\select@language {magyar} \contentsline {paragraph}{}{19}{section*.53}
+\select@language {magyar} \contentsline {paragraph}{}{19}{section*.54}
+\select@language {magyar} \contentsline {paragraph}{}{20}{figure.5.1}
+\select@language {magyar} \contentsline {paragraph}{}{20}{section*.56}
+\select@language {magyar} \contentsline {paragraph}{}{21}{section*.57}
+\select@language {magyar} \contentsline {paragraph}{}{22}{section*.58}
+\select@language {magyar} \contentsline {paragraph}{}{22}{section*.59}
+\select@language {magyar} \contentsline {paragraph}{}{22}{section*.60}
+\select@language {magyar} \contentsline {chapter}{\numberline {6}\IeC {\"O}sszegz\IeC {\'e}s}{23}{chapter.6}
+\select@language {magyar} \contentsline {paragraph}{}{23}{section*.61}
+\select@language {magyar} \contentsline {paragraph}{}{23}{section*.62}
+\select@language {magyar} \contentsline {paragraph}{}{23}{section*.63}
+\select@language {magyar} \contentsline {section}{\numberline {6.1}Tov\IeC {\'a}bbfejleszt\IeC {\'e}si lehet\IeC {\H o}s\IeC {\'e}gek}{23}{section.6.1}
+\select@language {magyar} \contentsline {paragraph}{}{23}{section*.64}
+\select@language {magyar} \contentsline {paragraph}{}{23}{section*.65}
+\select@language {magyar} \contentsline {paragraph}{}{23}{section*.66}
+\select@language {magyar} \contentsline {paragraph}{}{24}{section*.67}
