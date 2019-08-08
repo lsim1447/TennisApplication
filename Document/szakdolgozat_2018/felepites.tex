@@ -16,6 +16,12 @@
 	\end{enumerate}
 \end{osszefoglal}
 
+\paragraph{}
+Az alkalmazás működését tekintve a következőképpen működik: a felületről érkező kéréseket a Java szerver kezeli, majd a neurális hálóval kapcsolatos műveletek elvégzése érdekében a Java szerver egy kérést küld a Python szerverünknek, amely a megfelelő utasítások végrehajtása során válaszol a Java szerverünknek, majd az a kliens oldalon futó szervernek, amely megjeleníti a kapott információkat.
+
+\paragraph{}
+A szerverek közti kommunikáció megkönnyítése érdekében a Java oldalon történő tréning adatok kiszámítását követően az adatokat egy JSON alakú fájlba írjuk, majd egy kérést küldünk a Python szerverünknek az állomány nevével, amely ezt követően beolvassa az adott állomány tartalmát, majd elvégzi a kért műveleteket.
+
 \section{A kliens oldal}
 \paragraph{}
 A kliens oldal a  React keretrendszer által lett megvalósítva. Az alkalmazás lehetőséget nyújt a felhasználók számára, hogy a tennis 4 nagy tornájának(Grand slams) a nyerteseit, mérkőzéseit megtekintjük táblázatos formában. Ugyanakkor lehetőségünk van tetszés szerint a tornák neve alapján is rákeresni bizonyos eseményekre, tornákra. 
@@ -110,7 +116,7 @@ private double convertToPercentage(List<Match> matches, Player player){
 \paragraph{}
 A fenti táblázatban azok a szempontok vannak  felsorolva, amelyeket a mérkőzések kimenetelének megjósolása alkalmával figyelembe vettünk. A táblázat harmadik oszlopa azt mutatja, hogy az adott "statisztikai mutatót" a játékos összes meccsére(ALL), az adott tornán lejátszott meccseire(Tournament) vagy az adott talajon lejátszott meccseire(Surface) számítottuk ki és alkalmaztunk.
 
-\begin{lstlisting}[caption= A második szervák győzelmi rátája fogadóként]
+\begin{lstlisting}[caption= A második adogatások utáni pontok győzelmi rátája fogadóként]
 public double getSecondServeReturnWonRate(List<Stats> playerStats, Player player){
   playerStats = playerStats.stream()
     .filter(st -> !((double)st.getWinner_second_serve_return_total() < 0.0001 || (double) st.getLoser_second_serve_return_total() < 0.0001))
@@ -134,8 +140,6 @@ public double getSecondServeReturnWonRate(List<Stats> playerStats, Player player
   return Double.parseDouble(df.format(playerSecondServeReturnWonRate));
 }
 \end{lstlisting}
-
-\newpage
 
 \begin{lstlisting}[caption= Az adatbázisban talált mérkőzések training adatokká való átalakítása]
     private List<TrainData> getTrainData(List<Match> matches){
@@ -173,3 +177,39 @@ if (matchMap.containsKey(winnerPlayer.getPlayerSlug())) {
   matchMap.put(winnerPlayer.getPlayerSlug(), winnerPlayerAllMatches);
 }
 \end{lstlisting}
+
+\subsection{Python - Neurális hálók}
+\paragraph{}
+A második fejezetben nagyon röviden már elkezdtük bemutatni a gépi tanulás és a neurális hálók világát, viszont lássuk kicsit részletesebben is, és hogy hogyan is használtuk fel mindezt az alkalmazásunkban.
+
+\paragraph{}
+Ahhoz, hogy jól megérthessük azt, hogy mi is az a neurális háló, tegyünk egy lépést hátra és beszéljünk egy kicsit a mesterséges neuronról, ismertebb nevén a perceptronról. A perceptront az 1950-es és 1960-as években Frank Rosenblatt tudós fejlesztette ki, inspirálódva Warren McCulloch és Walter Pitts munkájából. Manapság már gyakrabban használják a mesterséges neuron más modelljeit, például a sigmoid neuront, de hogy jobban megérthetssük annak működését, először lássuk hogyan is működik a perceptron.
+
+\paragraph{}
+A perceptron működése viszonylag egyszerű (2.3-as ábra), a több bemenő adatból (inputs: x1, x2, ...), egyetlen kimeneti értéket állít elő (output). A bemeneti értékek mellett súlyaink is vannak (w1, w2, ...), amelyek a bemeneti adatok fontosságát jelzik a kimenetre nézve. Minél nagyobb súllyal látunk el egy bemeneti értéket, annál fontosabb és nagyobb ráhatással lesz a kimenetünkre. A neuron kimenete 0 vagy 1, attól függően, hogy a bemeneti értékek és a nekik megfelelő súlyok szorzatösszege kisebb vagy nagyobb egy bizonyos küszöbértéknél (threshold value).
+
+\paragraph{}
+Történetesen amikor definiálunk egy perceptront, akkor annak a perceptronnak csak egyetlen kimenetele van. Egy háló esetén úgy tűnhet, hogy több is van, viszont még mindig igaz az az állítás, hogy csak egyetlen kimenet van. Viszont egy perceptron kimenete lehet több más perceptron bemenete egyaránt.
+
+\paragraph{}
+Annak érdekében, hogy megpróbáljuk leegyszerűsíteni a perceptron "szabályát", bevezethetjük a "bias" fogalmát (jelöljük b-vel), amelynek értéke feleljen meg a küszöbérték ellentettjével. Ennek következtében a képletünk a következőképpen alakul:
+\[ 
+Output= \left\{
+\begin{array}{ll}
+      0, w*x + b <= 0 \\
+      1, w*x + b >= 0 \\
+\end{array} 
+\right. 
+\]
+
+Erre a bias-re tulajdonképpen tekinthetünk úgy, mint egy olyan mértékre, amely megmondja, hogy milyen könnyen adhatja a perceptron számunkra az 1-es értéket. Mint ahogyan a képletből is láthatjuk, egy nagyon nagy bias értékkel nagyon egyszerűen tud a perceptronunk 1-es értéket visszatériteni. Természetesen a fordítottja igaz egy nagyon nagy negatív értékre.
+
+\paragraph{}
+Tételezzük fel, hogy az alkalmazásunkban perceptronokból felépített hálózatot használunk. Logikusan úgy gondoljuk, hogy egy teniszmérkőzés esetén, ha csak egy kis mértékben változtatjuk meg például az első adogatások sikerességének a súlyát és ezt a bias értékét, akkor az egy kis eredménymódosulással járhat mindössze, például a két játékos győzelmi esélye változik valamelyik irányba 1-2 százalékkal. A probléma az, hogy egy kis változtatás ezeken az értékeken egy nagyon nagy bonyodalmat is okozhat olyan értelemben, hogy egy teljesen nem várt, irreális eredményt kapunk a végén. Ezeknek a fajta hibáknak a nagyobb eséllyel való elkerülése érdekében vezették be a sigmoid neuronokat.
+
+\paragraph{}
+A sigmoid neuronok hasonlítanak a perceptronokhoz, viszont különböznek egyetlen fontos tulajdonságban: általuk egy súlyon/bias-en végzett apróbb módosítás mindössze kisebb változással járhat a kimenetre nézve. Ezt úgy valósítja meg, hogy míg a perceptron esetében a kimeneti érték 0 vagy 1 lehet, addig a sigmoid neuron esetében a kimenet bármilyen érték lehet a [0,1] intervallumban, például 0.7496 is. A sigmoid függvény alakját már a második fejezetben is bemutattuk:
+$$h_ \theta (x) =  \frac{\mathrm{1} }{\mathrm{1} + e^- \theta^Tx }  $$ 
+Szóval kicsit pontosabban a sigmoid neuron kimenete x1, x2 ... bemeneti, w1,w2, ... súlyokkal és b bias értékkel a következő:
+
+$$\frac{\mathrm{1} }{\mathrm{1} + exp(-\sum_{i=0}^{+n} (w_j * x_j - b)) }  $$ 
