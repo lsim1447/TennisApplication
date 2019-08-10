@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b0392ac-c066-4eee-a024-48f2ef94d32f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Document/szakdolgozat_2018/felepites.aux" beforeDir="false" afterPath="$PROJECT_DIR$/../Document/szakdolgozat_2018/felepites.aux" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Document/szakdolgozat_2018/felepites.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Document/szakdolgozat_2018/felepites.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Document/szakdolgozat_2018/felepites.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../Document/szakdolgozat_2018/felepites.tex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Document/szakdolgozat_2018/minta_dolgozat.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Document/szakdolgozat_2018/minta_dolgozat.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Document/szakdolgozat_2018/minta_dolgozat.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../Document/szakdolgozat_2018/minta_dolgozat.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Document/szakdolgozat_2018/minta_dolgozat.toc" beforeDir="false" afterPath="$PROJECT_DIR$/../Document/szakdolgozat_2018/minta_dolgozat.toc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -46,8 +42,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="74">
-              <caret line="480" column="47" selection-start-line="480" selection-start-column="47" selection-end-line="480" selection-end-column="47" />
+            <state relative-caret-position="595">
+              <caret line="837" column="55" lean-forward="true" selection-start-line="837" selection-start-column="55" selection-end-line="837" selection-end-column="55" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2350#2757#0" />
@@ -68,6 +64,7 @@
                 <element signature="e#22865#24131#0" />
                 <element signature="e#24137#32226#0" />
                 <element signature="e#32232#37254#0" />
+                <element signature="e#37260#44778#0" />
                 <element signature="e#46543#48732#0" />
               </folding>
             </state>
@@ -77,7 +74,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/UploadDatabaseController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="451">
+            <state relative-caret-position="833">
               <caret line="246" column="73" selection-start-line="246" selection-start-column="73" selection-end-line="246" selection-end-column="73" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -93,8 +90,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/PredicterService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="382">
-              <caret line="194" column="28" lean-forward="true" selection-start-line="194" selection-start-column="28" selection-end-line="194" selection-end-column="28" />
+            <state relative-caret-position="3128">
+              <caret line="194" column="28" selection-start-line="194" selection-start-column="28" selection-end-line="194" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -234,10 +231,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2488" />
-    <option name="y" value="160" />
-    <option name="width" value="974" />
-    <option name="height" value="1047" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1096" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -245,6 +242,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -325,8 +324,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -336,7 +333,7 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1563105222692" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1565445028728" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -473,9 +470,10 @@
     <option name="totallyTimeSpent" value="162842000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.34541577" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3491471" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -1004,41 +1002,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="33" selection-start-line="11" selection-start-column="33" selection-end-line="11" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/PredicterService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="194" column="28" lean-forward="true" selection-start-line="194" selection-start-column="28" selection-end-line="194" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/UploadDatabaseController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="451">
-          <caret line="246" column="73" selection-start-line="246" selection-start-column="73" selection-end-line="246" selection-end-column="73" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#uploadDatabaseWithMenPlayers#0;class#UploadDatabaseController#0" />
-            <element signature="method#uploadDatabaseWithTourneys#0;class#UploadDatabaseController#0" />
-            <element signature="method#uploadDatabaseWithTournaments#0;class#UploadDatabaseController#0" />
-            <element signature="method#uploadDatabaseWithMatches#0;class#UploadDatabaseController#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/PredicterController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="74">
-          <caret line="480" column="47" selection-start-line="480" selection-start-column="47" selection-end-line="480" selection-end-column="47" />
+        <state relative-caret-position="595">
+          <caret line="837" column="55" lean-forward="true" selection-start-line="837" selection-start-column="55" selection-end-line="837" selection-end-column="55" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2350#2757#0" />
@@ -1059,8 +1026,40 @@
             <element signature="e#22865#24131#0" />
             <element signature="e#24137#32226#0" />
             <element signature="e#32232#37254#0" />
+            <element signature="e#37260#44778#0" />
             <element signature="e#46543#48732#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/controller/UploadDatabaseController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="833">
+          <caret line="246" column="73" selection-start-line="246" selection-start-column="73" selection-end-line="246" selection-end-column="73" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#uploadDatabaseWithMenPlayers#0;class#UploadDatabaseController#0" />
+            <element signature="method#uploadDatabaseWithTourneys#0;class#UploadDatabaseController#0" />
+            <element signature="method#uploadDatabaseWithTournaments#0;class#UploadDatabaseController#0" />
+            <element signature="method#uploadDatabaseWithMatches#0;class#UploadDatabaseController#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tennis/service/PredicterService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3128">
+          <caret line="194" column="28" selection-start-line="194" selection-start-column="28" selection-end-line="194" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="33" selection-start-line="11" selection-start-column="33" selection-end-line="11" selection-end-column="33" />
         </state>
       </provider>
     </entry>

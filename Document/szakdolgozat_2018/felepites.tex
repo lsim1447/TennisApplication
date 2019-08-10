@@ -24,7 +24,7 @@ A szerverek közti kommunikáció megkönnyítése érdekében a Java oldalon t�
 
 \section{A kliens oldal}
 \paragraph{}
-A kliens oldal a  React keretrendszer által lett megvalósítva. Az alkalmazás lehetőséget nyújt a felhasználók számára, hogy a tennis 4 nagy tornájának(Grand slams) a nyerteseit, mérkőzéseit megtekintjük táblázatos formában. Ugyanakkor lehetőségünk van tetszés szerint a tornák neve alapján is rákeresni bizonyos eseményekre, tornákra. 
+A kliens oldal a  React keretrendszer által lett megvalósítva. Az alkalmazás lehetőséget nyújt a felhasználók számára, hogy a tennis 4 nagy tornájának (Grand slams) a nyerteseit, mérkőzéseit megtekintjük táblázatos formában. Ugyanakkor lehetőségünk van tetszés szerint a tornák neve alapján is rákeresni bizonyos eseményekre, tornákra. 
 \paragraph{}
 Ugyanúgy mint a tornák esetén, a játékosok esetében is lehetőségünk van a név szerinti keresésre, ahol a kiválasztott játékos karrierjének összes fontosabb mozzanatáról találhatunk néhány érdekesebb statisztikai adatot.
 \paragraph{}
@@ -40,7 +40,7 @@ Az alkalmazás reszponzív, azaz egy olyan alkalmazás, amely törekszik arra, h
 \end{enumerate}
 
 \paragraph{}
-A Bootstrap egy olyan eszközkészletet kínál, amely előre megírt, multifunkcionálisan alkalmazható, aminek a segítségével átláthatóbban, gyorsabban és hatékonyabban dolgozhatunk. A CSS tulajdonságok és a HTML struktúra mellett számos JavaScript bővítménnyel is rendelkezik, melyek igen rugalmasak!
+A Bootstrap\footnote{A Bootstrap hivatalos oldala: https://getbootstrap.com/} egy olyan eszközkészletet kínál, amely előre megírt, multifunkcionálisan alkalmazható, aminek a segítségével átláthatóbban, gyorsabban és hatékonyabban dolgozhatunk. A CSS tulajdonságok és a HTML struktúra mellett számos JavaScript bővítménnyel is rendelkezik, melyek igen rugalmasak!
 
 \begin{lstlisting}[caption=Responsive webtervezés - Bootstrap keretrendszer]
 <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -114,7 +114,7 @@ private double convertToPercentage(List<Match> matches, Player player){
 \end{tabular}
 
 \paragraph{}
-A fenti táblázatban azok a szempontok vannak  felsorolva, amelyeket a mérkőzések kimenetelének megjósolása alkalmával figyelembe vettünk. A táblázat harmadik oszlopa azt mutatja, hogy az adott "statisztikai mutatót" a játékos összes meccsére(ALL), az adott tornán lejátszott meccseire(Tournament) vagy az adott talajon lejátszott meccseire(Surface) számítottuk ki és alkalmaztunk.
+A fenti táblázatban azok a szempontok vannak  felsorolva, amelyeket a mérkőzések kimenetelének megjósolása alkalmával figyelembe vettünk. A táblázat harmadik oszlopa azt mutatja, hogy az adott "statisztikai mutatót" a játékos összes meccsére (ALL), az adott tornán lejátszott meccseire (Tournament) vagy az adott talajon lejátszott meccseire (Surface) számítottuk ki és alkalmaztunk.
 
 \begin{lstlisting}[caption= A második adogatások utáni pontok győzelmi rátája fogadóként]
 public double getSecondServeReturnWonRate(List<Stats> playerStats, Player player){
@@ -154,10 +154,10 @@ public double getSecondServeReturnWonRate(List<Stats> playerStats, Player player
 Minden mérkőzés esetén, amikor a neki megfelelő input adatok kiszámításán dolgozunk, csak az előtte lévő X mérkőzés adatait vesszük figyelembe. A mérkőzések közül csak azon meccsek maradnak a trainghez felhasznált mérkőzések között, amelyek teljesítenek bizonyos feltételeket, például egy minimum mérkőzésszám az adott játékos karrierjében, az adott talajon, tornán stb. Ez azért fontos, mivel a beválogatás során a legmegfelelőbb adatokat érdemes megtartanunk, hogy minél jobb eredményeket érhessünk el.
 
 \paragraph{}
-Abban az esetben, ha az adott mérkőzés nem felel meg az elvárásoknak, a "getInputs" metódus null értéket fog visszatéríteni, és mint ahogyan az 5.4-as kódrészletben is láthatjuk, az ilyen mérkőzések nem fognak bekerülni a training adatjaink közé.
+Abban az esetben, ha az adott mérkőzés nem felel meg az elvárásoknak, a "getInputs" metódus null értéket fog visszatéríteni, és mint ahogyan az 5.4-as kódrészletben is láthatjuk, az ilyen mérkőzések nem fognak bekerülni a training adataink közé.
 
 \paragraph{}
-Annak érdekében, hogy a training adatok létrehozásának folyamatát felgyorsítsuk, a játékosok mérkőzéseit változókba(5.5-ös kódrészlet) mentettük, amely azért lehet hasznos, mert a mérkőzések egyenként való feldolgozása alkalmával minden játékos mérkőzéseit egyetlen alkalommal kell lekérnünk az adatbázisból, amely lényegesen hozzájárul a futásidő minimalizálásához (5.6-os kódrészlet).
+Annak érdekében, hogy a training adatok létrehozásának folyamatát felgyorsítsuk, a játékosok mérkőzéseit változókba (5.5-ös kódrészlet) mentettük, amely azért lehet hasznos, mert a mérkőzések egyenként való feldolgozása alkalmával minden játékos mérkőzéseit így egyetlen alkalommal kell lekérnünk az adatbázisból, amely lényegesen hozzájárul a futásidő minimalizálásához (5.6-os kódrészlet).
 
 \begin{lstlisting}[caption=A futásidő minimalizálásához használt HashMap-ek listája]
     private HashMap<String, List<Match>> matchMap = new HashMap<>();
@@ -205,11 +205,209 @@ Output= \left\{
 Erre a bias-re tulajdonképpen tekinthetünk úgy, mint egy olyan mértékre, amely megmondja, hogy milyen könnyen adhatja a perceptron számunkra az 1-es értéket. Mint ahogyan a képletből is láthatjuk, egy nagyon nagy bias értékkel nagyon egyszerűen tud a perceptronunk 1-es értéket visszatériteni. Természetesen a fordítottja igaz egy nagyon nagy negatív értékre.
 
 \paragraph{}
-Tételezzük fel, hogy az alkalmazásunkban perceptronokból felépített hálózatot használunk. Logikusan úgy gondoljuk, hogy egy teniszmérkőzés esetén, ha csak egy kis mértékben változtatjuk meg például az első adogatások sikerességének a súlyát és ezt a bias értékét, akkor az egy kis eredménymódosulással járhat mindössze, például a két játékos győzelmi esélye változik valamelyik irányba 1-2 százalékkal. A probléma az, hogy egy kis változtatás ezeken az értékeken egy nagyon nagy bonyodalmat is okozhat olyan értelemben, hogy egy teljesen nem várt, irreális eredményt kapunk a végén. Ezeknek a fajta hibáknak a nagyobb eséllyel való elkerülése érdekében vezették be a sigmoid neuronokat.
+Tételezzük fel, hogy az alkalmazásunkban perceptronokból felépített hálózatot használunk. Logikusan úgy gondoljuk, hogy egy teniszmérkőzés esetén, ha csak egy kis mértékben változtatjuk meg például az első adogatások sikerességének a súlyát és a bias értékét, akkor az egy kis eredménymódosulással járhat mindössze, például a két játékos győzelmi esélye változik valamelyik irányba 1-2 százalékkal. A probléma az, hogy egy kis változtatás ezeken az értékeken egy nagyon nagy bonyodalmat is okozhat olyan értelemben, hogy egy egyáltalán nem várt, irreális eredményt kapunk a végén. Ezeknek a fajta hibáknak a nagyobb eséllyel való elkerülése érdekében vezették be a sigmoid neuronokat.
 
 \paragraph{}
 A sigmoid neuronok hasonlítanak a perceptronokhoz, viszont különböznek egyetlen fontos tulajdonságban: általuk egy súlyon/bias-en végzett apróbb módosítás mindössze kisebb változással járhat a kimenetre nézve. Ezt úgy valósítja meg, hogy míg a perceptron esetében a kimeneti érték 0 vagy 1 lehet, addig a sigmoid neuron esetében a kimenet bármilyen érték lehet a [0,1] intervallumban, például 0.7496 is. A sigmoid függvény alakját már a második fejezetben is bemutattuk:
 $$h_ \theta (x) =  \frac{\mathrm{1} }{\mathrm{1} + e^- \theta^Tx }  $$ 
-Szóval kicsit pontosabban a sigmoid neuron kimenete x1, x2 ... bemeneti, w1,w2, ... súlyokkal és b bias értékkel a következő:
+Szóval bizonyos műveletek elvégzése után a sigmoid neuron kimenete  a következőképpen alakul (az x1, x2 ... bemeneti adatokat, a w1,w2, ... súlyokat és "b" a bias értéket jelöli):
 
 $$\frac{\mathrm{1} }{\mathrm{1} + exp(-\sum_{i=0}^{+n} (w_j * x_j - b)) }  $$ 
+
+\subsubsection{Alkalmazás}
+\paragraph{}
+
+
+\begin{lstlisting}[caption=A neurális háló felépítése]
+NR_OF_INPUTS = 90      // a bemenő adatok száma = INPUTS
+NR_OF_LAY = 20         // az első layeren lévő neuronok száma
+NR_OF_INNER_LAY = 8    // a második layeren lévő neuronok száma
+NR_OF_OUTPUTS = 2      // a kimenő adatok száma = OUTPUTS
+\end{lstlisting}
+
+\begin{lstlisting}[caption=A szigmoid függvény Pythonban]
+def sigmoid(self, x):
+    return 1.0 / (1.0 + numpy.exp(-x))
+    
+def sigmoid_prime(z):
+    """A sigmoid függvény deriváltja"""
+    return sigmoid(z)*(1-sigmoid(z))
+    
+\end{lstlisting}
+
+\paragraph{}
+Mint azt ahogyan a fenti 5.7-es kódrészletben láthatjuk, az alkamazás 4 rétegből áll:  egy 90 neuronból álló INPUT LAYER, egy 2 neuronból álló OUTPUT LAYER, és a köztük léve 20 és 8 neuronokból álló köztes layerek(HIDDEN LAYERS). Az alkalmazásban használt neurális háló felépítését a 2. fejezetben megjelenő 2.2-es ábrán tekinthetjük meg.
+
+\paragraph{}
+A már a fentiekben is tárgyalt, és a 5.8-as kódrészletben Python alakban is megtalálható szigmoid függvényt a "feedforward" metódus használja, amelyek a Network osztályunk metóduskészletéből származnak.
+
+\begin{lstlisting}[caption=A Network osztály konstruktora illetve a feedforward függvény]
+class Network(object):
+    def __init__(self, sizes):
+        self.layers = len(sizes)
+        self.sizes = sizes
+        self.biases = [numpy.random.randn(x, 1) for x in sizes[1:]]
+        self.weights = [numpy.random.randn(y, x) for x, y in zip(sizes[:-1], sizes[1:])]
+        self.data = []
+        self.max_biases = []
+        self.max_weights = []
+        self.max_percentage = 0.0
+        self.history = []
+
+    def feedforward(self, a):
+        """Return the output of the network if "a" is input."""
+        for bias, weight in zip(self.biases, self.weights):
+            a = self.sigmoid(numpy.dot(weight, a) + bias)
+        return a
+        
+    ...  
+\end{lstlisting}
+
+Mint ahogyan a fenti 5.9-es kódrészletből is láthatjuk, a tömbben tárolandó adatok tárolásához a Python Numpy könyvtárát használjuk fel. Kezdetben a súlyokat és a bias értékeit random adatokkal töltsük fel, majd ahogyan a továbbiakban meglátjuk, ezeken az értékeken folyamatos apró módosításokat fogunk végrehajtani az eredményesség növelése érdekében.
+
+\paragraph{}
+A "feedforward" metódus egy, a paraméterként megadott (a) érték függvényében egy outputot fog visszatéríteni abban az esetben, ha a paraméterként megadott érték egy érvényes input adat.
+
+\paragraph{}
+És akkor most lássuk, hogyan is működik a tanulási/training folyamat:
+\begin{lstlisting}[caption= A train függvény]
+def train(self, data, eta, weight_filename, biases_filename):
+        j = 0
+        self.history = []
+        while j < NR_OF_EPOCH:
+            j += 1
+            self.update(data, eta)
+            right = self.evaluate(data)
+            whole = len(data)
+            cur = right / whole
+            print("Epoch", j, ":", cur*100, "%")
+            self.history.append(cur*100)
+            if cur > self.max_percentage:
+                self.max_percentage = cur
+                self.max_biases = self.biases
+                self.max_weights = self.weights
+
+        self.write_weights_to_file(self.max_weights, weight_filename)    
+        self.write_biases_to_file(self.max_biases, biases_filename)
+        self.max_percentage = self.max_percentage*100
+        print("Max percentage = ", self.max_percentage, "%")
+\end{lstlisting}
+
+A függvény (5.10-es kódrészlet) első fontos paramétere a "data" egy (inputs, outputs) párok listája, amelyek a tréning bemenő adatait és az eredményt (a győztest), azaz a kimeneti adatokat is tartalmazza. Ennek a szerkezete a következő:
+
+\begin{lstlisting}[caption= A data-paraméter egy eleme]
+{
+  "outputs":[1,0],
+  "inputs":[0.63,0.74,0.63,0.72,0.6,0.68,0.53,0.55,0.61,0.67,0.53,0.55,0.0,1.0 ...]
+}
+\end{lstlisting}
+
+Az "eta" a learning rate-nek felel meg, amelynek megválasztása nagyon is fontos, mert egy esetleges rossz érték választása nagyban eltorzíthatja, elronthatja a várt eredményt.
+ 
+Az utolsó két paraméter (weight-filename, biases-filename) mint ahogyan a nevükből is kikövetkeztethető, az állományok nevét tartalmazzák, amelyekben a végső súlyokat és bias-eket fogjuk tárolni/kiírni. A tanulás folyamat egy előre meghatározott számú(NR OF EPOCH) alkalommal végrehajtott programblokkból áll, ugyanakkor annak érdekében, hogy a lehető legjobb beállításokat tartsuk meg, minden iteráció végén összehasonlítjuk az eredményeket, és a jobbat lementjük.
+\paragraph{}
+Minden iteréció alkalmával frissítjük (5.13) a súlyokat (weights) és a torzításokat (bias). Ha a training adatok rendelkezésre állnak, akkor a program minden iteráció alkalmával kiértékeli a hálózatot, amelyet az "evaluate" függvénnyel teszi (5.12-es kódrészlet). A kimeneti adatok alapján tudja majd ez a függvény eldönteni, hogy az álta megtippelt eredmény helyes volt vagy sem, amelynek függvényében más és más módosításokat eszközöl a beállításokon(weights, biases). Mindezek mellet a függvény minden körben kiírja a haladást (a háló pontosságát, hogy az összes mérkőzés/traning adat közül hányat tippelt meg helyesen, azaz hogy ezt milyen arányban tette: cur = right / whole). Ez természetesen bizonyos mértékben lassítja a program futását, növeli annak futási idejét, viszont nagyon hasznos és sokatmondó is egyben.
+
+\begin{lstlisting}[caption= A neurális hálót kiértékelő függvény]
+def evaluate(self, data):
+    test_results = [(numpy.argmax(self.feedforward(x)), y) for (x, y) in data]
+    return sum(int(x == numpy.argmax(y)) for (x, y) in test_results)
+\end{lstlisting}
+
+\begin{lstlisting}[caption= A neurális hálót kiértékelő függvény]
+def update(self, data, eta):
+  dif_bias = [numpy.zeros(b.shape) for b in self.biases]
+  dif_weight = [numpy.zeros(w.shape) for w in self.weights]
+  for x, y in data:
+    delta_dif_bias, delta_dif_weight = self.backpropagation(x, y)
+    dif_bias = [newbias + difnewbias for newbias, difnewbias in zip(dif_bias, delta_dif_bias)]
+    dif_weight = [newweight + difnewweight for newweight, difnewweight in zip(dif_weight, delta_dif_weight)]
+  self.weights = [weight - (eta / len(data)) * newweight for weight, newweight in zip(self.weights, dif_weight)]
+  self.biases = [bias - (eta / len(data)) * newbias for bias, newbias in zip(self.biases, dif_bias)]
+\end{lstlisting}
+
+\paragraph{}
+Mint ahogyan már a fentiekben is említettük, az 5.13-as kódrészletben szereplő update függvény a felelős a súlyok és a torzítások frissítésében. Ennek a metódusnak a legfontosabb sora a következő: \\
+\begin{lstlisting}[caption=]
+delta_dif_bias, delta_dif_weight = self.backpropagation(x, y)
+\end{lstlisting}
+\paragraph{}
+Itt hívja meg az úgynevezett backpropagation algoritmust (5.14), amelynek működésének a megértése egy elég komoly matematikai tudást feltételez és igényel, viszont ebben a dolgozatban nem megyünk ennek az algoritmusnak a működésébe. Tulajdonképpen ez az algoritmus egy gyors módszer a költségfüggvény gradiensének a kiszámításához, amely függvényében az update nevű függvényünk a megfelelő módon frissíti a súlyok és a torzítások értékeit.
+
+\begin{lstlisting}[caption=A backpropagation algoritmus]
+    def backpropagation(self, x, y):
+        dif_bias = [numpy.zeros(bias.shape) for bias in self.biases]
+        dif_weight = [numpy.zeros(weight.shape) for weight in self.weights]
+        activation = x
+        activations = [x]
+        results = []
+        for bias, weight in zip(self.biases, self.weights):
+            result = numpy.dot(weight, activation) + bias
+            results.append(result)
+            activation = self.sigmoid(result)
+            activations.append(activation)
+        delta = self.cost_derivative(activations[-1], y) * self.sigmoid_prime(results[-1])
+        dif_bias[-1] = delta
+        dif_weight[-1] = numpy.dot(delta, activations[-2].transpose())
+        for l in range(2, self.layers):
+            result = results[-l]
+            sp = self.sigmoid_prime(result)
+            delta = numpy.dot(self.weights[-l + 1].transpose(), delta) * sp
+            dif_bias[-l] = delta
+            dif_weight[-l] = numpy.dot(delta, activations[-l - 1].transpose())
+        return (dif_bias, dif_weight)
+\end{lstlisting}
+
+\paragraph{}
+A training végeztével a kiszámolt és a folyamatosan javított súlyokat és torzításokat egy-egy állományba mentjük, amelyeket majd újra beolvasunk és Numpy tömbök formájában újra felépítünk. Ezeket az tömböket (self.weights, self.biases) fogjuk használni egy egy párharc megjósolása érdekében:
+
+\begin{lstlisting}[caption=A Predict Controller a Python szerver esetén:]
+@app.route('/prediction', methods=['POST'])
+def predict():
+    network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
+    network.set_weights_and_biases(add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']), False)
+    
+    numpy_inputs = convert_data_to_input_data(request.json['inputs'])
+    resp_data = network.feedforward(numpy_inputs)
+
+    numpy_inputs_revert = convert_data_to_input_data(revert_input_data(request.json['inputs']))
+    resp_data_invert = network.feedforward(numpy_inputs_revert)
+
+    percentage1 = ((resp_data[0][0] + resp_data_invert[1][0]) / 2) * 100
+    percentage2 = ((resp_data[1][0] + resp_data_invert[0][0]) / 2) * 100
+
+    to_json = {}
+    to_json['first_percentage']  = percentage1
+    to_json['second_percentage'] = percentage2
+	
+    return app.response_class(
+        response=json.dumps(to_json),
+        status=200,
+        mimetype='application/json'
+    )    
+\end{lstlisting}
+
+\paragraph{}
+A fenti Python Controller által kiszámított valószinűségeket egy JSON objektummá alakítjuk, majd visszaküldjük a Java alapú szerverünknek. Az majd megpróbálja értelmezni a kapott választ, majd továbbítja azt a kliens oldal irányába (5.16-os kódrészlet).
+
+\begin{lstlisting}[caption=Szerverek közti kommunikáció]
+PredictionRequestDTO requestDTO = 
+	new PredictionRequestDTO(playerOne.getPlayerSlug(), 
+			playerTwo.getPlayerSlug(), 
+			weight_filename,
+			biases_filename, 
+			getInputsToPredict(playerOne, playerTwo, surface, tourneyName));
+			
+HttpEntity<PredictionRequestDTO> request = new HttpEntity<>(requestDTO);
+ResponseEntity<PredictionResponseDTO> response;
+
+try{
+    response = restTemplate.postForEntity(URL, request, PredictionResponseDTO.class);
+    PredictionResponseDTO responseDTO = response.getBody();
+        return predicterService.convertSumToOneHundredPercent(
+          responseDTO.getFirst_percentage(),responseDTO.getSecond_percentage());
+} catch (Exception e){
+    System.out.println(e);
+    return Arrays.asList(50, 50);
+}
+\end{lstlisting}

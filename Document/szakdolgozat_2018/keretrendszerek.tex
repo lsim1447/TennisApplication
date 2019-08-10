@@ -5,7 +5,7 @@
 \paragraph{}
 A React \footnote{A React hivatalos oldala: https://reactjs.org/} nem más, mint egy JavaScript könyvtár, ezért feltételez egy alapvető JavaScript ismeretet,viszont használata megkönnyíti a felhasználói felületek létrehozását és karbantartását. Segítségével a kész felhasználói felület lebontható kisebb, újrahasznosítható komponensekre (react komponensekre). Megalkotója Jordan Walke, aki Facebook egyik szoftverfejlesztője(2011). Egy konferencián, amelyet 2013-ban nyílt forráskódúvá nyilvánították. Megalkotásának fő motivációja a Facebook gyors növekedése volt, amelynek hatására a régi rendszerek nem tudták tartani a lépést a fejlődéssel, mivel egyre körülményesebbé vált a fejlesztés. A keretrendszer gyors fejlődése következtében a React Native megjelenése által már Android és iOS készülékekre való fejlesztésekre is alkalmassá vált. 
 
-A keretrendszer legnagyobb erénye, hogy virtuális DOM(Document Object Model)-ot használ. A Virtual DOM nem mást csinál, mint új rétegként beékelődik a kódunk és a DOM közé (vagy egy natív vezérlő hierarchia mögé), csokrokba gyűjti a DOM-on végzett műveleteket, és optimálisabban hajtja végre azokat, figyelve a változásokra.
+A keretrendszer legnagyobb erénye, hogy virtuális DOM (Document Object Model)-ot használ. A Virtual DOM nem mást csinál, mint új rétegként beékelődik a kódunk és a DOM közé (vagy egy natív vezérlő hierarchia mögé), csokrokba gyűjti a DOM-on végzett műveleteket, és optimálisabban hajtja végre azokat, figyelve a változásokra.
 
 Tehát amikor módosítás történik az alkalmazás állapotában, akkor mindössze ennek a DOM-nak a legkisebb részfája lesz frissítve.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -25,19 +25,19 @@ Ha végrehajtottuk a fenti utasítássorozatot, akkor összes olyan csomag letö
 Természetesen ha úgy szeretnénk, akkor saját magunk is letölthetjük a szükséges csomagokat, illetve létrehozhatjuk a megfelelő állományokat, viszont ez az út sokkal hosszadalmasabb, bár esetenként akár hasznosabb is lehet, főleg ha már jártasak vagyunk a témában, és pontosan tudjuk, hogy mely csomagokra lesz szükségünk a továbbiakban.
 
 \paragraph{}
-A fejlesztés megkezdése előtt érdemes jól megválasztani a fejlesztői környezetünket. Természetesen nincs egy olyan környezet sem, amely mindenki számára teljesen megfelelő lenne, hiszen a fejlesztők más-más tulajdonságokat helyeznek előtérbe, ebből kifolyólag eltérő környezeteket is használnak, viszont nagyon jó alternatívák mindezek közül a JetBrains által közzétett IntelliJ, vagy a Microsoft által fejlesztett Visual Studio Code. Fontos megemlíteni, hogy az IntelliJ használata nem ingyenes, tehát ha használni szeretnénk, akkor fizetnünk kell, viszont létezik egy olyan próbaverziója, amely diákok számára ingyenesen elérhető.
+A fejlesztés megkezdése előtt érdemes jól megválasztani a fejlesztői környezetünket. Természetesen nincs egy olyan környezet sem, amely mindenki számára teljesen megfelelő lenne, hiszen a fejlesztők más-más tulajdonságokat helyeznek előtérbe, ebből kifolyólag eltérő környezeteket is használnak, viszont nagyon jó alternatívák mindezek közül a JetBrains\footnote{A JetBrains hivatalos oldala: https://www.jetbrains.com/idea/} által közzétett IntelliJ, vagy a Microsoft által fejlesztett Visual Studio Code\footnote{A Visual Studio Code hivatalos oldala: https://code.visualstudio.com/}. Fontos megemlíteni, hogy az IntelliJ használata nem ingyenes, tehát ha használni szeretnénk, akkor fizetnünk kell, viszont létezik egy olyan próbaverziója, amely diákok számára ingyenesen elérhető.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{React Context}
 \paragraph{}
-Egy tipikus React alkalmazás esetén az adatok fentről-lefele(a szülőtől a gyerek fele) vannak átadva props-okon keresztül, viszont ez sok esetben nem optimális, például ha olyan információkat szeretnénk átadni, amelyeket nagyon sok különböző komponensben szeretnénk egyaránt használni, mivel akkor ezen paraméterátadások száma nagyon megnövekedne(például: UI theme, locale preference). A Context épp ehhez nyújt egy egyszerűbb alternativát, vagyis lehetőséget ad értékek/adatok megosztásához a különböző komponensek között anélkül, hogy át kellene adnunk őket a props-okon keresztül az összes szinten.
+Egy tipikus React alkalmazás esetén az adatok fentről-lefele (a szülőtől a gyerek fele) vannak átadva props-okon keresztül, viszont ez sok esetben nem optimális, például ha olyan információkat szeretnénk átadni, amelyeket nagyon sok különböző komponensben szeretnénk egyaránt használni, mivel akkor ezen paraméterátadások száma nagyon megnövekedne (például: UI theme, locale preference). A Context\footnote{A React Context oldala: https://reactjs.org/docs/context.html} épp ehhez nyújt egy egyszerűbb alternativát, vagyis lehetőséget ad értékek/adatok megosztásához a különböző komponensek között anélkül, hogy át kellene adnunk őket a props-okon keresztül az összes szinten.
 
 \subsection{Használata}
 \paragraph{}
 Mint ahogy a fentiekben is elhangzott, a Context arra volt kitalálva, hogy könnyebben tudjunk bizonyos adatokat globálisan is megosztani a különböző komponensek között, mint például a pillanatnyilag bejelentkezett felhasználó, témák, használt nyelv, stb.
 
 \paragraph{}
-Viszont gondoljuk át többször is a Context használatát, mielőtt mindent általa próbálnánk megvalósítani, mivel nem minden esetben célszerű a használata. Használata célravezető,  amikor különböző mélységi szinteken(data needs to be accessible by many components at different nesting levels) is szükségünk van ugyanazokra az információkra, viszont használata nagyban veszélyezteti az adott komponens újrafelhasználhatóságát.
+Viszont gondoljuk át többször is a Context használatát, mielőtt mindent általa próbálnánk megvalósítani, mivel nem minden esetben célszerű a használata. Használata célravezető,  amikor különböző mélységi szinteken (data needs to be accessible by many components at different nesting levels) is szükségünk van ugyanazokra az információkra, viszont használata nagyban veszélyezteti az adott komponens újrafelhasználhatóságát.
 
 \subsection{Context API}
 
@@ -46,7 +46,7 @@ const PlayerContext = React.createContext(defaultValue);
 \end{lstlisting}
 
 \paragraph{}
-A fenti kódrészletben létrehoztunk egy Context objektumot. Amikor a React kirendereli a komponenst, feliratkozik(subscribes) ehhez a Context objektumhoz, és az aktuális kontext értékét a hozzá legközelebb álló egyező Providerből fogja kiolvasni.
+A fenti kódrészletben létrehoztunk egy Context objektumot. Amikor a React kirendereli a komponenst, feliratkozik (subscribes) ehhez a Context objektumhoz, és az aktuális kontext értékét a hozzá legközelebb álló egyező Providerből fogja kiolvasni.
 
 \begin{lstlisting}[caption=React Context Provider]
 <PlayerContext.Provider value={{ 
@@ -59,7 +59,7 @@ A fenti kódrészletben létrehoztunk egy Context objektumot. Amikor a React kir
 </PlayerContext.Provider>
 \end{lstlisting}
 
-A Contex alapértelmezett értéke (defaultValue) csupán abban az esetben lesz használva, ha a komponensnek nincs egyező Providere a fenti fában. Ez hasznos lehet olyan esetekben, amikor tesztelni szeretnénk a komponenseinket anélkül önmagukban, anélkül hogy "becsomagolnánk" őket.
+A Contex alapértelmezett értéke (defaultValue) csupán abban az esetben lesz használva, ha a komponensnek nincs egyező Providere a fenti fában. Ez hasznos lehet olyan esetekben, amikor tesztelni szeretnénk a komponenseinket önmagukban anélkül, hogy "becsomagolnánk" őket.
 
 Figyelem: ha UNDEFINED értéket adunk át a Providernek, akkor az nem fogja használni az alapértelmezett értékként megadott adatokat. 
 
@@ -96,7 +96,7 @@ const selectedPlayer = playerContext.selectedPlayer;
 
 \section{React Hooks}
 \paragraph{}
-A Hook-ok a React 16.8-as verziójától számolva elérhetőek, amelyeknek egyik fő előnye, hogy megengedi a state használatát anélkül, hogy osztályokat kellene írnunk.
+A Hook\footnote{A React Hook hivatalos oldala: https://reactjs.org/docs/hooks-overview.html}-ok a React 16.8-as verziójától számolva elérhetőek, amelyeknek egyik fő előnye, hogy megengedi a state használatát anélkül, hogy osztályokat kellene írnunk.
 
 Az egyik legegyszerűbb, viszont leggyakrabban használt Hook a "useState". Egy függvényen belül kell hívnunk, amely visszatérít egy kételemú tömböt, amelynek elemei egy state változó, és a hozzá tartozó setter függvény.
 
@@ -107,7 +107,7 @@ Az egyik legegyszerűbb, viszont leggyakrabban használt Hook a "useState". Egy 
 
 Ahogyan azt a 3.5-ös kódrészletből is láthatjuk, megadhatunk alapértelmezett értékeket is az újonnal létrehozott változóknak a useState használtával.
 
-De hogy micsodák is a Hook-ok? A Hook-ok föggvények, amelyek megengedik a react state-k és életciklus metódusok(lifecycle features) használatát függvényekből anélkül, hogy osztályokon belül dolgoznánk. 
+De hogy micsodák is a Hook-ok? A Hook-ok föggvények, amelyek megengedik a react state-k és életciklus metódusok (lifecycle methods) használatát függvényekből anélkül, hogy osztályokon belül dolgoznánk. 
 
 \paragraph{}
 Fontos megjegyezni, hogy a Hookok használata nem követeli meg, hogy az alkalmazásunkban minden egyes komponenst átírjunk úgy, hogy a Hook-okat  használja, hanem tetszőlegesen használhatjuk őket, mivel visszafele is teljesen kompatibilisak.
@@ -116,7 +116,7 @@ Mindezek mellett használjuk őket a felső szinten, illetve kerüljük a ciklus
 
 \subsection{Effect Hook}
 \paragraph{}
-Ezeknek a segítségével/felhasználásával küldhetünk és fogadhatunk kéréseket(fetching), vagy manipulálhatjuk a DOM szerkezetét. Tulajdonképpen ugyanazt a célt szolgálja, mint a componentDidMount, componentDidUpdate, componentWillUnmount  a React osztályok esetén, viszont itt ezek egyesítve vannak egyetlen API-ba.
+Ezeknek a segítségével/felhasználásával küldhetünk és fogadhatunk kéréseket (fetching), vagy manipulálhatjuk a DOM szerkezetét. Tulajdonképpen ugyanazt a célt szolgálja, mint a componentDidMount, componentDidUpdate, componentWillUnmount  a React osztályok esetén, viszont itt ezek egyesítve vannak egyetlen API-ba.
 
 \begin{lstlisting}[caption= useEffect hook-nak a használata]
   useEffect(() => {
@@ -138,7 +138,7 @@ Lehetőségünk van úgy is személyreszabni ezeket az effekteket, hogy csak biz
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Spring keretrendszer}\label{ch:progik}
 \paragraph{}
-Az elmúlt években figyelemmel kísérhettünk egy sikertörténetet, a Spring keretrendszer fejlődésének és elterjedésének történetét. 
+Az elmúlt években figyelemmel kísérhettünk egy sikertörténetet, a Spring\footnote{A Spring framework hivatalos oldala: https://spring.io/} keretrendszer fejlődésének és elterjedésének történetét. 
 
 Ez a keretrendszer évekig nem terjedt el, mert helyette ott volt a J2EE majd Java EE technológia és biztonság szempontból kritikus alkalmazások fejlesztésére szinte kizárólag ezeket használták. 
 

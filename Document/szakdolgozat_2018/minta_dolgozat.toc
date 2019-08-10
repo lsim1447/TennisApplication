@@ -91,12 +91,23 @@
 \select@language {magyar} \contentsline {paragraph}{}{23}{section*.67}
 \select@language {magyar} \contentsline {paragraph}{}{24}{section*.68}
 \select@language {magyar} \contentsline {paragraph}{}{24}{section*.69}
-\select@language {magyar} \contentsline {chapter}{\numberline {6}\IeC {\"O}sszegz\IeC {\'e}s}{25}{chapter.6}
-\select@language {magyar} \contentsline {paragraph}{}{25}{section*.70}
-\select@language {magyar} \contentsline {paragraph}{}{25}{section*.71}
-\select@language {magyar} \contentsline {paragraph}{}{25}{section*.72}
-\select@language {magyar} \contentsline {section}{\numberline {6.1}Tov\IeC {\'a}bbfejleszt\IeC {\'e}si lehet\IeC {\H o}s\IeC {\'e}gek}{25}{section.6.1}
+\select@language {magyar} \contentsline {subsubsection}{Alkalmaz\IeC {\'a}s}{24}{section*.70}
+\select@language {magyar} \contentsline {paragraph}{}{24}{lstlisting.5.7}
+\select@language {magyar} \contentsline {paragraph}{}{24}{section*.72}
 \select@language {magyar} \contentsline {paragraph}{}{25}{section*.73}
 \select@language {magyar} \contentsline {paragraph}{}{25}{section*.74}
 \select@language {magyar} \contentsline {paragraph}{}{25}{section*.75}
 \select@language {magyar} \contentsline {paragraph}{}{26}{section*.76}
+\select@language {magyar} \contentsline {paragraph}{}{27}{section*.77}
+\select@language {magyar} \contentsline {paragraph}{}{27}{section*.78}
+\select@language {magyar} \contentsline {paragraph}{}{27}{section*.79}
+\select@language {magyar} \contentsline {paragraph}{}{28}{section*.80}
+\select@language {magyar} \contentsline {chapter}{\numberline {6}\IeC {\"O}sszegz\IeC {\'e}s}{29}{chapter.6}
+\select@language {magyar} \contentsline {paragraph}{}{29}{section*.81}
+\select@language {magyar} \contentsline {paragraph}{}{29}{section*.82}
+\select@language {magyar} \contentsline {paragraph}{}{29}{section*.83}
+\select@language {magyar} \contentsline {section}{\numberline {6.1}Tov\IeC {\'a}bbfejleszt\IeC {\'e}si lehet\IeC {\H o}s\IeC {\'e}gek}{29}{section.6.1}
+\select@language {magyar} \contentsline {paragraph}{}{29}{section*.84}
+\select@language {magyar} \contentsline {paragraph}{}{29}{section*.85}
+\select@language {magyar} \contentsline {paragraph}{}{29}{section*.86}
+\select@language {magyar} \contentsline {paragraph}{}{30}{section*.87}
