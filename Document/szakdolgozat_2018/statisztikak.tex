@@ -1,99 +1,133 @@
 %!TEX root = dolgozat.tex
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Gépi tanulás - Machine learning}\label{ch:MAT}
+\chapter{Statisztikák}\label{ch:MAT}
 
 \begin{osszefoglal}
-	A következõkben a gépi tanulás - a mesterséges intelligencia alapjait mutatjuk be nagyon röviden, amely az alkalmazásunkban Python nyelvben iródott.
+	Az alkalmazás fejlesztése folyamán több alkalommal leteszteltük az alkalmazás különböző funkcióit, lásd: tréning és tesztelés. Ezeket különböző számú és alakú bemeneti adatokkal próbáltuk ki, viszont természetesen az algoritmusok hatékonyságán és működésén is folyamatosan alakítgattunk. Ebben a rövid fejezetben ezeknek a fázisoknak az eredményeit és az ezzekkel kapcsolatos észrevételeinket mutatjuk be.
 \end{osszefoglal}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Rövid ismertetõ}\label{sec:MAT:bev}
-\paragraph{}A jelenkor egyik kulcsterülete a gépi tanulás, vagyis a „mesterséges intelligencia.” Egyre több és több program végez „tanulási folyamatot", azaz úgy módosítja működését futás közben, hogy jobban, és eredményesebben végre tudja hajtani a rábízott feladatokat, mintákat keresve az adatok között: például az arcfelismerés, szövegértés, önvezető autók stb. 
-\paragraph{}Ez a gyakorlatban azt jelenti, hogy a rendszer az adatok és minták alapján képes arra, hogy önállóan fel tudjon ismerni vagy meghatározni bizonyos szabályokat. Tulajdonképpen a rendszer nem csupán betanulja „kívülről” a mintákat, hanem képes ezek alapján olyan általánosításokra, ami alapján a tanulási szakasz végzetével számára ismeretlen adatokkal dolgozva is „helyes” döntéseket képes meghozni.
-
-\begin{figure}[t]
-  \centering
-  \pgfimage[width=0.9\linewidth]{images/gepi-tanulas-altalaban}
-  \caption[Gépi tanulás úgy általában]%
-  {Gépi tanulás általában}
-  \label{fig:ALAP:sm1}
-\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Neurális hálók}\label{sec:MAT:bev}
+\section{Első mérföldkő/méréspont}\label{sec:MAT:bev}
 \paragraph{}
-A Neurális hálózatok az emberi ideghálózat működését próbálják szimulálni. Modern használatban ezen kifejezés alatt a mesterséges neurális hálót értjük, amelyek mesterséges neuronokból állnak. A működési elve hogy egy több szintes hálózaton a „neuronok” a bemenő adatok alapján a megfelelő képletek végrehajtása során a megfelelő eredményhez vezetnek vagy sem. 
-
-\begin{figure}[t]
-  \centering
-  \pgfimage[width=0.9\linewidth]{images/simple-neural-network}
-  \caption[Egyszerű neurális háló]%
-  {Neurális háló és különböző rétegei - Azonos a mi alkalmazásunk hálózatával}
-  \label{fig:ALAP:sm1}
-\end{figure}
-
-\paragraph{} 
-Ezeknek a hálózatok alapelve, hogy a számolásokat neuronok (egymással összekapcsolt kis feldolgozóegységek) végzik. A számítások folyamán a neuronok közötti kapcsolatrendszer fontos szerepet játszik.
-
-\paragraph{}
-Érdemes a neurális hálózatok használata, ha:
+Ebben a fázisban mindössze 18 input adatot használtunk mérkőzésenként:
 \begin{enumerate}
-	\item Sok összefüggő bemenő adat-, összefüggő kimeneti paraméter áll rendelkezésre
-	\item A megoldandó problémával kapcsolatban gazdag adathalmaz áll rendelkezésre
-	\item A rendelkezésre álló adathalmaz nem teljes, hibás adatokat is tartalmazhat
-	\item A megoldáshoz szükséges szabályok ismeretlenek 
+\item[•] a legutolsó N mérkőzés győzelmi aránya játékosonként - összes (2 érték)
+\item[•] a legutolsó M mérkőzés győzelmi aránya játékosonként - az adott talajon (2 érték)
+\item[•] a legutolsó P mérkőzés győzelmi aránya játékosonként - az adott tornán (2 érték)
+\item[•] a legutolsó N mérkőzésen a nyert játékok és játszmák győzelmi aránya játékosonként - összes (4 érték)
+\item[•] a legutolsó M mérkőzésen a nyert játékok és játszmák győzelmi aránya játékosonként - az adott talajon (4 érték)
+\item[•] az egymás elleni R mérkőzés győzelmi aránya játékosonként - összes (2 érték)
+\item[•] az egymás elleni S mérkőzés győzelmi aránya játékosonként - az adott talajon (2 érték)
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{ |p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|  }
+ \hline
+ \multicolumn{5}{|c|}{A fent használt mennyiségek számokban} \\
+ \hline
+  N & M & P & R & S\\
+ \hline
+ 160 & 100 & 60 & 12 & 8 \\
+ \hline
+\end{tabular}
+\end{center}
+
+\paragraph{}
+A fenti adatokat és szempontokat felhasználva/figyelembe véve a következő eredményeket kaptuk: 
+\begin{center}
+\begin{tabular}{ |p{4cm}|p{4cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{A training és a teszt eredménye százalékban - 5000 epoch} \\
+ \hline
+  Training & Teszt\\
+ \hline
+ 64 & 62  \\
+ \hline
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Második mérföldkő/méréspont}\label{sec:MAT:bev}
+\paragraph{}
+Ebben a fázisban 34 input adatot használtunk mérkőzésenként. Az előzőhöz képest újonnal hozzáadott szempontok:
+\begin{enumerate}
+\item[•] a legutolsó N mérkőzés: adogatási arány játékosonként - összes (2 érték)
+\item[•] a legutolsó N mérkőzés: fogadó arány játékosonként - összes (2 érték)
+\item[•] a legutolsó N mérkőzés: sikeres első szervák aránya játékosonként - összes (2 érték)
+\item[•] a legutolsó N mérkőzés: első szervák győzelmi aránya játékosonként - összes (2 érték)
+\item[•] a legutolsó N mérkőzés: break labdák kihasználási aránya játékosonként - összes (2 érték)
+\item[•] a legutolsó N mérkőzés: break labdák hárítási aránya játékosonként - összes (2 érték)
+\item[•] a legutolsó N mérkőzés: második szervák győzelmi aránya (adogatóként) játékosonként - összes (2 érték)
+\item[•] a legutolsó N mérkőzés: második szervák győzelmi aránya (fogadóként) játékosonként - összes (2 érték)
 \end{enumerate}
 
 \paragraph{}
-A neurális hálózat egyszerű egységekből áll olyan értelemben, hogy belső állapotai leírhatók számokkal (aktivációs értékek). Az egységek egyenként létrehoznak egy aktiválási értéktől függő kimeneti értéket és csatlakoznak egymáshoz. Mindegyik csatlakozás tartalmaz egy egyéni súlyt amelyek szintén számokkal vannak kifejezve. Ezen egységek mindegyike kiküldi a kimeneti értékét az összes többi egységnek, amelyekkel kimenő kapcsolatban vannak. A "rendszer" bemenetei lehetnek mesterséges szenzorok vagy akár érzékelők adatai, míg kimenetei lehet a viselkedés egy kimeneti neuronon. A kapcsolatok miatt az egység kimenete hatással van a másik egység aktivációjára. A bemeneti oldalán álló egység fogadja az értékéket, és azok súlyozásával kiszámolja az aktivációs értékét (összeszorozza a bemeneti jelet a hozzá tartozó bemenet súllyal,majd összegét számol) A kimenetet az aktivációs függvény határozza meg az aktivációtól függően.
+A fenti adatokat és szempontokat felhasználva/figyelembe véve a következő eredményeket kaptuk: 
+\begin{center}
+\begin{tabular}{ |p{4cm}|p{4cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{A training és a teszt eredménye százalékban - 5000 epoch} \\
+ \hline
+  Training & Teszt\\
+ \hline
+ 69 & 65  \\
+ \hline
+\end{tabular}
+\end{center}
 
-\begin{figure}[t]
-  \centering
-  \pgfimage[width=0.8\linewidth]{images/simple-neural-network-weights}
-  \caption[Egyszerű neurális háló]%
-  {Neurális hálózat súlyokkal, input és output adatokkal, illetve egy középső réteggel}
-  \label{fig:ALAP:sm1}
-\end{figure}
-
-\subsection{A neuron}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Harmadik mérföldkő/méréspont}\label{sec:MAT:bev}
 \paragraph{}
-A neuronnak több bemeneti változója lehet. A neuron által adott predikció a bemenő értékek, és a súlyok szorzata, ami egy lineáris függvényt ad, majd ennek eredményére a szigmoid függvény van alkalmazva, mint aktivációs függvény.
-A bemeneti adatokat x-szel vannak jelölve( x=(x0, x1, x2) ),  míg a súlyokat a w-vektor jelöli. A h - hipotézisfüggvény: a neurális hálózat kimenete egy adott x - bemenetre, w - súlyok mellett.
-
-A szigmoid függvény:
-\[
-    g(x) = \frac{1}{1 + e^{-x}}
-\]
-
-\begin{figure}[t]
-  \centering
-  \pgfimage[width=0.8\linewidth]{images/neuron}
-  \caption[A neuron]%
-  {Az alábbi ábrán egyszeres aláhúzás jelöli a vektor típusú változókat (sorvektorokat és oszlopvektorokat)}
-  \label{fig:ALAP:sm1}
-\end{figure}
-
-\subsection{Egy egyszerű neuron implementációja}
-
+Ebben a fázisban 66 input adatot használtunk mérkőzésenként, az előzőhöz képest annyi változtatással, hogy a 2. mérföldkőnél bevezetett szempontokat alkalmaztuk a következő esetekben:
 \begin{enumerate}
-	\item Inicializálás: véletlenszerű kezdő súly értékek beállítása
-	\item Előreterjesztés (feed forward): kiszámolni a neuron kimeneteit minden egyes bemenetre.
-	\[
-    	g(x) = \frac{1}{1 + e^{-x}}
-	\]
-	\[
-    	Hw(x) = g(x*w)
-	\]
-	\item Hiba-visszaterjesztés (backpropagation): A hibafüggvény (J) aktuális értéke az aktuális súlyoktól függ. Ha az i. súlyt változtatjuk (valamit hozzáadunk/kivonunk), akkor ki tudjuk számolni, hogy mennyit változik a hibafüggvény értéke, ha a többi súlyt változatlanul hagyjuk. Ebből kiszámolható, hogy megközelítőleg mekkora a hibafüggvény meredeksége az. i. súly mentén, ha a többi súly változatlanul marad. Tehát tulajdonképpen a hibafüggvény parciális deriváltját számítjuk ki. Majd eztkövetően  a parciális deriváltakból egy oszlopvektort állítunk ki. Az oszlopvektor sorainak száma megegyezik a súlyok számával, vagyis a bemenő változók számával. A kiszámolt vektort megszorozzuk a tanulási rátával, és kivonjuk a súlyvektor jelenlegi értékéből, amellyel megkapjuk az új súlyvektort.
-	\item Az előző három lépést ismételve jó közelítéssel megtalálhatjuk a hibafüggvény minimumhelyét, tehát azokat a súlyokat, ahol a hibafüggvény a legkisebb.
-A hibafüggvény, J (y jelöli a tényleges eredményt, h pedig a hipotézist):
-	\begin{align*}
-  		J(w) &= \frac{1}{n}\sum_{i=0}^{+n} (y - hw(x))^2 \\
-	\end{align*}
-	\item A súlyokat minden iterációnál frissítem, így lépésről lépésre eljutok a hibafüggvény minimum értékének a közelébe
+\item[•] a legutolsó M mérkőzésre - az adott talajon (16 érték)
+\item[•] a legutolsó P mérkőzésre - az adott tornán  (16 érték)
+
 \end{enumerate}
+
 \paragraph{}
+A fenti adatokat és szempontokat felhasználva/figyelembe véve a következő eredményeket kaptuk: 
+\begin{center}
+\begin{tabular}{ |p{4cm}|p{4cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{A training és a teszt eredménye százalékban - 5000 epoch} \\
+ \hline
+  Training & Teszt\\
+ \hline
+ 88 &  85 \\
+ \hline
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Utolsó mérföldkő/méréspont}\label{sec:MAT:bev}
+\paragraph{}
+Az utolsó fázisban 90 input adatot használtunk mérkőzésenként, az előzőhöz képest a következők hozzáadásával:
+\begin{enumerate}
+\item[•] a második mérföldkőben bevezetett szempontok - az aktuális tornán az adott meccsig - játékosonként (16 érték)
+\item[•] a torna adott szakaszában - győzelmi arány - játékosonként - összes (2 érték)
+\item[•] a torna adott szakaszában - győzelmi arány - játékosonként - az adott talajon (2 érték)
+\item[•] a torna adott szakaszában - győzelmi arány - játékosonként - az adott tornán (2 érték)
+\item[•] a pályán töltött percek aránya játékosonként - az adott tornán (2 érték)
+
+\end{enumerate}
+
+\paragraph{}
+A fenti adatokat és szempontokat felhasználva/figyelembe véve a következő eredményeket kaptuk: 
+\begin{center}
+\begin{tabular}{ |p{4cm}|p{4cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{A training és a teszt eredménye százalékban - 5000 epoch} \\
+ \hline
+  Training & Teszt\\
+ \hline
+ 97 & 91  \\
+ \hline
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Összegzés}\label{sec:MAT:bev}
+\paragraph{}
+Az eredményeket megvizsgálva láthatjuk, hogy nem minden újonnal hozzáadott szempont járt lényeges hatékonyságnövekedéssel, viszont kis mértékben majdnem mindegyikük hozzájárul a végső célunkhoz, amely nem más, mint egy jó tipp megalkotása. Az alkalmazás összesen 27 év mérkőzéseivel dolgozik, amely nagyjából 98.000 mérkőzést jelent, mérkőzésenként 30-35 mutatóval, amelyekből mi magunk is hoztunk létre még újakat. Ezeknek a meccseknek nagyjából a 30-35 százalékát használja fel a program, mint training adat, a tesztelés pedig a 2017-ben lejátszott meccsekkel történik, amely 3800 mérkőzést jelent (természetesen ezek a meccsek nem részei a training-nek).

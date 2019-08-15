@@ -24,7 +24,7 @@ A szerverek közti kommunikáció megkönnyítése érdekében a Java oldalon t�
 
 \section{A kliens oldal}
 \paragraph{}
-A kliens oldal a  React keretrendszer által lett megvalósítva. Az alkalmazás lehetőséget nyújt a felhasználók számára, hogy a tennis 4 nagy tornájának (Grand slams) a nyerteseit, mérkőzéseit megtekintjük táblázatos formában. Ugyanakkor lehetőségünk van tetszés szerint a tornák neve alapján is rákeresni bizonyos eseményekre, tornákra. 
+A kliens oldal a  React keretrendszer által lett megvalósítva. Az alkalmazás lehetőséget nyújt a felhasználók számára, hogy a sportág 4 nagy tornájának (Grand Slams) a nyerteseit, mérkőzéseit megtekintjük táblázatos formában. Ugyanakkor lehetőségünk van tetszés szerint a tornák neve alapján is rákeresni bizonyos eseményekre, tornákra. 
 \paragraph{}
 Ugyanúgy mint a tornák esetén, a játékosok esetében is lehetőségünk van a név szerinti keresésre, ahol a kiválasztott játékos karrierjének összes fontosabb mozzanatáról találhatunk néhány érdekesebb statisztikai adatot.
 \paragraph{}
@@ -183,7 +183,7 @@ if (matchMap.containsKey(winnerPlayer.getPlayerSlug())) {
 A második fejezetben nagyon röviden már elkezdtük bemutatni a gépi tanulás és a neurális hálók világát, viszont lássuk kicsit részletesebben is, és hogy hogyan is használtuk fel mindezt az alkalmazásunkban.
 
 \paragraph{}
-Ahhoz, hogy jól megérthessük azt, hogy mi is az a neurális háló, tegyünk egy lépést hátra és beszéljünk egy kicsit a mesterséges neuronról, ismertebb nevén a perceptronról. A perceptront az 1950-es és 1960-as években Frank Rosenblatt tudós fejlesztette ki, inspirálódva Warren McCulloch és Walter Pitts munkájából. Manapság már gyakrabban használják a mesterséges neuron más modelljeit, például a sigmoid neuront, de hogy jobban megérthetssük annak működését, először lássuk hogyan is működik a perceptron.
+Ahhoz, hogy jól megérthessük azt, hogy mi is az a neurális háló, tegyünk egy lépést hátra és beszéljünk egy kicsit a mesterséges neuronról, a perceptronról. A perceptront az 1950-es és 1960-as években Frank Rosenblatt tudós fejlesztette ki, inspirálódva Warren McCulloch és Walter Pitts munkájából. Manapság már gyakrabban használják a mesterséges neuron más modelljeit, például a sigmoid neuront, de hogy jobban megérthetssük annak működését, először lássuk hogyan is működik a perceptron.
 
 \paragraph{}
 A perceptron működése viszonylag egyszerű (2.3-as ábra), a több bemenő adatból (inputs: x1, x2, ...), egyetlen kimeneti értéket állít elő (output). A bemeneti értékek mellett súlyaink is vannak (w1, w2, ...), amelyek a bemeneti adatok fontosságát jelzik a kimenetre nézve. Minél nagyobb súllyal látunk el egy bemeneti értéket, annál fontosabb és nagyobb ráhatással lesz a kimenetünkre. A neuron kimenete 0 vagy 1, attól függően, hogy a bemeneti értékek és a nekik megfelelő súlyok szorzatösszege kisebb vagy nagyobb egy bizonyos küszöbértéknél (threshold value).
@@ -304,9 +304,9 @@ A függvény (5.10-es kódrészlet) első fontos paramétere a "data" egy (input
 
 Az "eta" a learning rate-nek felel meg, amelynek megválasztása nagyon is fontos, mert egy esetleges rossz érték választása nagyban eltorzíthatja, elronthatja a várt eredményt.
  
-Az utolsó két paraméter (weight-filename, biases-filename) mint ahogyan a nevükből is kikövetkeztethető, az állományok nevét tartalmazzák, amelyekben a végső súlyokat és bias-eket fogjuk tárolni/kiírni. A tanulás folyamat egy előre meghatározott számú(NR OF EPOCH) alkalommal végrehajtott programblokkból áll, ugyanakkor annak érdekében, hogy a lehető legjobb beállításokat tartsuk meg, minden iteráció végén összehasonlítjuk az eredményeket, és a jobbat lementjük.
+Az utolsó két paraméter (weight-filename, biases-filename) mint ahogyan a nevükből is kikövetkeztethető, az állományok nevét tartalmazzák, amelyekben a végső súlyokat és bias-eket fogjuk tárolni/kiírni. A tanulás folyamat egy előre meghatározott számú (NR OF EPOCH) alkalommal végrehajtott programblokkból áll, ugyanakkor annak érdekében, hogy a lehető legjobb beállításokat tartsuk meg, minden iteráció végén összehasonlítjuk az eredményeket, és a jobbat lementjük.
 \paragraph{}
-Minden iteréció alkalmával frissítjük (5.13) a súlyokat (weights) és a torzításokat (bias). Ha a training adatok rendelkezésre állnak, akkor a program minden iteráció alkalmával kiértékeli a hálózatot, amelyet az "evaluate" függvénnyel teszi (5.12-es kódrészlet). A kimeneti adatok alapján tudja majd ez a függvény eldönteni, hogy az álta megtippelt eredmény helyes volt vagy sem, amelynek függvényében más és más módosításokat eszközöl a beállításokon(weights, biases). Mindezek mellet a függvény minden körben kiírja a haladást (a háló pontosságát, hogy az összes mérkőzés/traning adat közül hányat tippelt meg helyesen, azaz hogy ezt milyen arányban tette: cur = right / whole). Ez természetesen bizonyos mértékben lassítja a program futását, növeli annak futási idejét, viszont nagyon hasznos és sokatmondó is egyben.
+Minden iteréció alkalmával frissítjük (5.13) a súlyokat (weights) és a torzításokat (bias). Ha a training adatok rendelkezésre állnak, akkor a program minden iteráció alkalmával kiértékeli a hálózatot, amelyet az "evaluate" függvénnyel teszi (5.12-es kódrészlet). A kimeneti adatok alapján tudja majd ez a függvény eldönteni, hogy az álta megtippelt eredmény helyes volt vagy sem, amelynek függvényében más és más módosításokat eszközöl a beállításokon (weights, biases). Mindezek mellet a függvény minden körben kiírja a haladást (a háló pontosságát, hogy az összes mérkőzés/traning adat közül hányat tippelt meg helyesen, azaz hogy ezt milyen arányban tette: cur = right / whole). Ez természetesen bizonyos mértékben lassítja a program futását, növeli annak futási idejét, viszont nagyon hasznos és sokatmondó is egyben.
 
 \begin{lstlisting}[caption= A neurális hálót kiértékelő függvény]
 def evaluate(self, data):
@@ -332,7 +332,7 @@ Mint ahogyan már a fentiekben is említettük, az 5.13-as kódrészletben szere
 delta_dif_bias, delta_dif_weight = self.backpropagation(x, y)
 \end{lstlisting}
 \paragraph{}
-Itt hívja meg az úgynevezett backpropagation algoritmust (5.14), amelynek működésének a megértése egy elég komoly matematikai tudást feltételez és igényel, viszont ebben a dolgozatban nem megyünk ennek az algoritmusnak a működésébe. Tulajdonképpen ez az algoritmus egy gyors módszer a költségfüggvény gradiensének a kiszámításához, amely függvényében az update nevű függvényünk a megfelelő módon frissíti a súlyok és a torzítások értékeit.
+Itt hívja meg az úgynevezett backpropagation algoritmust (5.14), amelynek működésének a megértése egy viszonylag komolyabb matematikai tudást igényel/feltételez, viszont ebben a dolgozatban nem megyünk mélyebben bele ennek az algoritmusnak a működésébe (a 2.2.2 részben felületesen már érintettük a témát). Tulajdonképpen ez az algoritmus egy gyors módszer a költségfüggvény gradiensének a kiszámításához, amely függvényében az update nevű függvényünk a megfelelő módon frissíti a súlyok és a torzítások értékeit.
 
 \begin{lstlisting}[caption=A backpropagation algoritmus]
     def backpropagation(self, x, y):

@@ -3,7 +3,7 @@
 \chapter{React keretrendszer}\label{ch:progik}
 
 \paragraph{}
-A React \footnote{A React hivatalos oldala: https://reactjs.org/} nem más, mint egy JavaScript könyvtár, ezért feltételez egy alapvető JavaScript ismeretet,viszont használata megkönnyíti a felhasználói felületek létrehozását és karbantartását. Segítségével a kész felhasználói felület lebontható kisebb, újrahasznosítható komponensekre (react komponensekre). Megalkotója Jordan Walke, aki Facebook egyik szoftverfejlesztője(2011). Egy konferencián, amelyet 2013-ban nyílt forráskódúvá nyilvánították. Megalkotásának fő motivációja a Facebook gyors növekedése volt, amelynek hatására a régi rendszerek nem tudták tartani a lépést a fejlődéssel, mivel egyre körülményesebbé vált a fejlesztés. A keretrendszer gyors fejlődése következtében a React Native megjelenése által már Android és iOS készülékekre való fejlesztésekre is alkalmassá vált. 
+A React \footnote{A React hivatalos oldala: https://reactjs.org/} nem más, mint egy JavaScript könyvtár, ezért feltételez egy alapvető JavaScript ismeretet, viszont használata megkönnyíti a felhasználói felületek létrehozását és karbantartását. Segítségével a kész felhasználói felület lebontható kisebb, újrahasznosítható komponensekre (react komponensekre). Megalkotója Jordan Walke, aki Facebook egyik szoftverfejlesztője (2011). Egy konferencián, amelyet 2013-ban nyílt forráskódúvá nyilvánították. Megalkotásának fő motivációja a Facebook gyors növekedése volt, amelynek hatására a régi rendszerek nem tudták tartani a lépést a fejlődéssel, mivel egyre körülményesebbé vált a fejlesztés. A keretrendszer gyors fejlődése következtében a React Native megjelenése által már Android és iOS készülékekre való fejlesztésekre is alkalmassá vált. 
 
 A keretrendszer legnagyobb erénye, hogy virtuális DOM (Document Object Model)-ot használ. A Virtual DOM nem mást csinál, mint új rétegként beékelődik a kódunk és a DOM közé (vagy egy natív vezérlő hierarchia mögé), csokrokba gyűjti a DOM-on végzett műveleteket, és optimálisabban hajtja végre azokat, figyelve a változásokra.
 
@@ -133,7 +133,7 @@ Amikor meghívjuk a useEffect effektust, tulajdonképpen azt mondjuk a React-nek
 Alapértelmezetten a React a render metódus minden lefutása után végrehajtja ezeket az effekteket, beleértve az elsőt is, viszont ez szabályozható is. Például a fenti, 3.6-os kódrészletben szereplő effect mindössze az első render lefutása után lesz lefuttatva annak köszönhetően, hogy a kódrészlet utolsó sorában egy üres tömböt adtunk meg paraméterként.
 
 \paragraph{}
-Lehetőségünk van úgy is személyreszabni ezeket az effekteket, hogy csak bizonyos adatok megváltozása következtében hivódjanak meg a különböző effektek, amelyet az már fent emlitett üres tömbnek, az adott változóval való kicserélésével érhetünk el.
+Lehetőségünk van úgy is személyreszabni ezeket az effekteket, hogy csak bizonyos adatok megváltozása következtében hivódjanak meg a különböző effektek, amelyet a már fent emlitett üres tömbnek az adott változóval (state/props/...) való kicserélésével érhetünk el.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Spring keretrendszer}\label{ch:progik}

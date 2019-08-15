@@ -16,15 +16,11 @@ function Home(props) {
 
     return (
         <div class="container"> 
-            <button onClick={(e) => tryTest(e)}>Test</button>
             <div className="row">
-                <div className="col col-lg-3">
-                    <img src="./images/gifs/rafael-nadal-1.gif" alt="..." />
-                    <img src="./images/gifs/rafael-nadal-2.gif" alt="..." />
-                    <img src="./images/gifs/roger-federer-1.gif" alt="..." />
-                    <img src="./images/gifs/roger-federer-2.gif" alt="..." />
-                </div>
-                <div className="col col-lg-9">
+                <button onClick={(e) => tryTest(e)}> Let's train </button>
+            </div>
+            <div className="row">
+                <div className="col col-lg-12" style={{marginTop: "75px", minHeight: "750px"}}>
                     <div id="carouselExampleCaptions" className="carousel slide" data-ride="carousel">
                         <ol className="carousel-indicators">
                             <li data-target="#carouselExampleCaptions" data-slide-to="0" className="active"></li>

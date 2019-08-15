@@ -102,12 +102,27 @@
 \select@language {magyar} \contentsline {paragraph}{}{27}{section*.78}
 \select@language {magyar} \contentsline {paragraph}{}{27}{section*.79}
 \select@language {magyar} \contentsline {paragraph}{}{28}{section*.80}
-\select@language {magyar} \contentsline {chapter}{\numberline {6}\IeC {\"O}sszegz\IeC {\'e}s}{29}{chapter.6}
+\select@language {magyar} \contentsline {chapter}{\numberline {6}Statisztik\IeC {\'a}k}{29}{chapter.6}
+\select@language {magyar} \contentsline {section}{\numberline {6.1}Els\IeC {\H o} m\IeC {\'e}rf\IeC {\"o}ldk\IeC {\H o}/m\IeC {\'e}r\IeC {\'e}spont}{29}{section.6.1}
 \select@language {magyar} \contentsline {paragraph}{}{29}{section*.81}
 \select@language {magyar} \contentsline {paragraph}{}{29}{section*.82}
-\select@language {magyar} \contentsline {paragraph}{}{29}{section*.83}
-\select@language {magyar} \contentsline {section}{\numberline {6.1}Tov\IeC {\'a}bbfejleszt\IeC {\'e}si lehet\IeC {\H o}s\IeC {\'e}gek}{29}{section.6.1}
-\select@language {magyar} \contentsline {paragraph}{}{29}{section*.84}
-\select@language {magyar} \contentsline {paragraph}{}{29}{section*.85}
-\select@language {magyar} \contentsline {paragraph}{}{29}{section*.86}
-\select@language {magyar} \contentsline {paragraph}{}{30}{section*.87}
+\select@language {magyar} \contentsline {section}{\numberline {6.2}M\IeC {\'a}sodik m\IeC {\'e}rf\IeC {\"o}ldk\IeC {\H o}/m\IeC {\'e}r\IeC {\'e}spont}{30}{section.6.2}
+\select@language {magyar} \contentsline {paragraph}{}{30}{section*.83}
+\select@language {magyar} \contentsline {paragraph}{}{30}{section*.84}
+\select@language {magyar} \contentsline {section}{\numberline {6.3}Harmadik m\IeC {\'e}rf\IeC {\"o}ldk\IeC {\H o}/m\IeC {\'e}r\IeC {\'e}spont}{30}{section.6.3}
+\select@language {magyar} \contentsline {paragraph}{}{30}{section*.85}
+\select@language {magyar} \contentsline {paragraph}{}{30}{section*.86}
+\select@language {magyar} \contentsline {section}{\numberline {6.4}Utols\IeC {\'o} m\IeC {\'e}rf\IeC {\"o}ldk\IeC {\H o}/m\IeC {\'e}r\IeC {\'e}spont}{31}{section.6.4}
+\select@language {magyar} \contentsline {paragraph}{}{31}{section*.87}
+\select@language {magyar} \contentsline {paragraph}{}{31}{section*.88}
+\select@language {magyar} \contentsline {section}{\numberline {6.5}\IeC {\"O}sszegz\IeC {\'e}s}{31}{section.6.5}
+\select@language {magyar} \contentsline {paragraph}{}{31}{section*.89}
+\select@language {magyar} \contentsline {chapter}{\numberline {7}\IeC {\"O}sszegz\IeC {\'e}s}{32}{chapter.7}
+\select@language {magyar} \contentsline {paragraph}{}{32}{section*.90}
+\select@language {magyar} \contentsline {paragraph}{}{32}{section*.91}
+\select@language {magyar} \contentsline {paragraph}{}{32}{section*.92}
+\select@language {magyar} \contentsline {section}{\numberline {7.1}Tov\IeC {\'a}bbfejleszt\IeC {\'e}si lehet\IeC {\H o}s\IeC {\'e}gek}{32}{section.7.1}
+\select@language {magyar} \contentsline {paragraph}{}{32}{section*.93}
+\select@language {magyar} \contentsline {paragraph}{}{32}{section*.94}
+\select@language {magyar} \contentsline {paragraph}{}{32}{section*.95}
+\select@language {magyar} \contentsline {paragraph}{}{33}{section*.96}
