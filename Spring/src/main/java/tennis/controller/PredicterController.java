@@ -515,8 +515,8 @@ public class PredicterController {
                 winnerPlayerAllMatchesOnSelectedSurface = (List<Match>) matchService.findAllMatchesByPlayerNameAndSurface(winnerPlayer.getFirstName(), winnerPlayer.getLastName(), surface);
                 matchMapOnSurface.put(winnerPlayer.getPlayerSlug() + surface, winnerPlayerAllMatchesOnSelectedSurface);
             }
-            List<Match> winnerPlayerMatchesOnSurface = matchFilter(winnerPlayerAllMatchesOnSelectedSurface, numberOfLastMatchesOnSpecificSurface, date, match.getRound_order());
-            if (winnerPlayerMatchesOnSurface.size() < LIMIT_NR_OF_ALL_SURFACE_MATCHES) return null;
+            List<Match> winnerPlayerMatchesOnSelectedSurface = matchFilter(winnerPlayerAllMatchesOnSelectedSurface, numberOfLastMatchesOnSpecificSurface, date, match.getRound_order());
+            if (winnerPlayerMatchesOnSelectedSurface.size() < LIMIT_NR_OF_ALL_SURFACE_MATCHES) return null;
 
             if (matchMapOnSurface.containsKey(loserPlayer.getPlayerSlug() + surface)) {
                 loserPlayerAllMatchesOnSelectedSurface = matchMapOnSurface.get(loserPlayer.getPlayerSlug() + surface);
@@ -524,8 +524,8 @@ public class PredicterController {
                 loserPlayerAllMatchesOnSelectedSurface = (List<Match>) matchService.findAllMatchesByPlayerNameAndSurface(loserPlayer.getFirstName(), loserPlayer.getLastName(), surface);
                 matchMapOnSurface.put(loserPlayer.getPlayerSlug() + surface, loserPlayerAllMatchesOnSelectedSurface);
             }
-            List<Match> loserPlayerMatchesOnSurface = matchFilter(loserPlayerAllMatchesOnSelectedSurface, numberOfLastMatchesOnSpecificSurface, date, match.getRound_order());
-            if (loserPlayerMatchesOnSurface.size() < LIMIT_NR_OF_ALL_SURFACE_MATCHES) return null;
+            List<Match> loserPlayerMatchesOnSelectedSurface = matchFilter(loserPlayerAllMatchesOnSelectedSurface, numberOfLastMatchesOnSpecificSurface, date, match.getRound_order());
+            if (loserPlayerMatchesOnSelectedSurface.size() < LIMIT_NR_OF_ALL_SURFACE_MATCHES) return null;
 
             if (matchMapOnTournament.containsKey(winnerPlayer.getPlayerSlug() + match.getTournament().getTourney().getSlug())) {
                 winnerPlayerAllMatchesOnTournament = matchMapOnTournament.get(winnerPlayer.getPlayerSlug() + match.getTournament().getTourney().getSlug());
@@ -550,23 +550,24 @@ public class PredicterController {
             boolean order = orderCondition(match);
 
             list = addMatchWinningRateToResults(list, winnerPlayer, winnerPlayerMatches, loserPlayer, loserPlayerMatches, order);
-            list = addMatchWinningRateToResults(list, winnerPlayer, winnerPlayerMatchesOnSurface, loserPlayer, loserPlayerMatchesOnSurface, order);
+            list = addMatchWinningRateToResults(list, winnerPlayer, winnerPlayerMatchesOnSelectedSurface, loserPlayer, loserPlayerMatchesOnSelectedSurface, order);
             list = addGameAndSetWinningRatesToResults(list, winnerPlayer, winnerPlayerMatches, loserPlayer, loserPlayerMatches, order);
-            list = addGameAndSetWinningRatesToResults(list, winnerPlayer, winnerPlayerMatchesOnSurface, loserPlayer, loserPlayerMatchesOnSurface, order);  // wip
+            list = addGameAndSetWinningRatesToResults(list, winnerPlayer, winnerPlayerMatchesOnSelectedSurface, loserPlayer, loserPlayerMatchesOnSelectedSurface, order);  // wip
             list = addHeadToHeadMatchesWinningRateToResults(list, winnerPlayer, loserPlayer, date, order);
             list = addHeadToHeadMatchesOnSurfaceWinningRateToResults(list, winnerPlayer, loserPlayer, date, surface, order);
             list = addTourneyWinningRate(list, winnerPlayer, winnerPlayerMatchesOnTournament, loserPlayer, loserPlayerMatchesOnTournament, order);
 
-            list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerMatches, loserPlayer, loserPlayerMatches, order);
-            list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerMatchesOnSurface, loserPlayer, loserPlayerMatchesOnSurface, order);
-            list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerAllMatchesOnTournament, loserPlayer, loserPlayerAllMatchesOnTournament, order);
+            //list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerMatches, loserPlayer, loserPlayerMatches, order);
+            list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerMatchesOnSelectedSurface, loserPlayer, loserPlayerMatchesOnSelectedSurface, order);
+            //list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerMatchesOnTournament, loserPlayer, loserPlayerMatchesOnTournament, order);
 
-            list = addRoundExperienceAndWinningRate(list, winnerPlayer, winnerPlayerAllMatches, loserPlayer, loserPlayerAllMatches, match.getRound_order(), order);
-            list = addRoundExperienceAndWinningRate(list, winnerPlayer, winnerPlayerAllMatchesOnSelectedSurface, loserPlayer, loserPlayerAllMatchesOnSelectedSurface, match.getRound_order(), order);
-            list = addRoundExperienceAndWinningRate(list, winnerPlayer,winnerPlayerAllMatchesOnTournament, loserPlayer, loserPlayerAllMatchesOnTournament, match.getRound_order(), order);
+            list = addRoundExperienceAndWinningRate(list, winnerPlayer, winnerPlayerMatches, loserPlayer, loserPlayerMatches, match.getRound_order(), order);
+            list = addRoundExperienceAndWinningRate(list, winnerPlayer, winnerPlayerMatchesOnSelectedSurface, loserPlayer, loserPlayerMatchesOnSelectedSurface, match.getRound_order(), order);
+            list = addRoundExperienceAndWinningRate(list, winnerPlayer,winnerPlayerMatchesOnTournament, loserPlayer, loserPlayerMatchesOnTournament, match.getRound_order(), order);
 
             list = addMatchDurationAvg(list, winnerPlayer, loserPlayer, match.getTournament(), match.getRound_order(), order);
-            list = addServiceAndReturnStatisticsSoFarOnTheTournament(list, winnerPlayer, loserPlayer, match.getTournament(), match.getRound_order(), order);
+
+            //list = addServiceAndReturnStatisticsSoFarOnTheTournament(list, winnerPlayer, loserPlayer, match.getTournament(), match.getRound_order(), order);
 
             return  list;
 
@@ -585,15 +586,17 @@ public class PredicterController {
 
             List<Match> playerOneAllMatches;
             List<Match> playerTwoAllMatches;
-
             List<Match> playerOneAllMatchesOnSelectedSurface;
             List<Match> playerTwoAllMatchesOnSelectedSurface;
+            List<Match> playerOneAllMatchesOnTournament;
+            List<Match> playerTwoAllMatchesOnTournament;
 
             playerOneAllMatches = (List<Match>) matchService.findAllMatchesByPlayerName(playerOne.getFirstName(), playerOne.getLastName());
             playerTwoAllMatches = (List<Match>) matchService.findAllMatchesByPlayerName(playerTwo.getFirstName(), playerTwo.getLastName());
-
             playerOneAllMatchesOnSelectedSurface = (List<Match>) matchService.findAllMatchesByPlayerNameAndSurface(playerOne.getFirstName(), playerOne.getLastName(), surface);
             playerTwoAllMatchesOnSelectedSurface = (List<Match>) matchService.findAllMatchesByPlayerNameAndSurface(playerTwo.getFirstName(), playerTwo.getLastName(), surface);
+            playerOneAllMatchesOnTournament = (List<Match>) matchService.findAllMatchesByPlayerNameAndTourneyName(playerOne.getFirstName(), playerOne.getLastName(), tourneyName);
+            playerTwoAllMatchesOnTournament = (List<Match>) matchService.findAllMatchesByPlayerNameAndTourneyName(playerTwo.getFirstName(), playerTwo.getLastName(), tourneyName);
 
             List<Match> playerOneMatches = playerOneAllMatches
                     .stream()
@@ -608,45 +611,55 @@ public class PredicterController {
                     .collect(Collectors.toList());
 
 
-            List<Match> playerOneMatchesOnSurface = playerOneAllMatchesOnSelectedSurface
+            List<Match> playerOneMatchesOnSelectedSurface = playerOneAllMatchesOnSelectedSurface
                     .stream()
                     .sorted(matchComparator)
                     .limit(numberOfLastMatchesOnSpecificSurface)
                     .collect(Collectors.toList());
 
-            List<Match> playerTwoMatchesOnSurface = playerTwoAllMatchesOnSelectedSurface
+            List<Match> playerTwoMatchesOnSelectedSurface = playerTwoAllMatchesOnSelectedSurface
                     .stream()
                     .sorted(matchComparator)
                     .limit(numberOfLastMatchesOnSpecificSurface)
                     .collect(Collectors.toList());
 
-            List<Match> player1AllMatchesOnTournament = (List<Match>) matchService.findAllMatchesByPlayerNameAndTourneyName(playerOne.getFirstName(), playerOne.getLastName(), tourneyName);
-            List<Match> player2AllMatchesOnTournament = (List<Match>) matchService.findAllMatchesByPlayerNameAndTourneyName(playerTwo.getFirstName(), playerTwo.getLastName(), tourneyName);
+            List<Match> playerOneMatchesOnTournament = playerOneAllMatchesOnTournament
+                    .stream()
+                    .sorted(matchComparator)
+                    .limit(numberOfLastMatchesOnTournament)
+                    .collect(Collectors.toList());
+
+            List<Match> playerTwoMatchesOnTournament = playerTwoAllMatchesOnTournament
+                    .stream()
+                    .sorted(matchComparator)
+                    .limit(numberOfLastMatchesOnTournament)
+                    .collect(Collectors.toList());
+
 
             List<Double> list = new ArrayList<Double>();
 
             boolean order = false;
 
             list = addMatchWinningRateToResults(list, playerOne, playerOneMatches, playerTwo, playerTwoMatches, order);
-            list = addMatchWinningRateToResults(list, playerOne, playerOneMatchesOnSurface, playerTwo, playerTwoMatchesOnSurface, order);
+            list = addMatchWinningRateToResults(list, playerOne, playerOneMatchesOnSelectedSurface, playerTwo, playerTwoMatchesOnSelectedSurface, order);
             list = addGameAndSetWinningRatesToResults(list, playerOne, playerOneMatches, playerTwo, playerTwoMatches, order);
-            list = addGameAndSetWinningRatesToResults(list, playerOne, playerOneMatchesOnSurface, playerTwo, playerTwoMatchesOnSurface, order); // wip
+            list = addGameAndSetWinningRatesToResults(list, playerOne, playerOneMatchesOnSelectedSurface, playerTwo, playerTwoMatchesOnSelectedSurface, order); // wip
             list = addHeadToHeadMatchesWinningRateToResults(list, playerOne, playerTwo, "2099.01.01", order);
             list = addHeadToHeadMatchesOnSurfaceWinningRateToResults(list, playerOne, playerTwo, "2099.01.01", surface, order);
-            list = addTourneyWinningRate(list, playerOne, player1AllMatchesOnTournament, playerTwo, player2AllMatchesOnTournament, order);
+            list = addTourneyWinningRate(list, playerOne, playerOneMatchesOnTournament, playerTwo, playerTwoMatchesOnTournament, order);
 
-            list = addServiceAndReturnStatistics(list, playerOne, playerOneMatches, playerTwo, playerOneMatches, order);
-            list = addServiceAndReturnStatistics(list, playerOne, playerOneMatchesOnSurface, playerTwo, playerTwoMatchesOnSurface, order);
-            list = addServiceAndReturnStatistics(list, playerOne, player1AllMatchesOnTournament, playerTwo, player2AllMatchesOnTournament, order);
+            //list = addServiceAndReturnStatistics(list, playerOne, playerOneMatches, playerTwo, playerOneMatches, order);
+            list = addServiceAndReturnStatistics(list, playerOne, playerOneMatchesOnSelectedSurface, playerTwo, playerTwoMatchesOnSelectedSurface, order);
+            //list = addServiceAndReturnStatistics(list, playerOne, playerOneMatchesOnTournament, playerTwo, playerTwoMatchesOnTournament, order);
 
-            list = addRoundExperienceAndWinningRate(list, playerOne, playerOneAllMatches, playerTwo, playerTwoAllMatches, round_order, order);
-            list = addRoundExperienceAndWinningRate(list, playerOne, playerOneAllMatchesOnSelectedSurface, playerTwo, playerTwoAllMatchesOnSelectedSurface, round_order, order);
-            list = addRoundExperienceAndWinningRate(list, playerOne, player1AllMatchesOnTournament, playerTwo, player2AllMatchesOnTournament, round_order, order);
+            list = addRoundExperienceAndWinningRate(list, playerOne, playerOneMatches, playerTwo, playerTwoMatches, round_order, order);
+            list = addRoundExperienceAndWinningRate(list, playerOne, playerOneMatchesOnSelectedSurface, playerTwo, playerTwoMatchesOnSelectedSurface, round_order, order);
+            list = addRoundExperienceAndWinningRate(list, playerOne, playerOneMatchesOnTournament, playerTwo, playerTwoMatchesOnTournament, round_order, order);
 
             // MATCH DURATION - there is no rhyme or reason to put this into the input values just if we choose the round of the tournament too. - and the date
             list = addMatchDurationAvg(list, playerOne, playerTwo, tournament, 999, order);
             // STATISTICS on the tournament
-            list = addServiceAndReturnStatisticsSoFarOnTheTournament(list, playerOne, playerTwo, tournament, 999, order);
+            //list = addServiceAndReturnStatisticsSoFarOnTheTournament(list, playerOne, playerTwo, tournament, 999, order);
 
         return  list;
     }
@@ -686,7 +699,7 @@ public class PredicterController {
                 winnerPlayerAllMatchesOnSelectedSurface = (List<Match>) matchService.findAllMatchesByPlayerNameAndSurface(winnerPlayer.getFirstName(), winnerPlayer.getLastName(), surface);
                 matchMapOnSurface.put(winnerPlayer.getPlayerSlug() + surface, winnerPlayerAllMatchesOnSelectedSurface);
             }
-            List<Match> winnerPlayerMatchesOnSurface = matchFilter(winnerPlayerAllMatchesOnSelectedSurface, numberOfLastMatchesOnSpecificSurface, date, match.getRound_order());
+            List<Match> winnerPlayerMatchesOnSelectedSurface = matchFilter(winnerPlayerAllMatchesOnSelectedSurface, numberOfLastMatchesOnSpecificSurface, date, match.getRound_order());
 
             if (matchMapOnSurface.containsKey(loserPlayer.getPlayerSlug() + surface)) {
                 loserPlayerAllMatchesOnSelectedSurface = matchMapOnSurface.get(loserPlayer.getPlayerSlug() + surface);
@@ -694,7 +707,7 @@ public class PredicterController {
                 loserPlayerAllMatchesOnSelectedSurface = (List<Match>) matchService.findAllMatchesByPlayerNameAndSurface(loserPlayer.getFirstName(), loserPlayer.getLastName(), surface);
                 matchMapOnSurface.put(loserPlayer.getPlayerSlug() + surface, loserPlayerAllMatchesOnSelectedSurface);
             }
-            List<Match> loserPlayerMatchesOnSurface = matchFilter(loserPlayerAllMatchesOnSelectedSurface, numberOfLastMatchesOnSpecificSurface, date, match.getRound_order());
+            List<Match> loserPlayerMatchesOnSelectedSurface = matchFilter(loserPlayerAllMatchesOnSelectedSurface, numberOfLastMatchesOnSpecificSurface, date, match.getRound_order());
 
             if (matchMapOnTournament.containsKey(winnerPlayer.getPlayerSlug() + match.getTournament().getTourney().getSlug())) {
                 winnerPlayerAllMatchesOnTournament = matchMapOnTournament.get(winnerPlayer.getPlayerSlug() + match.getTournament().getTourney().getSlug());
@@ -716,24 +729,23 @@ public class PredicterController {
 
             List<Double> list = new ArrayList<Double>();
             list = addMatchWinningRateToResults(list, winnerPlayer, winnerPlayerMatches, loserPlayer, loserPlayerMatches, order);
-            list = addMatchWinningRateToResults(list, winnerPlayer, winnerPlayerMatchesOnSurface, loserPlayer, loserPlayerMatchesOnSurface, order);
+            list = addMatchWinningRateToResults(list, winnerPlayer, winnerPlayerMatchesOnSelectedSurface, loserPlayer, loserPlayerMatchesOnSelectedSurface, order);
             list = addGameAndSetWinningRatesToResults(list, winnerPlayer, winnerPlayerMatches, loserPlayer, loserPlayerMatches, order);
-            list = addGameAndSetWinningRatesToResults(list, winnerPlayer, winnerPlayerMatchesOnSurface, loserPlayer, loserPlayerMatchesOnSurface, order);  // wip
+            list = addGameAndSetWinningRatesToResults(list, winnerPlayer, winnerPlayerMatchesOnSelectedSurface, loserPlayer, loserPlayerMatchesOnSelectedSurface, order);  // wip
             list = addHeadToHeadMatchesWinningRateToResults(list, winnerPlayer, loserPlayer, date, order);
             list = addHeadToHeadMatchesOnSurfaceWinningRateToResults(list, winnerPlayer, loserPlayer, date, surface, order);
             list = addTourneyWinningRate(list, winnerPlayer, winnerPlayerMatchesOnTournament, loserPlayer, loserPlayerMatchesOnTournament, order);
 
+            //list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerMatches, loserPlayer, loserPlayerMatches, order);
+            list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerMatchesOnSelectedSurface, loserPlayer, loserPlayerMatchesOnSelectedSurface, order);
+            ///list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerMatchesOnTournament, loserPlayer, loserPlayerMatchesOnTournament, order);
 
-            list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerMatches, loserPlayer, loserPlayerMatches, order);
-            list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerMatchesOnSurface, loserPlayer, loserPlayerMatchesOnSurface, order);
-            list = addServiceAndReturnStatistics(list, winnerPlayer, winnerPlayerAllMatchesOnTournament, loserPlayer, loserPlayerAllMatchesOnTournament, order);
-
-            list = addRoundExperienceAndWinningRate(list, winnerPlayer, winnerPlayerAllMatches, loserPlayer, loserPlayerAllMatches, match.getRound_order(), order);
-            list = addRoundExperienceAndWinningRate(list, winnerPlayer, winnerPlayerAllMatchesOnSelectedSurface, loserPlayer, loserPlayerAllMatchesOnSelectedSurface, match.getRound_order(), order);
-            list = addRoundExperienceAndWinningRate(list, winnerPlayer,winnerPlayerAllMatchesOnTournament, loserPlayer, loserPlayerAllMatchesOnTournament, match.getRound_order(), order);
+            list = addRoundExperienceAndWinningRate(list, winnerPlayer, winnerPlayerMatches, loserPlayer, loserPlayerMatches, match.getRound_order(), order);
+            list = addRoundExperienceAndWinningRate(list, winnerPlayer, winnerPlayerMatchesOnSelectedSurface, loserPlayer, loserPlayerMatchesOnSelectedSurface, match.getRound_order(), order);
+            list = addRoundExperienceAndWinningRate(list, winnerPlayer,winnerPlayerMatchesOnTournament, loserPlayer, loserPlayerMatchesOnTournament, match.getRound_order(), order);
 
             list = addMatchDurationAvg(list, winnerPlayer, loserPlayer, match.getTournament(), match.getRound_order(), order);
-            list = addServiceAndReturnStatisticsSoFarOnTheTournament(list, winnerPlayer, loserPlayer, match.getTournament(), match.getRound_order(), order);
+            //list = addServiceAndReturnStatisticsSoFarOnTheTournament(list, winnerPlayer, loserPlayer, match.getTournament(), match.getRound_order(), order);
 
             return  list;
 
@@ -760,9 +772,10 @@ public class PredicterController {
             testData = getTestData(allMatchesForTest);
         System.out.println("Number of test data = " + testData.size());
         System.out.println("Number of input data = " + testData.size());
-        String test_data_filename = "test-data-v2-with-all-90-inputs-2017.txt";
-        String weights_filename = "weights-version-all-included-actual-tournaments-statistics.txt";
-        String biases_filename = "biases-version-all-included-actual-tournaments-statistics.txt";
+
+        String test_data_filename = "test-data-v6.txt";
+        String weights_filename = "weights-v6.txt";
+        String biases_filename = "biases-v6.txt";
 
         TrainingDataToJSONConverter.writeToJSONFile(testData, test_data_filename);
 
@@ -830,8 +843,8 @@ public class PredicterController {
 
         // Later we can receive these file names from the user => new webpage
         List<Double> inputs = getInputsToPredict(playerOne, playerTwo, surface, tourneyName);
-        String weight_filename = "weights-version-all-included-actual-tournaments-statistics.txt";
-        String biases_filename = "biases-version-all-included-actual-tournaments-statistics.txt";
+        String weight_filename = "weights-v6.txt";
+        String biases_filename = "biases-v6.txt";
 
         PredictionRequestDTO requestDTO = new PredictionRequestDTO(playerOne.getPlayerSlug(), playerTwo.getPlayerSlug(), weight_filename, biases_filename, getInputsToPredict(playerOne, playerTwo, surface, tourneyName));
         HttpEntity<PredictionRequestDTO> request = new HttpEntity<>(requestDTO);

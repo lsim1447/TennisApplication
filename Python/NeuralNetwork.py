@@ -8,11 +8,11 @@ import sys
 import os
 import json
 
-NR_OF_INPUTS = 90
+NR_OF_INPUTS = 42
 NR_OF_OUTPUTS = 2
 NR_OF_LAY = 20
 NR_OF_INNER_LAY = 8
-NR_OF_EPOCH = 5000
+NR_OF_EPOCH = 3000
 
 app = Flask(__name__)
 
@@ -319,7 +319,7 @@ def train():
     network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
     network.set_init_settings_before_training(add_relative_path(request.json['training_data_filename']))
     network.set_weights_and_biases(add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']), request.json['with_new_settings'])
-    network.training(network.data, 1.0, 0.9, add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']))
+    network.training(network.data, 1.5, 0.9, add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']))
 
     to_json = {}
     to_json['training_data_filename'] = request.json['training_data_filename']
@@ -335,24 +335,35 @@ def train():
 
 @app.route('/prediction', methods=['POST'])
 def predict():
-    print('request = ', request.json)
-
     network = Network([NR_OF_INPUTS, NR_OF_LAY, NR_OF_OUTPUTS])
     network.set_weights_and_biases(add_relative_path(request.json['weights_filename']), add_relative_path(request.json['biases_filename']), False)
     
     numpy_inputs = convert_data_to_input_data(request.json['inputs'])
     resp_data = network.feedforward(numpy_inputs)
-    print('firstResult = ', resp_data)
 
     numpy_inputs_revert = convert_data_to_input_data(revert_input_data(request.json['inputs']))
     resp_data_invert = network.feedforward(numpy_inputs_revert)
-    print('secondResult = ', resp_data_invert)
 
-    percentage1 = ((resp_data[0][0] + resp_data_invert[1][0]) / 2) * 100
-    percentage2 = ((resp_data[1][0] + resp_data_invert[0][0]) / 2) * 100
+    a1 = resp_data[0][0]
+    a2 = resp_data[1][0]
+    b1 = resp_data_invert[0][0]
+    b2 = resp_data_invert[1][0]
+
+    p1 = a1 / (a1 + a2)
+    p2 = a2 / (a1 + a2)
+    i1 = b1 / (b1 + b2)
+    i2 = b2 / (b1 + b2)
+    print('p1 = ', p1, ' p2 = ', p2)
+    print('i1 = ', i1, ' i2 = ', i2)	
+
+    percentage1 = ((p1 + i2) / 2) * 100
+    percentage2 = ((p2 + i1) / 2) * 100
 
     print('Percentage of ', request.json['firstPlayerSlug'], ': ', percentage1)
     print('Percentage of ', request.json['secondPlayerSlug'], ': ', percentage2)	
+
+    print('FIRST INPUTS  = ', numpy_inputs)
+    print('REVERT INPUTS = ', numpy_inputs_revert)
 
     to_json = {}
     to_json['first_percentage']  = percentage1

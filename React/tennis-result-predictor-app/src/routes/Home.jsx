@@ -17,7 +17,7 @@ function Home(props) {
     return (
         <div class="container"> 
             <div className="row">
-                <button onClick={(e) => tryTest(e)}> Let's train </button>
+                <button onClick={(e) => tryTest(e)}> Let's TEST </button>
             </div>
             <div className="row">
                 <div className="col col-lg-12" style={{marginTop: "75px", minHeight: "750px"}}>
